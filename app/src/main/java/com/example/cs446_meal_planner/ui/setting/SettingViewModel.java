@@ -1,16 +1,16 @@
-package com.example.cs446_meal_planner.ui.notifications;
+package com.example.cs446_meal_planner.ui.setting;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NotificationsViewModel extends ViewModel {
+public class SettingViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public NotificationsViewModel() {
+    public SettingViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+        mText.setValue("This is setting fragment");
     }
 
     public LiveData<String> getText() {

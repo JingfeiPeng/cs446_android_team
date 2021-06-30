@@ -1,4 +1,4 @@
-package com.example.cs446_meal_planner.ui.dashboard;
+package com.example.cs446_meal_planner.ui.recipe;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,24 +12,23 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.cs446_meal_planner.R;
-import com.example.cs446_meal_planner.databinding.FragmentDashboardBinding;
+import com.example.cs446_meal_planner.databinding.FragmentRecipeBinding;
 
-public class DashboardFragment extends Fragment {
+public class RecipeFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
-    private FragmentDashboardBinding binding;
+    private RecipeViewModel recipeViewModel;
+    private FragmentRecipeBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
+        recipeViewModel =
+                new ViewModelProvider(this).get(RecipeViewModel.class);
 
-        binding = FragmentDashboardBinding.inflate(inflater, container, false);
+        binding = FragmentRecipeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        recipeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

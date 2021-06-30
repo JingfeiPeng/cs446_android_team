@@ -1,4 +1,4 @@
-package com.example.cs446_meal_planner.ui.notifications;
+package com.example.cs446_meal_planner.ui.setting;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,24 +12,23 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.cs446_meal_planner.R;
-import com.example.cs446_meal_planner.databinding.FragmentNotificationsBinding;
+import com.example.cs446_meal_planner.databinding.FragmentSettingBinding;
 
-public class NotificationsFragment extends Fragment {
+public class SettingFragment extends Fragment {
 
-    private NotificationsViewModel notificationsViewModel;
-    private FragmentNotificationsBinding binding;
+    private SettingViewModel settingViewModel;
+    private FragmentSettingBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
+        settingViewModel =
+                new ViewModelProvider(this).get(SettingViewModel.class);
 
-        binding = FragmentNotificationsBinding.inflate(inflater, container, false);
+        binding = FragmentSettingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textNotifications;
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        settingViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
