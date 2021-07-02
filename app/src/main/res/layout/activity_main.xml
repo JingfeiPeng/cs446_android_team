@@ -8,65 +8,6 @@
     android:paddingTop="?attr/actionBarSize"
     android:scrollbarSize="10dp">
 
-    <View
-        android:id="@+id/divider_1"
-        android:layout_width="match_parent"
-        android:layout_height="2px"
-        android:background="@android:color/darker_gray"
-        app:layout_constraintTop_toBottomOf="@+id/textView_calorie_2"
-        android:layout_marginTop="20dp"/>
-
-    <View
-        android:id="@+id/divider_2"
-        android:layout_width="match_parent"
-        android:layout_height="2px"
-        android:background="@android:color/darker_gray"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        android:layout_marginTop="20dp"/>
-
-    <Button
-        android:id="@+id/button_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="NEXT"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintLeft_toLeftOf="@+id/imageView_dinner"
-        app:layout_constraintRight_toRightOf="@+id/imageView_dinner"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_dinner" />
-
-    <ImageView
-        android:id="@+id/imageView_lunch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView_breakfast"
-        app:layout_constraintRight_toLeftOf="@+id/imageView_dinner"
-        app:layout_constraintTop_toBottomOf="@+id/textView_plan_date"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <ImageView
-        android:id="@+id/imageView_dinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView_lunch"
-        app:layout_constraintTop_toBottomOf="@+id/textView_plan_date"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/textView_calorie_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0% of your daily intake"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="40dp" />
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="0dp"
@@ -79,130 +20,16 @@
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 
-    <EditText
-        android:id="@+id/overview_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Overview"
+    <fragment
+        android:id="@+id/nav_host_fragment_activity_main"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@id/nav_view"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="30dp"
-        android:layout_marginBottom="20dp"/>
-
-    <TextView
-        android:id="@+id/textView_calorie_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Today's Calorie: 0 kCal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/overview_title"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="40dp" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_calorie_1"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="40dp" />
-
-    <TextView
-        android:id="@+id/textView_next_meal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Next Meal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider_1"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_next_meal"
-        tools:srcCompat="@tools:sample/avatars[0]" />
-
-    <TextView
-        android:id="@+id/textView_meal_calorie"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Calorie: 666"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="60dp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/textView_next_meal" />
-
-    <TextView
-        android:id="@+id/textView_meal_prepTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cooking Time: 2h33min"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="60dp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/textView_meal_calorie" />
-
-    <Button
-        android:id="@+id/button_view_recipe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="VIEW RECIPE"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintLeft_toRightOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/textView_meal_prepTime" />
-
-    <TextView
-        android:id="@+id/textView_plan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Plan of the Week"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider_2" />
-
-    <ImageView
-        android:id="@+id/imageView_breakfast"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/imageView_lunch"
-        app:layout_constraintTop_toBottomOf="@+id/textView_plan_date"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/textView_plan_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tomorrow"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintLeft_toLeftOf="@+id/imageView_lunch"
-        app:layout_constraintRight_toRightOf="@+id/imageView_lunch"
-        app:layout_constraintTop_toBottomOf="@+id/textView_plan"
-        app:layout_constraintBottom_toTopOf="@+id/imageView_lunch"/>
-
-    <Button
-        android:id="@+id/button_prev"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PREV"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintLeft_toLeftOf="@+id/imageView_breakfast"
-        app:layout_constraintRight_toRightOf="@+id/imageView_breakfast"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_breakfast" />
+        app:navGraph="@navigation/mobile_navigation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
