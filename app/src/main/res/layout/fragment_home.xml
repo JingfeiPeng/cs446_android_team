@@ -191,6 +191,7 @@
             android:id="@+id/button_calendar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:onClick="viewCalender"
             android:text="VIEW CALENDAR"
             android:layout_marginLeft="0dp"
             android:layout_marginTop="20dp"

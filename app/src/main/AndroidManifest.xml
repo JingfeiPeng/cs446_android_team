@@ -9,6 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CS446_Meal_Planner">
+        <activity 
+            android:name=".CalenderActivity"
+            android:label="@string/Calender"
+        ></activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
