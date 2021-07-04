@@ -40,4 +40,8 @@ public class MainActivity extends AppCompatActivity {
         Intent moveToCalender = new Intent(getApplicationContext(), CalenderActivity.class);
         startActivity(moveToCalender);
     }
+    public void viewRecipeCreation(View v)
+    {
+        startActivity(new Intent(getApplicationContext(),recipe_creation.class));
+    }
 }

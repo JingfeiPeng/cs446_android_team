@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent">
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -66,11 +69,12 @@
         ></Button>
 
     <Button
-        android:id="@+id/button_submit_list"
+        android:id="@+id/button_submit_recipe"
         android:background="@drawable/round_primary"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:text="Submit List"
+        android:onClick="close_activity"
+        android:text="Submit Recipe"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
@@ -81,3 +85,4 @@
         ></Button>
 
 </LinearLayout>
+</ScrollView>

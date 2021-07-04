@@ -1,5 +1,6 @@
 package com.example.cs446_meal_planner;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -22,18 +23,17 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.cs446_meal_planner.databinding.ActivityRecipeCreationBinding;
 
-public class recipe_creation extends AppCompatActivity implements View.OnClickListener {
+public class recipe_creation extends AppCompatActivity{
     LinearLayout add_ingredient_layoutlist;
     LinearLayout add_instruction_layoutlist;
     Button add_ingredient;
     Button add_instruction;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         setContentView(R.layout.recipe_creation_view);
-
         add_ingredient_layoutlist=findViewById(R.id.ingredient_list);
         add_instruction_layoutlist=findViewById(R.id.instruction_list);
 
@@ -51,7 +51,7 @@ public class recipe_creation extends AppCompatActivity implements View.OnClickLi
                 imageClose.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        add_ingredient_layoutlist.removeView(v);
+                        add_ingredient_layoutlist.removeView(ingredientView);
                     }
                 });
 
@@ -69,7 +69,7 @@ public class recipe_creation extends AppCompatActivity implements View.OnClickLi
                 imageClose.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        add_instruction_layoutlist.removeView(v);
+                        add_instruction_layoutlist.removeView(instructionView);
                     }
                 });
 
@@ -78,13 +78,13 @@ public class recipe_creation extends AppCompatActivity implements View.OnClickLi
         });
 
     }
-
-    @Override
-    public void onClick(View v) {
-        addView();
+    public void close_activity(View v)
+    {
+        startActivity(new Intent(getApplicationContext(),MainActivity.class));
     }
 
-    private void addView() {
-
+    public void viewRecipeCreation(View v)
+    {
+        startActivity(new Intent(getApplicationContext(),recipe_creation.class));
     }
 }
