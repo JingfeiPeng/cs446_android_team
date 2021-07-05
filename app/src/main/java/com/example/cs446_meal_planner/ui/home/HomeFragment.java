@@ -4,15 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.cs446_meal_planner.R;
 import com.example.cs446_meal_planner.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
@@ -37,7 +33,6 @@ public class HomeFragment extends Fragment {
 //        });
         return root;
     }
-
 //    @Override
 //    public void onDestroyView() {
 //        super.onDestroyView();

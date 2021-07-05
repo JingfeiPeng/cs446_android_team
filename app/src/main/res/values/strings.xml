@@ -3,4 +3,10 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Recipe</string>
     <string name="title_notifications">Setting</string>
+    <string name="Calender">Calender</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="lunch">Lunch</string>
+    <string name="dinner">Dinner</string>
+    <string name="button_prev">Prev</string>
+    <string name="button_next">Next</string>
 </resources>

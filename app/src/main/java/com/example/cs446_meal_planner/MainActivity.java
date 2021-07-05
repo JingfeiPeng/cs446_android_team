@@ -1,6 +1,8 @@
 package com.example.cs446_meal_planner;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -34,4 +36,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
+    public void viewCalender(View view) {
+        Intent moveToCalender = new Intent(getApplicationContext(), CalenderActivity.class);
+        startActivity(moveToCalender);
+    }
 }
