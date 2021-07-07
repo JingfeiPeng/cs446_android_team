@@ -9,14 +9,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CS446_Meal_Planner">
-        <activity 
-            android:name=".CalenderActivity"
-            android:label="@string/Calender"
-        ></activity>
         <activity
-            android:name=".recipe_creation"
+            android:name=".ViewRecipe"
+            android:label="@string/title_activity_view_recipe"
+            android:theme="@style/Theme.CS446_Meal_Planner.NoActionBar"></activity>
+        <activity
+            android:name=".RecipeOverview"
+            android:label="@string/title_activity_submit_recipe"
+            android:theme="@style/Theme.CS446_Meal_Planner.NoActionBar" />
+        <activity
+            android:name=".CalenderActivity"
+            android:label="@string/Calender" />
+        <activity
+            android:name=".RecipeCreation"
             android:label="@string/title_activity_recipe_creation"
-            android:theme="@style/Theme.CS446_Meal_Planner"></activity>
+            android:theme="@style/Theme.CS446_Meal_Planner" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">

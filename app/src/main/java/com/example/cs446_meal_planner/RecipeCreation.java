@@ -3,32 +3,24 @@ package com.example.cs446_meal_planner;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import androidx.appcompat.widget.AppCompatSpinner;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+import com.example.cs446_meal_planner.model.Recipe;
 
-import com.example.cs446_meal_planner.databinding.ActivityRecipeCreationBinding;
 
-public class recipe_creation extends AppCompatActivity{
+public class RecipeCreation extends AppCompatActivity{
     LinearLayout add_ingredient_layoutlist;
     LinearLayout add_instruction_layoutlist;
     Button add_ingredient;
     Button add_instruction;
-
+    Button submit_recipe;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +31,7 @@ public class recipe_creation extends AppCompatActivity{
 
         add_ingredient = findViewById(R.id.button_add_ingredient);
         add_instruction = findViewById(R.id.button_add_instruction);
+        submit_recipe = findViewById(R.id.button_submit_recipe);
 
         add_ingredient.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,15 +69,44 @@ public class recipe_creation extends AppCompatActivity{
                 add_instruction_layoutlist.addView(instructionView);
             }
         });
+        submit_recipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String instructions = "";
+                for(int i=0;i<add_instruction_layoutlist.getChildCount();i++)
+                {
+                    View curInstructionView = add_instruction_layoutlist.getChildAt(i);
+                    EditText curInstructionText = (EditText)curInstructionView.findViewById(R.id.edit_instruction_name);
+                    instructions += curInstructionText.getText().toString()+"#";
+                }
+                String ingredients = "";
+                for(int i=0;i<add_ingredient_layoutlist.getChildCount();i++)
+                {
+                    View curIngredientView = add_ingredient_layoutlist.getChildAt(i);
+                    EditText curIngredientText = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_name);
+                    ingredients += curIngredientText.getText().toString()+"#";
+                }
+                Recipe r = Recipe.builder()
+                        .name("placeholder")
+                        .ingredients(ingredients)
+                        .instruction(instructions)
+                        .cookingTime(55)
+                        .imageUrl("xxxx").build();
+                DBHelper db = new DBHelper(RecipeCreation.this);
+                db.insertRecipe(r);
+                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            }
+
+
+        });
 
     }
-    public void close_activity(View v)
+    public void submitRecipe(View v)
     {
-        startActivity(new Intent(getApplicationContext(),MainActivity.class));
-    }
 
+    }
     public void viewRecipeCreation(View v)
     {
-        startActivity(new Intent(getApplicationContext(),recipe_creation.class));
+        startActivity(new Intent(getApplicationContext(), RecipeCreation.class));
     }
 }

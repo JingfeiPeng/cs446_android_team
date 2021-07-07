@@ -73,7 +73,6 @@
         android:background="@drawable/round_primary"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:onClick="close_activity"
         android:text="Submit Recipe"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="15dp"

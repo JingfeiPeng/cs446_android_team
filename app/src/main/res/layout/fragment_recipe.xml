@@ -34,6 +34,7 @@
         android:layout_marginEnd="55dp"
         android:layout_marginRight="55dp"
         android:layout_marginBottom="104dp"
+        android:onClick="viewRecipes"
         android:text="View Recipe"
         app:layout_constraintBottom_toTopOf="@+id/create_recipe"
         app:layout_constraintEnd_toEndOf="parent"
