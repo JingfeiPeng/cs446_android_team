@@ -52,46 +52,49 @@ public class ViewRecipe extends AppCompatActivity {
         EditText cookingTimeField = (EditText) findViewById(R.id.edit_cooking_time);
         cookingTimeField.setText(Double.toString(cookingTime));
 
-        String[] instructionList = instructions.split("#");
-        for (int i = 0; i < instructionList.length; i++) {
-            final View instructionView = getLayoutInflater().inflate(R.layout.row_add_instruction,null,false);
-            EditText instructionText = instructionView.findViewById(R.id.edit_instruction_name);
-            instructionText.setText(instructionList[i]);
-            add_instruction_layoutlist.addView(instructionView);
+        if (!instructions.equals("")) {
+            String[] instructionList = instructions.split("#");
+            for (int i = 0; i < instructionList.length; i++) {
+                final View instructionView = getLayoutInflater().inflate(R.layout.row_add_instruction,null,false);
+                EditText instructionText = instructionView.findViewById(R.id.edit_instruction_name);
+                instructionText.setText(instructionList[i]);
+                add_instruction_layoutlist.addView(instructionView);
 
-            // handle button close
-            ImageView imageClose = instructionView.findViewById(R.id.image_remove);
-            imageClose.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    add_instruction_layoutlist.removeView(instructionView);
-                }
-            });
+                // handle button close
+                ImageView imageClose = instructionView.findViewById(R.id.image_remove);
+                imageClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        add_instruction_layoutlist.removeView(instructionView);
+                    }
+                });
+            }
         }
 
-        String[] ingredientGramList = ingredients.split("#");
-        for (int i = 0; i < ingredientGramList.length; i++) {
-            // ingredient at index 0 and weight at index 1
-            String[] ingredientGram = ingredientGramList[i].split("%");
-            String ingredientName = ingredientGram[0];
-            String ingredientWeight = ingredientGram[1];
-            final View ingredientView = getLayoutInflater().inflate(R.layout.row_add_ingredient,null,false);
-            EditText ingredientText = ingredientView.findViewById(R.id.edit_ingredient_name);
-            ingredientText.setText(ingredientName);
-            EditText gramEditText = ingredientView.findViewById(R.id.edit_ingredient_gram);
-            gramEditText.setText(ingredientWeight);
-            add_ingredient_layoutlist.addView(ingredientView);
+        if (!ingredients.equals("")) {
+            String[] ingredientGramList = ingredients.split("#");
+            for (int i = 0; i < ingredientGramList.length; i++) {
+                // ingredient at index 0 and weight at index 1
+                String[] ingredientGram = ingredientGramList[i].split("%");
+                String ingredientName = ingredientGram[0];
+                String ingredientWeight = ingredientGram[1];
+                final View ingredientView = getLayoutInflater().inflate(R.layout.row_add_ingredient,null,false);
+                EditText ingredientText = ingredientView.findViewById(R.id.edit_ingredient_name);
+                ingredientText.setText(ingredientName);
+                EditText gramEditText = ingredientView.findViewById(R.id.edit_ingredient_gram);
+                gramEditText.setText(ingredientWeight);
+                add_ingredient_layoutlist.addView(ingredientView);
 
-            // handle close button
-            ImageView imageClose = ingredientView.findViewById(R.id.image_remove);
-            imageClose.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    add_ingredient_layoutlist.removeView(ingredientView);
-                }
-            });
+                // handle close button
+                ImageView imageClose = ingredientView.findViewById(R.id.image_remove);
+                imageClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        add_ingredient_layoutlist.removeView(ingredientView);
+                    }
+                });
+            }
         }
-
 
         add_ingredient = findViewById(R.id.button_add_ingredient_view);
         add_instruction = findViewById(R.id.button_add_instruction_view);
