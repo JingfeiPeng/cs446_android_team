@@ -47,6 +47,16 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean insertRecipe(Recipe recipe){
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
+
+        int n = numberOfRows();
+        if(n == 0){
+            contentValues.put(RECIPE_ID, 1);
+        }
+        else {
+            Cursor res = db.rawQuery(QUERY_LAST_ROW, null);
+            res.moveToFirst();
+            contentValues.put(RECIPE_ID, Integer.parseInt(res.getString(res.getColumnIndex(RECIPE_ID))) + 1);
+        }
         contentValues.put(RECIPE_NAME, recipe.getName());
         contentValues.put(RECIPE_IMAGE_URL, recipe.getImageUrl());
         contentValues.put(RECIPE_INGREDIENTS, recipe.getIngredients());
@@ -74,6 +84,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         while(res.isAfterLast() == false){
             Recipe recipe = Recipe.builder()
+                    .id(res.getInt(res.getColumnIndex(RECIPE_ID)))
                     .name(res.getString(res.getColumnIndex(RECIPE_NAME)))
                     .imageUrl(res.getString(res.getColumnIndex(RECIPE_IMAGE_URL)))
                     .ingredients(res.getString(res.getColumnIndex(RECIPE_INGREDIENTS)))
@@ -85,6 +96,54 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return result;
+    }
+
+    public boolean updateName(String name, Integer id){
+        ContentValues cv = new ContentValues();
+        cv.put(RECIPE_NAME, name);
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.update(RECIPE_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(id)});
+        return true;
+    }
+
+    public boolean updateImageUrl(String imageUrl, Integer id){
+        ContentValues cv = new ContentValues();
+        cv.put(RECIPE_IMAGE_URL, imageUrl);
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.update(RECIPE_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(id)});
+        return true;
+    }
+
+    public boolean updateInstruction(String instruction, Integer id){
+        ContentValues cv = new ContentValues();
+        cv.put(RECIPE_INSTRUCTION, instruction);
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.update(RECIPE_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(id)});
+        return true;
+    }
+
+    public boolean updateCookingTime(Double cookingTime, Integer id){
+        ContentValues cv = new ContentValues();
+        cv.put(RECIPE_COOKING_TIME, cookingTime);
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.update(RECIPE_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(id)});
+        return true;
+    }
+
+
+    public boolean updateIngredients(String ingredients, Integer id){
+        ContentValues cv = new ContentValues();
+        cv.put(RECIPE_INGREDIENTS, ingredients);
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.update(RECIPE_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(id)});
+        return true;
+    }
+
+    //delete all recipe
+    public boolean deleteAllRecipes(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL("DELETE FROM " + RECIPE_TABLE_NAME);
+        return true;
     }
 
 
@@ -99,4 +158,5 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private final String QUERY_UPGRADE_DB = "DROP TABLE IF EXISTS RecipeTable";
     private final String QUERY_ALL_RECIPE = "SELECT * FROM RecipeTable";
+    private final String QUERY_LAST_ROW = "SELECT TOP 1 * FROM " + RECIPE_TABLE_NAME + " ORDER BY ID DESC";
 }
