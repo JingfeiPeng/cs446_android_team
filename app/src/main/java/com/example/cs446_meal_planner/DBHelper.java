@@ -47,7 +47,16 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean insertRecipe(Recipe recipe){
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(RECIPE_ID, numberOfRows()+1);
+
+        int n = numberOfRows();
+        if(n == 0){
+            contentValues.put(RECIPE_ID, 1);
+        }
+        else {
+            Cursor res = db.rawQuery(QUERY_LAST_ROW, null);
+            res.moveToFirst();
+            contentValues.put(RECIPE_ID, Integer.parseInt(res.getString(res.getColumnIndex(RECIPE_ID))) + 1);
+        }
         contentValues.put(RECIPE_NAME, recipe.getName());
         contentValues.put(RECIPE_IMAGE_URL, recipe.getImageUrl());
         contentValues.put(RECIPE_INGREDIENTS, recipe.getIngredients());
@@ -148,4 +157,5 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private final String QUERY_UPGRADE_DB = "DROP TABLE IF EXISTS RecipeTable";
     private final String QUERY_ALL_RECIPE = "SELECT * FROM RecipeTable";
+    private final String QUERY_LAST_ROW = "SELECT TOP 1 * FROM " + RECIPE_TABLE_NAME + " ORDER BY ID DESC";
 }
