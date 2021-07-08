@@ -3,9 +3,6 @@ package com.example.cs446_meal_planner;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.cs446_meal_planner.model.Recipe;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
@@ -15,10 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 
 public class ViewRecipe extends AppCompatActivity {
@@ -58,71 +52,44 @@ public class ViewRecipe extends AppCompatActivity {
         EditText cookingTimeField = (EditText) findViewById(R.id.edit_cooking_time);
         cookingTimeField.setText(Double.toString(cookingTime));
 
-        String tmp="";
-        Log.d("instructionsHere", instructions);
-        for(int i=0;i<instructions.length();i++)
-        {
-            if(instructions.charAt(i) == '#')
-            {
-                final View instructionView = getLayoutInflater().inflate(R.layout.row_add_instruction,null,false);
-                EditText editText = (EditText)instructionView.findViewById(R.id.edit_instruction_name);
-                editText.setText(tmp);
-                add_instruction_layoutlist.addView(instructionView);
-                tmp="";
-                ImageView imageClose = (ImageView)instructionView.findViewById(R.id.image_remove);
-                imageClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        add_instruction_layoutlist.removeView(instructionView);
-                    }
-                });
-            }
-            else
-            {
-                tmp+=instructions.charAt(i);
-            }
-        }
-        tmp="";
-        String tmpGram="";
-        boolean startGram = false;
-        for(int i=0;i<ingredients.length();i++)
-        {
-            if(ingredients.charAt(i) == '#')
-            {
-                final View ingredientView = getLayoutInflater().inflate(R.layout.row_add_ingredient,null,false);
-                EditText editText = (EditText)ingredientView.findViewById(R.id.edit_ingredient_name);
-                editText.setText(tmp);
-                EditText gramEditText = (EditText)ingredientView.findViewById(R.id.edit_ingredient_gram);
-                gramEditText.setText(tmpGram);
-                add_ingredient_layoutlist.addView(ingredientView);
-                tmp="";
-                startGram = false;
-                tmpGram = "";
-                ImageView imageClose = (ImageView)ingredientView.findViewById(R.id.image_remove);
+        String[] instructionList = instructions.split("#");
+        for (int i = 0; i < instructionList.length; i++) {
+            final View instructionView = getLayoutInflater().inflate(R.layout.row_add_instruction,null,false);
+            EditText instructionText = instructionView.findViewById(R.id.edit_instruction_name);
+            instructionText.setText(instructionList[i]);
+            add_instruction_layoutlist.addView(instructionView);
 
-                imageClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        add_ingredient_layoutlist.removeView(ingredientView);
-                    }
-                });
-            }
-            else
-            {
-                if(ingredients.charAt(i) == '%')
-                {
-                    startGram=true;
-                    continue;
+            // handle button close
+            ImageView imageClose = instructionView.findViewById(R.id.image_remove);
+            imageClose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    add_instruction_layoutlist.removeView(instructionView);
                 }
-                if(startGram)
-                {
-                    tmpGram+=ingredients.charAt(i);
+            });
+        }
+
+        String[] ingredientGramList = ingredients.split("#");
+        for (int i = 0; i < ingredientGramList.length; i++) {
+            // ingredient at index 0 and weight at index 1
+            String[] ingredientGram = ingredientGramList[i].split("%");
+            String ingredientName = ingredientGram[0];
+            String ingredientWeight = ingredientGram[1];
+            final View ingredientView = getLayoutInflater().inflate(R.layout.row_add_ingredient,null,false);
+            EditText ingredientText = ingredientView.findViewById(R.id.edit_ingredient_name);
+            ingredientText.setText(ingredientName);
+            EditText gramEditText = ingredientView.findViewById(R.id.edit_ingredient_gram);
+            gramEditText.setText(ingredientWeight);
+            add_ingredient_layoutlist.addView(ingredientView);
+
+            // handle close button
+            ImageView imageClose = ingredientView.findViewById(R.id.image_remove);
+            imageClose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    add_ingredient_layoutlist.removeView(ingredientView);
                 }
-                else
-                {
-                    tmp+=ingredients.charAt(i);
-                }
-            }
+            });
         }
 
 
