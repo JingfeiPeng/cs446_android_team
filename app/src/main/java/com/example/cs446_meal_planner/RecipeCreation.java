@@ -86,11 +86,13 @@ public class RecipeCreation extends AppCompatActivity{
                     EditText curIngredientText = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_name);
                     ingredients += curIngredientText.getText().toString()+"#";
                 }
+                EditText recipeNameText = (EditText)findViewById(R.id.edit_recipe_name);
+                String recipeName = recipeNameText.getText().toString();
                 Recipe r = Recipe.builder()
-                        .name("placeholder")
+                        .name(recipeName)
                         .ingredients(ingredients)
                         .instruction(instructions)
-                        .cookingTime(55)
+                        .cookingTime(55.0)
                         .imageUrl("xxxx").build();
                 DBHelper db = new DBHelper(RecipeCreation.this);
                 db.insertRecipe(r);

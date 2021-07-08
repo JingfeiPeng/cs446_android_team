@@ -9,7 +9,18 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".MainActivity">
-
+        <EditText
+            android:id="@+id/edit_recipe_name_view"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/round_grey"
+            android:layout_weight="1"
+            android:hint="Recipe name"
+            android:textSize="14sp"
+            android:paddingLeft="10dp"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"></EditText>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -19,13 +30,13 @@
             android:textColor="@color/black"></TextView>
 
         <LinearLayout
-            android:id="@+id/ingredient_list"
+            android:id="@+id/ingredient_list_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"></LinearLayout>
 
         <Button
-            android:id="@+id/button_add_ingredient"
+            android:id="@+id/button_add_ingredient_view"
             android:background="@drawable/round_primary"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
@@ -48,13 +59,13 @@
             android:textColor="@color/black"></TextView>
 
         <LinearLayout
-            android:id="@+id/instruction_list"
+            android:id="@+id/instruction_list_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"></LinearLayout>
 
         <Button
-            android:id="@+id/button_add_instruction"
+            android:id="@+id/button_add_instruction_view"
             android:background="@drawable/round_primary"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
@@ -82,6 +93,19 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             ></Button>
-
+        <Button
+            android:id="@+id/button_delete_recipe"
+            android:background="@drawable/round_primary"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Delete Recipe"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            ></Button>
     </LinearLayout>
 </ScrollView>

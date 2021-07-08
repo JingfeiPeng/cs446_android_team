@@ -75,6 +75,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         while(res.isAfterLast() == false){
             Recipe recipe = Recipe.builder()
+                    .id(res.getInt(res.getColumnIndex(RECIPE_ID)))
                     .name(res.getString(res.getColumnIndex(RECIPE_NAME)))
                     .imageUrl(res.getString(res.getColumnIndex(RECIPE_IMAGE_URL)))
                     .ingredients(res.getString(res.getColumnIndex(RECIPE_INGREDIENTS)))

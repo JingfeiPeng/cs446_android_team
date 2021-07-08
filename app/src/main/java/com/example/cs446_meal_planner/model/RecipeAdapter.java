@@ -47,6 +47,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
                 Bundle bundle = new Bundle();
                 bundle.putString("instruction",r.getInstruction());
                 bundle.putString("ingredients",r.getIngredients());
+                bundle.putString("recipeName",r.getName());
+                bundle.putInt("id",r.getId());
                 intent.putExtras(bundle);
                 mcon.startActivity(intent);
             }

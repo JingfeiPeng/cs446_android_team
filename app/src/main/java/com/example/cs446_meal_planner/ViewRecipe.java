@@ -30,12 +30,19 @@ public class ViewRecipe extends AppCompatActivity {
     Button add_ingredient;
     Button add_instruction;
     Button modify_recipe;
+    Button delete_recipe;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipe_view_layout);
         String instructions = getIntent().getExtras().getString("instructions");
         String ingredients =getIntent().getExtras().getString("ingredients");
+        String recipeName = getIntent().getExtras().getString("recipeName");
+        int recipeID = getIntent().getExtras().getInt("id");
+        if(recipeName == null)
+        {
+            recipeName = "";
+        }
         if (instructions == null)
         {
             instructions="";
@@ -44,8 +51,10 @@ public class ViewRecipe extends AppCompatActivity {
         {
             ingredients="";
         }
-        add_ingredient_layoutlist=findViewById(R.id.ingredient_list);
-        add_instruction_layoutlist=findViewById(R.id.instruction_list);
+        add_ingredient_layoutlist=findViewById(R.id.ingredient_list_view);
+        add_instruction_layoutlist=findViewById(R.id.instruction_list_view);
+        EditText curRecipeName = (EditText) findViewById(R.id.edit_recipe_name_view);
+        curRecipeName.setText(recipeName);
         String tmp="";
         for(int i=0;i<instructions.length();i++)
         {
@@ -80,9 +89,10 @@ public class ViewRecipe extends AppCompatActivity {
         }
 
 
-        add_ingredient = findViewById(R.id.button_add_ingredient);
-        add_instruction = findViewById(R.id.button_add_instruction);
+        add_ingredient = findViewById(R.id.button_add_ingredient_view);
+        add_instruction = findViewById(R.id.button_add_instruction_view);
         modify_recipe = findViewById(R.id.button_modify_recipe);
+        delete_recipe = findViewById(R.id.button_delete_recipe);
 
         add_ingredient.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,18 +147,23 @@ public class ViewRecipe extends AppCompatActivity {
                     EditText curIngredientText = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_name);
                     ingredients += curIngredientText.getText().toString()+"#";
                 }
-                Recipe r = Recipe.builder()
-                        .name("placeholder")
-                        .ingredients(ingredients)
-                        .instruction(instructions)
-                        .cookingTime(55)
-                        .imageUrl("xxxx").build();
+
                 DBHelper db = new DBHelper(ViewRecipe.this);
-                db.insertRecipe(r);
-                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                db.updateName(curRecipeName.getText().toString(),recipeID);
+                db.updateInstruction(instructions,recipeID);
+                db.updateIngredients(ingredients,recipeID);
+                startActivity(new Intent(getApplicationContext(),RecipeOverview.class));
             }
 
 
+        });
+        delete_recipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DBHelper db = new DBHelper(ViewRecipe.this);
+                db.deleteRecipe(recipeID);
+                startActivity(new Intent(getApplicationContext(),RecipeOverview.class));
+            }
         });
     }
 
