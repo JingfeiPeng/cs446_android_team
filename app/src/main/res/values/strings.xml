@@ -9,6 +9,7 @@
     <string name="dinner">Dinner</string>
     <string name="button_prev">Prev</string>
     <string name="button_next">Next</string>
+
     <string name="title_activity_recipe_creation">recipe_creation</string>
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
