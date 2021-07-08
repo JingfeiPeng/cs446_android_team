@@ -86,20 +86,22 @@ public class RecipeCreation extends AppCompatActivity{
                     EditText curIngredientText = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_name);
                     ingredients += curIngredientText.getText().toString()+"#";
                 }
+                // get recipe name
                 EditText recipeNameText = (EditText)findViewById(R.id.edit_recipe_name);
                 String recipeName = recipeNameText.getText().toString();
+
+                // get cooking time
+                EditText cookingTimeText = (EditText)findViewById(R.id.edit_cooking_time);
                 Recipe r = Recipe.builder()
                         .name(recipeName)
                         .ingredients(ingredients)
                         .instruction(instructions)
-                        .cookingTime(55.0)
+                        .cookingTime(Double.parseDouble(cookingTimeText.getText().toString()))
                         .imageUrl("xxxx").build();
                 DBHelper db = new DBHelper(RecipeCreation.this);
                 db.insertRecipe(r);
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
             }
-
-
         });
 
     }
