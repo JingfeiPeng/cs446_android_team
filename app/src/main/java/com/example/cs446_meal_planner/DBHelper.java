@@ -47,6 +47,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean insertRecipe(Recipe recipe){
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
+        contentValues.put(RECIPE_ID, numberOfRows()+1);
         contentValues.put(RECIPE_NAME, recipe.getName());
         contentValues.put(RECIPE_IMAGE_URL, recipe.getImageUrl());
         contentValues.put(RECIPE_INGREDIENTS, recipe.getIngredients());
