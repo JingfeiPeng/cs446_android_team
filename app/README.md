@@ -4,6 +4,12 @@
 3. delete: db.deleteRecipe(Integer id)
 4. retrieve: db.getAllRecipes() 
 5. get total number of recipes: db.numberOfRows()
+6. delete all recipes: db.deleteAllRecipes()
+7. update name: db.updateName(String name, Integer id)
+8. update image_url: db.updateImageUrl(String imageUrl, Integer id)
+9. update instruction: db.updateInstruction(String instruction, Integer id)
+10. update cooking time: db.updateCookingTime(Double cookingTime, Integer id)
+11. update ingredients: db.updateIngredients(String ingredients, Integer id)
 
 #sample code 
 Recipe recipe = Recipe.builder()
