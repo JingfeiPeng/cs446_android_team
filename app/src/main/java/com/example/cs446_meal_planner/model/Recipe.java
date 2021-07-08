@@ -6,10 +6,10 @@ import lombok.Data;
 @Data
 @Builder
 public class Recipe {
-    private int id;
+    private Integer id;
     private String name;
     private String imageUrl;
     private String ingredients;
     private String instruction;
-    private double cookingTime;
+    private Double cookingTime;
 }
