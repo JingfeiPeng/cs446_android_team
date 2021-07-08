@@ -157,6 +157,6 @@ public class DBHelper extends SQLiteOpenHelper {
             ")";
 
     private final String QUERY_UPGRADE_DB = "DROP TABLE IF EXISTS RecipeTable";
-    private final String QUERY_ALL_RECIPE = "SELECT * FROM RecipeTable";
+    private final String QUERY_ALL_RECIPE = "SELECT * FROM RecipeTable ORDER BY " + RECIPE_ID + " DESC";
     private final String QUERY_LAST_ROW = "SELECT * FROM " + RECIPE_TABLE_NAME + " ORDER BY " + RECIPE_ID + " DESC LIMIT 1";
 }
