@@ -17,14 +17,12 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cs446_meal_planner.databinding.ActivitySubmitRecipeBinding;
 
 import java.util.ArrayList;
 
 public class RecipeOverview extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
-    private ActivitySubmitRecipeBinding binding;
 
     RecyclerView recyclerRecipes;
     ArrayList<Recipe> recipes = new ArrayList<>();
@@ -33,7 +31,6 @@ public class RecipeOverview extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivitySubmitRecipeBinding.inflate(getLayoutInflater());
         setContentView(R.layout.recipe_overview_layout);
 
         recyclerRecipes = findViewById(R.id.recycler_recipes);
@@ -46,8 +43,6 @@ public class RecipeOverview extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_submit_recipe);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
+        return super.onSupportNavigateUp();
     }
 }

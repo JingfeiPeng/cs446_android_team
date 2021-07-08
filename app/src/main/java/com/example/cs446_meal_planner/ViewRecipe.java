@@ -21,12 +21,9 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 
-import com.example.cs446_meal_planner.databinding.ActivityViewRecipeBinding;
-
 public class ViewRecipe extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
-    private ActivityViewRecipeBinding binding;
     LinearLayout add_ingredient_layoutlist;
     LinearLayout add_instruction_layoutlist;
     Button add_ingredient;
@@ -177,8 +174,6 @@ public class ViewRecipe extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_view_recipe);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
+        return super.onSupportNavigateUp();
     }
 }
