@@ -39,6 +39,7 @@ public class ViewRecipe extends AppCompatActivity {
         String ingredients =getIntent().getExtras().getString("ingredients");
         String recipeName = getIntent().getExtras().getString("recipeName");
         int recipeID = getIntent().getExtras().getInt("id");
+        double cookingTime = getIntent().getExtras().getDouble("cookingTime");
         if(recipeName == null)
         {
             recipeName = "";
@@ -55,6 +56,9 @@ public class ViewRecipe extends AppCompatActivity {
         add_instruction_layoutlist=findViewById(R.id.instruction_list_view);
         EditText curRecipeName = (EditText) findViewById(R.id.edit_recipe_name_view);
         curRecipeName.setText(recipeName);
+        EditText cookingTimeField = (EditText) findViewById(R.id.edit_cooking_time);
+        cookingTimeField.setText(Double.toString(cookingTime));
+
         String tmp="";
         for(int i=0;i<instructions.length();i++)
         {
@@ -150,6 +154,7 @@ public class ViewRecipe extends AppCompatActivity {
 
                 DBHelper db = new DBHelper(ViewRecipe.this);
                 db.updateName(curRecipeName.getText().toString(),recipeID);
+                db.updateCookingTime(Double.parseDouble(cookingTimeField.getText().toString()), recipeID);
                 db.updateInstruction(instructions,recipeID);
                 db.updateIngredients(ingredients,recipeID);
                 startActivity(new Intent(getApplicationContext(),RecipeOverview.class));
