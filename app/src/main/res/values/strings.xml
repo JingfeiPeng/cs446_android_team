@@ -10,7 +10,8 @@
     <string name="button_prev">Prev</string>
     <string name="button_next">Next</string>
 
-    <string name="title_activity_recipe_creation">recipe_creation</string>
+    <string name="title_activity_recipe_creation">recipe creation</string>
+    <string name="recipe_name">Recipe Name:</string>
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
@@ -19,5 +20,6 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_submit_recipe">SubmitRecipe</string>
-    <string name="title_activity_view_recipe">ViewRecipe</string>
+    <string name="view_recipes">Recipe List</string>
+    <string name="title_activity_view_recipe">Recipe Overview</string>
 </resources>

@@ -16,14 +16,11 @@
         <activity
             android:name=".ViewRecipe"
             android:label="@string/title_activity_view_recipe"
-            android:theme="@style/Theme.CS446_Meal_Planner.NoActionBar"></activity>
+            android:theme="@style/Theme.CS446_Meal_Planner"></activity>
         <activity
             android:name=".RecipeOverview"
-            android:label="@string/title_activity_submit_recipe"
-            android:theme="@style/Theme.CS446_Meal_Planner.NoActionBar" />
-        <activity
-            android:name=".CalenderActivity"
-            android:label="@string/Calender" />
+            android:label="@string/view_recipes"
+            android:theme="@style/Theme.CS446_Meal_Planner"/>
         <activity
             android:name=".RecipeCreation"
             android:label="@string/title_activity_recipe_creation"
