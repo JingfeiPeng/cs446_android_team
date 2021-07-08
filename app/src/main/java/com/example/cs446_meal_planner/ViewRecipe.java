@@ -69,6 +69,13 @@ public class ViewRecipe extends AppCompatActivity {
                 editText.setText(tmp);
                 add_instruction_layoutlist.addView(instructionView);
                 tmp="";
+                ImageView imageClose = (ImageView)instructionView.findViewById(R.id.image_remove);
+                imageClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        add_instruction_layoutlist.removeView(instructionView);
+                    }
+                });
             }
             else
             {
@@ -76,6 +83,8 @@ public class ViewRecipe extends AppCompatActivity {
             }
         }
         tmp="";
+        String tmpGram="";
+        boolean startGram = false;
         for(int i=0;i<ingredients.length();i++)
         {
             if(ingredients.charAt(i) == '#')
@@ -83,12 +92,36 @@ public class ViewRecipe extends AppCompatActivity {
                 final View ingredientView = getLayoutInflater().inflate(R.layout.row_add_ingredient,null,false);
                 EditText editText = (EditText)ingredientView.findViewById(R.id.edit_ingredient_name);
                 editText.setText(tmp);
+                EditText gramEditText = (EditText)ingredientView.findViewById(R.id.edit_ingredient_gram);
+                gramEditText.setText(tmpGram);
                 add_ingredient_layoutlist.addView(ingredientView);
                 tmp="";
+                startGram = false;
+                tmpGram = "";
+                ImageView imageClose = (ImageView)ingredientView.findViewById(R.id.image_remove);
+
+                imageClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        add_ingredient_layoutlist.removeView(ingredientView);
+                    }
+                });
             }
             else
             {
-                tmp+=ingredients.charAt(i);
+                if(ingredients.charAt(i) == '%')
+                {
+                    startGram=true;
+                    continue;
+                }
+                if(startGram)
+                {
+                    tmpGram+=ingredients.charAt(i);
+                }
+                else
+                {
+                    tmp+=ingredients.charAt(i);
+                }
             }
         }
 
@@ -149,7 +182,8 @@ public class ViewRecipe extends AppCompatActivity {
                 {
                     View curIngredientView = add_ingredient_layoutlist.getChildAt(i);
                     EditText curIngredientText = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_name);
-                    ingredients += curIngredientText.getText().toString()+"#";
+                    EditText curIngredientGram = (EditText) curIngredientView.findViewById(R.id.edit_ingredient_gram);
+                    ingredients += curIngredientText.getText().toString()+"%"+curIngredientGram.getText().toString()+"#";
                 }
                 Log.d("hereherehere", String.valueOf(recipeID));
                 DBHelper db = new DBHelper(ViewRecipe.this);
