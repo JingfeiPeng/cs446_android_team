@@ -101,7 +101,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(RECIPE_NAME, name);
         SQLiteDatabase db = this.getReadableDatabase();
-        db.update(RECIPE_TABLE_NAME, cv, "_id = ?", new String[]{String.valueOf(id)});
+        db.update(RECIPE_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(id)});
         return true;
     }
 
@@ -109,7 +109,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(RECIPE_IMAGE_URL, imageUrl);
         SQLiteDatabase db = this.getReadableDatabase();
-        db.update(RECIPE_TABLE_NAME, cv, "_id = ?", new String[]{String.valueOf(id)});
+        db.update(RECIPE_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(id)});
         return true;
     }
 
@@ -117,7 +117,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(RECIPE_INSTRUCTION, instruction);
         SQLiteDatabase db = this.getReadableDatabase();
-        db.update(RECIPE_TABLE_NAME, cv, "_id = ?", new String[]{String.valueOf(id)});
+        db.update(RECIPE_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(id)});
         return true;
     }
 
@@ -125,7 +125,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(RECIPE_COOKING_TIME, cookingTime);
         SQLiteDatabase db = this.getReadableDatabase();
-        db.update(RECIPE_TABLE_NAME, cv, "_id = ?", new String[]{String.valueOf(id)});
+        db.update(RECIPE_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(id)});
         return true;
     }
 
@@ -134,7 +134,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(RECIPE_INGREDIENTS, ingredients);
         SQLiteDatabase db = this.getReadableDatabase();
-        db.update(RECIPE_TABLE_NAME, cv, "_id = ?", new String[]{String.valueOf(id)});
+        db.update(RECIPE_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(id)});
         return true;
     }
 
