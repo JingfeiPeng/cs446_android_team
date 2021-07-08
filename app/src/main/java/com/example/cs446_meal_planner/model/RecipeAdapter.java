@@ -45,7 +45,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
             public void onClick(View v) {
                 Intent intent = new Intent(mcon,ViewRecipe.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("instruction",r.getInstruction());
+                bundle.putString("instructions",r.getInstruction());
                 bundle.putString("ingredients",r.getIngredients());
                 bundle.putString("recipeName",r.getName());
                 bundle.putInt("id",r.getId());

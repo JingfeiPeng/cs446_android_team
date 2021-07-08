@@ -8,6 +8,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
 
 import com.example.cs446_meal_planner.databinding.ActivityViewRecipeBinding;
 
@@ -60,6 +62,7 @@ public class ViewRecipe extends AppCompatActivity {
         cookingTimeField.setText(Double.toString(cookingTime));
 
         String tmp="";
+        Log.d("instructionsHere", instructions);
         for(int i=0;i<instructions.length();i++)
         {
             if(instructions.charAt(i) == '#')
@@ -151,7 +154,7 @@ public class ViewRecipe extends AppCompatActivity {
                     EditText curIngredientText = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_name);
                     ingredients += curIngredientText.getText().toString()+"#";
                 }
-
+                Log.d("hereherehere", String.valueOf(recipeID));
                 DBHelper db = new DBHelper(ViewRecipe.this);
                 db.updateName(curRecipeName.getText().toString(),recipeID);
                 db.updateCookingTime(Double.parseDouble(cookingTimeField.getText().toString()), recipeID);
