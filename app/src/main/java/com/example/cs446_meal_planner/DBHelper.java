@@ -87,6 +87,54 @@ public class DBHelper extends SQLiteOpenHelper {
         return result;
     }
 
+    public boolean updateName(String name, Integer id){
+        ContentValues cv = new ContentValues();
+        cv.put(RECIPE_NAME, name);
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.update(RECIPE_TABLE_NAME, cv, "_id = ?", new String[]{String.valueOf(id)});
+        return true;
+    }
+
+    public boolean updateImageUrl(String imageUrl, Integer id){
+        ContentValues cv = new ContentValues();
+        cv.put(RECIPE_IMAGE_URL, imageUrl);
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.update(RECIPE_TABLE_NAME, cv, "_id = ?", new String[]{String.valueOf(id)});
+        return true;
+    }
+
+    public boolean updateInstruction(String instruction, Integer id){
+        ContentValues cv = new ContentValues();
+        cv.put(RECIPE_INSTRUCTION, instruction);
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.update(RECIPE_TABLE_NAME, cv, "_id = ?", new String[]{String.valueOf(id)});
+        return true;
+    }
+
+    public boolean updateCookingTime(Double cookingTime, Integer id){
+        ContentValues cv = new ContentValues();
+        cv.put(RECIPE_COOKING_TIME, cookingTime);
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.update(RECIPE_TABLE_NAME, cv, "_id = ?", new String[]{String.valueOf(id)});
+        return true;
+    }
+
+
+    public boolean updateIngredients(String ingredients, Integer id){
+        ContentValues cv = new ContentValues();
+        cv.put(RECIPE_INGREDIENTS, ingredients);
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.update(RECIPE_TABLE_NAME, cv, "_id = ?", new String[]{String.valueOf(id)});
+        return true;
+    }
+
+    //delete all recipe
+    public boolean deleteAllRecipes(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL("DELETE FROM " + RECIPE_TABLE_NAME);
+        return true;
+    }
+
 
     private final String QUERY_CREATE_DB = "CREATE TABLE IF NOT EXISTS RecipeTable (" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
