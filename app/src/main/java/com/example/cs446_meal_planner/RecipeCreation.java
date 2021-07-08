@@ -84,7 +84,8 @@ public class RecipeCreation extends AppCompatActivity{
                 {
                     View curIngredientView = add_ingredient_layoutlist.getChildAt(i);
                     EditText curIngredientText = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_name);
-                    ingredients += curIngredientText.getText().toString()+"#";
+                    EditText curIngredientGram = (EditText) curIngredientView.findViewById(R.id.edit_ingredient_gram);
+                    ingredients += curIngredientText.getText().toString()+"%"+curIngredientGram.getText().toString()+"#";
                 }
                 // get recipe name
                 EditText recipeNameText = (EditText)findViewById(R.id.edit_recipe_name);
