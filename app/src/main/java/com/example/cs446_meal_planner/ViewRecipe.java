@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -77,12 +78,15 @@ public class ViewRecipe extends AppCompatActivity {
                 // ingredient at index 0 and weight at index 1
                 String[] ingredientGram = ingredientGramList[i].split("%");
                 String ingredientName = ingredientGram[0];
-                String ingredientWeight = ingredientGram[1];
+                String ingredientNumber = ingredientGram[1];
+                String ingredientUnit = ingredientGram[2];
                 final View ingredientView = getLayoutInflater().inflate(R.layout.row_add_ingredient,null,false);
                 EditText ingredientText = ingredientView.findViewById(R.id.edit_ingredient_name);
                 ingredientText.setText(ingredientName);
-                EditText gramEditText = ingredientView.findViewById(R.id.edit_ingredient_gram);
-                gramEditText.setText(ingredientWeight);
+                EditText ingredientUnitNumber = ingredientView.findViewById(R.id.edit_ingredient_number);
+                ingredientUnitNumber.setText(ingredientNumber);
+                AutoCompleteTextView unitEditText = ingredientView.findViewById(R.id.edit_ingredient_unit);
+                unitEditText.setText(ingredientUnit);
                 add_ingredient_layoutlist.addView(ingredientView);
 
                 // handle close button
@@ -152,8 +156,9 @@ public class ViewRecipe extends AppCompatActivity {
                 {
                     View curIngredientView = add_ingredient_layoutlist.getChildAt(i);
                     EditText curIngredientText = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_name);
-                    EditText curIngredientGram = (EditText) curIngredientView.findViewById(R.id.edit_ingredient_gram);
-                    ingredients += curIngredientText.getText().toString()+"%"+curIngredientGram.getText().toString()+"#";
+                    AutoCompleteTextView curIngredientUnit = (AutoCompleteTextView) curIngredientView.findViewById(R.id.edit_ingredient_unit);
+                    EditText curIngredientNumber = (EditText) curIngredientView.findViewById(R.id.edit_ingredient_number);
+                    ingredients += curIngredientText.getText().toString()+"%"+curIngredientNumber.getText().toString()+"%"+curIngredientUnit.getText().toString()+"#";
                 }
                 Log.d("hereherehere", String.valueOf(recipeID));
                 DBHelper db = new DBHelper(ViewRecipe.this);
