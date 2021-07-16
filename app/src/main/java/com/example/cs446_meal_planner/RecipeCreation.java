@@ -112,7 +112,7 @@ public class RecipeCreation extends AppCompatActivity{
                         .instruction(instructions)
                         .cookingTime(Double.parseDouble(cookingTimeText.getText().toString()))
                         .imageUrl("xxxx").build();
-                DBHelper db = new DBHelper(RecipeCreation.this);
+                DBHelper db = DBHelper.getInstance(RecipeCreation.this);
                 db.insertRecipe(r);
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
             }

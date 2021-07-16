@@ -36,7 +36,7 @@ public class RecipeOverview extends AppCompatActivity {
         recyclerRecipes = findViewById(R.id.recycler_recipes);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
         recyclerRecipes.setLayoutManager(layoutManager);
-        DBHelper db = new DBHelper(this);
+        DBHelper db = DBHelper.getInstance(this);
         recipes = db.getAllRecipes();
         recyclerRecipes.setAdapter(new RecipeAdapter(this,recipes));
     }

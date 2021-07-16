@@ -21,8 +21,20 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String RECIPE_INSTRUCTION = "instruction";
     public static final String RECIPE_COOKING_TIME = "cooking_time";
 
-    public DBHelper(Context context) {
+    private static DBHelper dbhelper = null;
+    private Context mCxt;
+
+    private DBHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
+        this.mCxt = context;
+    }
+
+    public static DBHelper getInstance(Context ctx) {
+        if (dbhelper == null) {
+            dbhelper = new DBHelper(ctx.getApplicationContext());
+        }
+
+        return dbhelper;
     }
 
     @Override
