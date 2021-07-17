@@ -161,7 +161,7 @@ public class ViewRecipe extends AppCompatActivity {
                     ingredients += curIngredientText.getText().toString()+"%"+curIngredientNumber.getText().toString()+"%"+curIngredientUnit.getText().toString()+"#";
                 }
                 Log.d("hereherehere", String.valueOf(recipeID));
-                DBHelper db = DBHelper.getInstance(ViewRecipe.this);
+                RecipeDBHelper db = RecipeDBHelper.getInstance(ViewRecipe.this);
                 db.updateName(curRecipeName.getText().toString(),recipeID);
                 db.updateCookingTime(Double.parseDouble(cookingTimeField.getText().toString()), recipeID);
                 db.updateInstruction(instructions,recipeID);
@@ -174,7 +174,7 @@ public class ViewRecipe extends AppCompatActivity {
         delete_recipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DBHelper db = DBHelper.getInstance(ViewRecipe.this);
+                RecipeDBHelper db = RecipeDBHelper.getInstance(ViewRecipe.this);
                 db.deleteRecipe(recipeID);
                 startActivity(new Intent(getApplicationContext(),RecipeOverview.class));
             }

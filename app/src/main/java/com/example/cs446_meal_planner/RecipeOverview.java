@@ -4,16 +4,10 @@ import android.os.Bundle;
 
 import com.example.cs446_meal_planner.model.Recipe;
 import com.example.cs446_meal_planner.model.RecipeAdapter;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.View;
-
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,7 +30,7 @@ public class RecipeOverview extends AppCompatActivity {
         recyclerRecipes = findViewById(R.id.recycler_recipes);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
         recyclerRecipes.setLayoutManager(layoutManager);
-        DBHelper db = DBHelper.getInstance(this);
+        RecipeDBHelper db = RecipeDBHelper.getInstance(this);
         recipes = db.getAllRecipes();
         recyclerRecipes.setAdapter(new RecipeAdapter(this,recipes));
     }
