@@ -10,29 +10,39 @@ import lombok.Data;
 public class CalenderBooking {
     private String meal_type;
     private Integer recipe_id;
-    private Date meal_date;
+    private Integer meal_date;
+    private Recipe booked_recipe;
 
-    public Date getMeal_date() {
+    public Recipe get_booked_recipe() {
+        return booked_recipe;
+    }
+
+    public void set_booked_recipe(Recipe booked_recipe) {
+        this.booked_recipe = booked_recipe;
+    }
+
+
+    public Integer getMealDate() {
         return meal_date;
     }
 
-    public String getMeal_type() {
+    public String getMealType() {
         return meal_type;
     }
 
-    public Integer getRecipe_id() {
+    public Integer getRecipeId() {
         return recipe_id;
     }
 
-    public void setMeal_date(Date meal_date) {
+    public void setMealDate(Integer meal_date) {
         this.meal_date = meal_date;
     }
 
-    public void setMeal_type(String meal_type) {
+    public void setMealType(String meal_type) {
         this.meal_type = meal_type;
     }
 
-    public void setRecipe_id(Integer recipe_id) {
+    public void setRecipeId(Integer recipe_id) {
         this.recipe_id = recipe_id;
     }
 }
