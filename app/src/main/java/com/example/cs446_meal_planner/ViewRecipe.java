@@ -160,7 +160,6 @@ public class ViewRecipe extends AppCompatActivity {
                     EditText curIngredientNumber = (EditText) curIngredientView.findViewById(R.id.edit_ingredient_number);
                     ingredients += curIngredientText.getText().toString()+"%"+curIngredientNumber.getText().toString()+"%"+curIngredientUnit.getText().toString()+"#";
                 }
-                Log.d("hereherehere", String.valueOf(recipeID));
                 RecipeDBHelper db = RecipeDBHelper.getInstance(ViewRecipe.this);
                 db.updateName(curRecipeName.getText().toString(),recipeID);
                 db.updateCookingTime(Double.parseDouble(cookingTimeField.getText().toString()), recipeID);
