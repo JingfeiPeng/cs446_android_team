@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private static RecipeDBHelper db;
+    private static CalenderDBHelper calenderDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         db = RecipeDBHelper.getInstance(this);
+        calenderDB = CalenderDBHelper.getInstance(this);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -49,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void viewRecipes(View view) {
-        startActivity(new Intent(getApplicationContext(),RecipeOverview.class));
+        Intent intent = new Intent(getApplicationContext(),RecipeOverview.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("cameFrom", "home");
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

@@ -31,6 +31,7 @@ public class CalenderDBHelper extends DBHelper{
     // add booking of meal on calender
     public boolean insertCalenderBooking(CalenderBooking booking) {
         SQLiteDatabase db = this.getReadableDatabase();
+        this.onCreate(db);
         ContentValues contentValues = new ContentValues();
         contentValues.put("meal_date", booking.getMealDate());
         contentValues.put("meal_type", booking.getMealType());
@@ -43,6 +44,7 @@ public class CalenderDBHelper extends DBHelper{
         ArrayList<CalenderBooking> result = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
+        this.onCreate(db);
         Cursor res = db.rawQuery("select * from " + CALENDER_TABLE_NAME +
                 " WHERE "+MEAL_DATE + ">=? AND " + MEAL_DATE + " <=?", new String[]{fromDate.toString(), toDate.toString()});
         res.moveToFirst();
@@ -76,6 +78,7 @@ public class CalenderDBHelper extends DBHelper{
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(QUERY_CREATE_CALENDER_DB);
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(QUERY_UPGRADE_DB);
