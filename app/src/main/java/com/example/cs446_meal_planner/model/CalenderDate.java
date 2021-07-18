@@ -1,6 +1,8 @@
 package com.example.cs446_meal_planner.model;
 
 
+import android.util.Log;
+
 import org.joda.time.DateTime;
 
 public class CalenderDate {
@@ -10,11 +12,21 @@ public class CalenderDate {
         this.date = date;
     }
 
+    public CalenderDate(int dateInt) {
+        int year = dateInt / 10000;
+        int month  = (dateInt % 10000) / 100;
+        int day = dateInt % 100;
+        this.date = new DateTime();
+        this.date.withYear(year);
+        this.date.withMonthOfYear(month);
+        this.date.withDayOfMonth(day);
+    }
+
     public Integer getIntger(){
         return Integer.valueOf(date.getYear()*10000+date.getMonthOfYear()*100+date.getDayOfMonth());
     }
 
     public String getString() {
-        return String.valueOf(date.getYear()) + "-" + String.valueOf(date.getMonthOfYear()) + "-" + String.valueOf(date.getDayOfMonth());
+        return String.format("%04d-%02d-%02d",date.getYear(),date.getMonthOfYear(), date.getDayOfMonth());
     }
 }

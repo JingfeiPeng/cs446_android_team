@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cs446_meal_planner.R;
+import com.example.cs446_meal_planner.RecipeOverview;
 import com.example.cs446_meal_planner.ViewRecipe;
 
 import org.jetbrains.annotations.NotNull;
@@ -52,7 +53,12 @@ public class CalenderAdapter extends RecyclerView.Adapter<CalenderAdapter.Calend
             mealTypes.get(mealtype).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("Clicked", mealtype);
+                    Intent intent = new Intent(mcon, RecipeOverview.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("mealtype", mealtype);
+                    bundle.putInt("date",date.getIntger());
+                    intent.putExtras(bundle);
+                    mcon.startActivity(intent);
                 }
             });
         }
