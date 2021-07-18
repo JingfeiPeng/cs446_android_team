@@ -41,7 +41,8 @@ public class RecipeCreation extends AppCompatActivity{
     String recipe_url;
     ArrayAdapter<String> adapter;
     // List of available units of ingredients
-    String [] units = {"whole", "g", "teaspoon", "cup", "pound", "tablespoon"};
+    String [] units = {"whole", "gram", "teaspoon", "cup", "pound", "tablespoon"};
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,41 +62,13 @@ public class RecipeCreation extends AppCompatActivity{
         add_ingredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final View ingredientView = getLayoutInflater().inflate(R.layout.row_add_ingredient,null,false);
-
-                AutoCompleteTextView acTextView = (AutoCompleteTextView) ingredientView.findViewById(R.id.edit_ingredient_unit);
-                acTextView.setThreshold(1);
-                acTextView.setAdapter(adapter);
-
-                EditText editText = (EditText)ingredientView.findViewById(R.id.edit_ingredient_name);
-                ImageView imageClose = (ImageView)ingredientView.findViewById(R.id.image_remove);
-
-                imageClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        add_ingredient_layoutlist.removeView(ingredientView);
-                    }
-                });
-
-                add_ingredient_layoutlist.addView(ingredientView);
+                addNewIngredient("","","");
             }
         });
         add_instruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final View instructionView = getLayoutInflater().inflate(R.layout.row_add_instruction,null,false);
-
-                EditText editText = (EditText)instructionView.findViewById(R.id.edit_instruction_name);
-                ImageView imageClose = (ImageView)instructionView.findViewById(R.id.image_remove);
-
-                imageClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        add_instruction_layoutlist.removeView(instructionView);
-                    }
-                });
-
-                add_instruction_layoutlist.addView(instructionView);
+                addNewInstruction("");
             }
         });
         parse_recipe_url.setOnClickListener(new View.OnClickListener() {
@@ -148,6 +121,55 @@ public class RecipeCreation extends AppCompatActivity{
             }
         });
 
+    }
+
+    public void addNewInstruction(String instruction) {
+        final View instructionView = getLayoutInflater().inflate(R.layout.row_add_instruction,null,false);
+
+        EditText editText = (EditText)instructionView.findViewById(R.id.edit_instruction_name);
+        ImageView imageClose = (ImageView)instructionView.findViewById(R.id.image_remove);
+
+        if (!instruction.equals("")) {
+            editText.setText(instruction);
+        }
+
+        imageClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                add_instruction_layoutlist.removeView(instructionView);
+            }
+        });
+
+        add_instruction_layoutlist.addView(instructionView);
+    }
+
+    public void addNewIngredient(String number, String unit, String name) {
+        final View ingredientView = getLayoutInflater().inflate(R.layout.row_add_ingredient,null,false);
+
+        // number
+        EditText editIngredientNumber = ingredientView.findViewById(R.id.edit_ingredient_number);
+        editIngredientNumber.setText(number);
+
+        // unit
+        AutoCompleteTextView editIngredientUnit = ingredientView.findViewById(R.id.edit_ingredient_unit);
+        editIngredientUnit.setThreshold(1);
+        editIngredientUnit.setAdapter(adapter);
+        editIngredientUnit.setText(unit);  // checks to be done before calling this function
+
+        // name
+        EditText editIngredientName = ingredientView.findViewById(R.id.edit_ingredient_name);
+        editIngredientName.setText(name);
+
+        ImageView imageClose = ingredientView.findViewById(R.id.image_remove);
+
+        imageClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                add_ingredient_layoutlist.removeView(ingredientView);
+            }
+        });
+
+        add_ingredient_layoutlist.addView(ingredientView);
     }
 
     private class ParseURL extends AsyncTask<String,String,String> {
@@ -205,77 +227,75 @@ public class RecipeCreation extends AppCompatActivity{
         @Override
         protected void onProgressUpdate(String... values) {
             if (values[0] == "instruction") {
-                final View instructionView = getLayoutInflater().inflate(R.layout.row_add_instruction,null,false);
-
-                EditText editText = (EditText)instructionView.findViewById(R.id.edit_instruction_name);
-                editText.setText(values[1]);
-                ImageView imageClose = (ImageView)instructionView.findViewById(R.id.image_remove);
-
-                imageClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        add_instruction_layoutlist.removeView(instructionView);
-                    }
-                });
-
-                add_instruction_layoutlist.addView(instructionView);
+                addNewInstruction(values[1]);
             } else if (values[0] == "ingredient") {
-                // parse the content
+                // set default values
+                String number = "5.00";
+                String unit = "gram";
+                String name = "";
+
+                // number
                 String raw_amount = values[1].substring(0, values[1].indexOf(' '));
+                String unit_and_name = values[1].substring(values[1].indexOf(' ')+1);
+                char first_digit = raw_amount.charAt(0);
                 float amount = 0;
-                for (int i=0; i < raw_amount.length(); ++i) {
-                    char c = raw_amount.charAt(i);
-                    switch(c) {
-                        case '\u00bd':
-                            amount += 0.5;
+                if ((first_digit >= '1' && first_digit <= '9')
+                        || first_digit == '\u00bd' || first_digit == '\u00bc'
+                        || first_digit == '\u00be' || first_digit == '\u2153'
+                        || first_digit == '\u2154') {
+                    for (int i=0; i < raw_amount.length(); ++i) {
+                        char c = raw_amount.charAt(i);
+                        // Caution: does not work with more than 1 digit :)
+                        switch(c) {
+                            case '\u00bd':
+                                amount += 0.5;
+                                break;
+                            case '\u2153':
+                                amount += 0.33;
+                                break;
+                            case '\u2154':
+                                amount += 0.67;
+                                break;
+                            case '\u00bc':
+                                amount += 0.25;
+                                break;
+                            case '\u00be':
+                                amount += 0.75;
+                                break;
+                            default:
+                                amount += Character.getNumericValue(c);
+                                break;
+                        }
+                    }
+                    number = String.format ("%.2f", amount);
+                } else if (raw_amount.equals("One") || raw_amount.equals("Two")) {
+                    switch (raw_amount) {
+                        case "One":
+                            amount = 1;
                             break;
-                        case '\u2153':
-                            amount += 0.33;
-                            break;
-                        case '\u2154':
-                            amount += 0.67;
-                            break;
-                        case '\u00bc':
-                            amount += 0.25;
-                            break;
-                        case '\u00be':
-                            amount += 0.75;
-                            break;
-                        default:
-                            amount += Character.getNumericValue(c);
+                        case "Two":
+                            amount = 2;
                             break;
                     }
+                    number = String.format ("%.2f", amount);
+                } else {
+                    unit_and_name = values[1];
                 }
-                String temp = values[1].substring(values[1].indexOf(' ')+1);
-                String raw_unit = temp.substring(0, temp.indexOf(' '));
+
+                // unit
+                String raw_unit = unit_and_name.substring(0, unit_and_name.indexOf(' '));
+                String raw_name = unit_and_name.substring(unit_and_name.indexOf(" ")+1);
                 Optional<String> matching_unit = Arrays.stream(units).filter(raw_unit::contains).findAny();
-                String raw_name = temp.substring(temp.indexOf(" ")+1);
-                String name = raw_name.split("\\,")[0];
-
-                final View ingredientView = getLayoutInflater().inflate(R.layout.row_add_ingredient,null,false);
-
-                AutoCompleteTextView acTextView = (AutoCompleteTextView) ingredientView.findViewById(R.id.edit_ingredient_unit);
-                acTextView.setThreshold(1);
-                acTextView.setAdapter(adapter);
-
-                EditText url_ingredient_name = ingredientView.findViewById(R.id.edit_ingredient_name);
-                url_ingredient_name.setText(name);
-                EditText url_ingredient_amount = ingredientView.findViewById(R.id.edit_ingredient_number);
-                url_ingredient_amount.setText(String.format ("%.2f", amount));
-                AutoCompleteTextView url_ingredient_unit = ingredientView.findViewById(R.id.edit_ingredient_unit);
                 if (matching_unit.isPresent()) {
-                    url_ingredient_unit.setText(matching_unit.get());
+                    unit = matching_unit.get();
+                } else {
+                    raw_name = unit_and_name;
                 }
-                ImageView imageClose = (ImageView)ingredientView.findViewById(R.id.image_remove);
 
-                imageClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        add_ingredient_layoutlist.removeView(ingredientView);
-                    }
-                });
+                // name
+                name = raw_name.split("\\,")[0];
 
-                add_ingredient_layoutlist.addView(ingredientView);
+                addNewIngredient(number, unit, name);
             } else if (values[0] == "time") {
                 EditText edit_cooking_time = findViewById(R.id.edit_cooking_time);
                 edit_cooking_time.setText(values[1]);
