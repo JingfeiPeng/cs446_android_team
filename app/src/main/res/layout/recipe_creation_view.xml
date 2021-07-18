@@ -12,6 +12,40 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/recipe_url"
+        android:textSize="15sp"
+        android:layout_margin="15dp"
+        android:textColor="@color/black"></TextView>
+    <EditText
+        android:id="@+id/edit_recipe_url"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/round_grey"
+        android:layout_weight="1"
+        android:hint="Enter the URL of your recipe"
+        android:textSize="14sp"
+        android:paddingLeft="10dp"
+        android:textColor="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"></EditText>
+    <Button
+        android:id="@+id/button_parse_recipe_url"
+        android:background="@drawable/round_primary"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Parse URL"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        ></Button>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/recipe_name"
         android:textSize="15sp"
         android:layout_margin="15dp"

@@ -15,7 +15,7 @@
         android:layout_marginRight="5dp"
         android:background="@drawable/round_grey"
         android:layout_weight="1"
-        android:hint="1,2,3..."
+        android:hint="1,1.5,2,3..."
         android:textSize="14sp"
         android:paddingLeft="10dp"
         android:textColor="@color/black"
@@ -28,27 +28,13 @@
         android:layout_marginRight="5dp"
         android:background="@drawable/round_grey"
         android:layout_weight="1"
-        android:hint="Select a unit"
+        android:hint="Enter a unit"
         android:textSize="14sp"
         android:paddingLeft="10dp"
         android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         ></AutoCompleteTextView>
-
-
-<!--        <EditText-->
-<!--            android:id="@+id/edit_ingredient_gram"-->
-<!--            android:layout_marginLeft="10dp"-->
-<!--            android:layout_marginRight="5dp"-->
-<!--            android:background="@drawable/round_grey"-->
-<!--            android:layout_weight="1"-->
-<!--            android:hint="grams"-->
-<!--            android:textSize="14sp"-->
-<!--            android:paddingLeft="10dp"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="40dp"></EditText>-->
 
 
     <EditText
