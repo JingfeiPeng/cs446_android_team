@@ -1,6 +1,7 @@
 package com.example.cs446_meal_planner;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.cs446_meal_planner.model.CalenderBookingData;
 import com.example.cs446_meal_planner.model.CalenderDate;
@@ -30,8 +31,11 @@ public class RecipeOverview extends AppCompatActivity {
         setContentView(R.layout.recipe_overview_layout);
 
         // decide if came here from calender or recipe tab
-        String cameFrom = getIntent().getExtras().getString("cameFrom");
-        boolean cameFromCalender = cameFrom.equals("calender");
+        boolean cameFromCalender = false;
+        if( getIntent().getExtras() != null) {
+            String cameFrom = getIntent().getExtras().getString("cameFrom");
+            cameFromCalender = cameFrom.equals("calender");
+        }
 
         recyclerRecipes = findViewById(R.id.recycler_recipes);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);

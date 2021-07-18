@@ -17,9 +17,9 @@ public class CalenderDate {
         int month  = (dateInt % 10000) / 100;
         int day = dateInt % 100;
         this.date = new DateTime();
-        this.date.withYear(year);
-        this.date.withMonthOfYear(month);
-        this.date.withDayOfMonth(day);
+        this.date = this.date.withYear(year);
+        this.date = this.date.withMonthOfYear(month);
+        this.date = this.date.withDayOfMonth(day);
     }
 
     public Integer getIntger(){

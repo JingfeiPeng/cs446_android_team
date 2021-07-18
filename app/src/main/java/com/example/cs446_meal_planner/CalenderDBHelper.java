@@ -4,8 +4,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.cs446_meal_planner.model.CalenderBooking;
+import com.example.cs446_meal_planner.model.CalenderDate;
 import com.example.cs446_meal_planner.model.Recipe;
 
 import java.util.ArrayList;
@@ -36,24 +38,27 @@ public class CalenderDBHelper extends DBHelper{
         contentValues.put("meal_date", booking.getMealDate());
         contentValues.put("meal_type", booking.getMealType());
         contentValues.put("recipe_id", booking.getRecipeId());
-        db.insert("CalenderTable", null, contentValues);
+        if (getMealBookingOnDate(new CalenderDate(booking.getMealDate()), booking.getMealType()) == null){
+            db.insert("CalenderTable", null, contentValues);
+        } else {
+            db.update(CALENDER_TABLE_NAME, contentValues,
+                    "meal_date = ? AND meal_type= ?",
+                    new String[]{String.valueOf(booking.getMealDate()), booking.getMeal_type()});
+        }
         return true;
     }
 
-    public ArrayList<CalenderBooking> getBookingInRange(Integer fromDate, Integer toDate){
-        ArrayList<CalenderBooking> result = new ArrayList<>();
-
+    public CalenderBooking getMealBookingOnDate(CalenderDate date, String mealType) {
         SQLiteDatabase db = this.getReadableDatabase();
         this.onCreate(db);
-        Cursor res = db.rawQuery("select * from " + CALENDER_TABLE_NAME +
-                " WHERE "+MEAL_DATE + ">=? AND " + MEAL_DATE + " <=?", new String[]{fromDate.toString(), toDate.toString()});
+        Cursor res = db.rawQuery(FIND_BOOKING, new String[]{mealType, String.valueOf(date.getIntger())});
         res.moveToFirst();
-
-        while(res.isAfterLast() == false){
+        CalenderBooking retVal = null;
+        if (res.isAfterLast() == false) {
             Integer attachedRecipeId = res.getInt(res.getColumnIndex(RECIPE_ID));
-            Cursor recipeResult = db.rawQuery("select * from "+RecipeDBHelper.RECIPE_COOKING_TIME +
+            Cursor recipeResult = db.rawQuery("select * from "+RecipeDBHelper.RECIPE_TABLE_NAME +
                     " WHERE id=?", new String[]{ attachedRecipeId.toString() });
-
+            recipeResult.moveToFirst();
             Recipe booked_recipe = Recipe.builder()
                     .id(attachedRecipeId)
                     .name(recipeResult.getString(recipeResult.getColumnIndex(RecipeDBHelper.RECIPE_NAME)))
@@ -63,17 +68,17 @@ public class CalenderDBHelper extends DBHelper{
                     .imageUrl(recipeResult.getString(recipeResult.getColumnIndex(RecipeDBHelper.RECIPE_IMAGE_URL)))
                     .build();
 
-            CalenderBooking recipe = CalenderBooking.builder()
+            retVal = CalenderBooking.builder()
                     .meal_date(res.getInt(res.getColumnIndex(MEAL_DATE)))
                     .meal_type(res.getString(res.getColumnIndex(MEAL_TYPE)))
                     .recipe_id(attachedRecipeId)
                     .booked_recipe(booked_recipe)
                     .build();
-            result.add(recipe);
-            res.moveToNext();
         }
-        return result;
+        return retVal;
     }
+
+    
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(QUERY_CREATE_CALENDER_DB);
@@ -93,5 +98,7 @@ public class CalenderDBHelper extends DBHelper{
             "Foreign Key (recipe_id) references RecipeTable(id) ON DELETE CASCADE" +
             ")";
     private final String QUERY_UPGRADE_DB = "DROP TABLE IF EXISTS CalenderTable";
+    private final String FIND_BOOKING = "SELECT * FROM CalenderTable" +
+            " WHERE meal_type=? AND meal_date=?";
 
 }
