@@ -53,6 +53,7 @@ public class CalenderActivity extends AppCompatActivity {
         datePtr = datePtr.plusDays(daysToShow*this.week);
         ArrayList<CalenderDate> dates = new ArrayList<>();
         dates.add(new CalenderDate(datePtr));
+        Log.d("here check", (new CalenderDate(dates.get(0).getIntger())).getString());
         for (int i=1; i<daysToShow;i++){
             dates.add(new CalenderDate(datePtr.plusDays(i+daysToShow*this.week)));
         }
