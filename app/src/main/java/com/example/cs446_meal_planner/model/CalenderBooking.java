@@ -13,11 +13,11 @@ public class CalenderBooking {
     private Integer meal_date;
     private Recipe booked_recipe;
 
-    public Recipe get_booked_recipe() {
+    public Recipe getBookedRecipe() {
         return booked_recipe;
     }
 
-    public void set_booked_recipe(Recipe booked_recipe) {
+    public void setBookedRecipe(Recipe booked_recipe) {
         this.booked_recipe = booked_recipe;
     }
 
