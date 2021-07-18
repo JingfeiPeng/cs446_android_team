@@ -65,7 +65,6 @@ public class CalenderAdapter extends RecyclerView.Adapter<CalenderAdapter.Calend
                 public void onClick(View v) {
                     Intent intent = new Intent(mcon, RecipeOverview.class);
                     Bundle bundle = new Bundle();
-                    Log.d("Sending: ", String.valueOf(date.getIntger()));
                     bundle.putString("mealType", mealtype);
                     bundle.putString("cameFrom", "calender");
                     bundle.putInt("date",date.getIntger());
