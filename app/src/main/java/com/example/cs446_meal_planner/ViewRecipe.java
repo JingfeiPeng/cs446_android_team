@@ -123,6 +123,7 @@ public class ViewRecipe extends AppCompatActivity {
                 add_ingredient_layoutlist.addView(ingredientView);
             }
         });
+
         add_instruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,6 +142,7 @@ public class ViewRecipe extends AppCompatActivity {
                 add_instruction_layoutlist.addView(instructionView);
             }
         });
+
         modify_recipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,7 +168,9 @@ public class ViewRecipe extends AppCompatActivity {
                 db.updateCookingTime(Double.parseDouble(cookingTimeField.getText().toString()), recipeID);
                 db.updateInstruction(instructions,recipeID);
                 db.updateIngredients(ingredients,recipeID);
-                startActivity(new Intent(getApplicationContext(),RecipeOverview.class));
+                Intent back = new Intent(getApplicationContext(), RecipeOverview.class);
+                back.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(back);
             }
 
 
