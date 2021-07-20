@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class RecipeOverview extends AppCompatActivity {
+public class RecipeListActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
 

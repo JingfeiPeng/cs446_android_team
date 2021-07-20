@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -16,7 +15,7 @@ import android.widget.LinearLayout;
 import androidx.navigation.ui.AppBarConfiguration;
 
 
-public class ViewRecipe extends AppCompatActivity {
+public class RecipeOverviewActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     LinearLayout add_ingredient_layoutlist;
@@ -162,12 +161,12 @@ public class ViewRecipe extends AppCompatActivity {
                     EditText curIngredientNumber = (EditText) curIngredientView.findViewById(R.id.edit_ingredient_number);
                     ingredients += curIngredientText.getText().toString()+"%"+curIngredientNumber.getText().toString()+"%"+curIngredientUnit.getText().toString()+"#";
                 }
-                RecipeDBHelper db = RecipeDBHelper.getInstance(ViewRecipe.this);
+                RecipeDBHelper db = RecipeDBHelper.getInstance(RecipeOverviewActivity.this);
                 db.updateName(curRecipeName.getText().toString(),recipeID);
                 db.updateCookingTime(Double.parseDouble(cookingTimeField.getText().toString()), recipeID);
                 db.updateInstruction(instructions,recipeID);
                 db.updateIngredients(ingredients,recipeID);
-                Intent back = new Intent(getApplicationContext(), RecipeOverview.class);
+                Intent back = new Intent(getApplicationContext(), RecipeListActivity.class);
                 back.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(back);
             }
@@ -177,9 +176,9 @@ public class ViewRecipe extends AppCompatActivity {
         delete_recipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RecipeDBHelper db = RecipeDBHelper.getInstance(ViewRecipe.this);
+                RecipeDBHelper db = RecipeDBHelper.getInstance(RecipeOverviewActivity.this);
                 db.deleteRecipe(recipeID);
-                startActivity(new Intent(getApplicationContext(),RecipeOverview.class));
+                startActivity(new Intent(getApplicationContext(), RecipeListActivity.class));
             }
         });
     }

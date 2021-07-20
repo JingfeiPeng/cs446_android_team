@@ -15,8 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cs446_meal_planner.CalenderActivity;
 import com.example.cs446_meal_planner.CalenderDBHelper;
 import com.example.cs446_meal_planner.R;
-import com.example.cs446_meal_planner.RecipeOverview;
-import com.example.cs446_meal_planner.ViewRecipe;
+import com.example.cs446_meal_planner.RecipeOverviewActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -53,7 +52,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
             holder.recipe_view_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mcon,ViewRecipe.class);
+                    Intent intent = new Intent(mcon, RecipeOverviewActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("instructions",r.getInstruction());
                     bundle.putString("ingredients",r.getIngredients());

@@ -15,15 +15,15 @@
             android:label="@string/Calender"
         ></activity>
         <activity
-            android:name=".ViewRecipe"
+            android:name=".RecipeOverviewActivity"
             android:label="@string/title_activity_view_recipe"
             android:theme="@style/Theme.CS446_Meal_Planner"></activity>
         <activity
-            android:name=".RecipeOverview"
+            android:name=".RecipeListActivity"
             android:label="@string/view_recipes"
             android:theme="@style/Theme.CS446_Meal_Planner"/>
         <activity
-            android:name=".RecipeCreation"
+            android:name=".RecipeCreationActivity"
             android:label="@string/title_activity_recipe_creation"
             android:theme="@style/Theme.CS446_Meal_Planner" />
         <activity

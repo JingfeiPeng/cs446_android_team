@@ -3,7 +3,6 @@ package com.example.cs446_meal_planner.model;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cs446_meal_planner.CalenderDBHelper;
 import com.example.cs446_meal_planner.R;
-import com.example.cs446_meal_planner.RecipeOverview;
-import com.example.cs446_meal_planner.ViewRecipe;
+import com.example.cs446_meal_planner.RecipeListActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -63,7 +61,7 @@ public class CalenderAdapter extends RecyclerView.Adapter<CalenderAdapter.Calend
             curTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mcon, RecipeOverview.class);
+                    Intent intent = new Intent(mcon, RecipeListActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("mealType", mealtype);
                     bundle.putString("cameFrom", "calender");

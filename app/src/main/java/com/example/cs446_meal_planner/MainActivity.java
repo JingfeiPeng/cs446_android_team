@@ -47,11 +47,11 @@ public class MainActivity extends AppCompatActivity {
     }
     public void viewRecipeCreation(View v)
     {
-        startActivity(new Intent(getApplicationContext(), RecipeCreation.class));
+        startActivity(new Intent(getApplicationContext(), RecipeCreationActivity.class));
     }
 
     public void viewRecipes(View view) {
-        Intent intent = new Intent(getApplicationContext(),RecipeOverview.class);
+        Intent intent = new Intent(getApplicationContext(), RecipeListActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("cameFrom", "home");
         intent.putExtras(bundle);

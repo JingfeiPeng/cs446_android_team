@@ -31,7 +31,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 
-public class RecipeCreation extends AppCompatActivity{
+public class RecipeCreationActivity extends AppCompatActivity{
     LinearLayout add_ingredient_layoutlist;
     LinearLayout add_instruction_layoutlist;
     Button add_ingredient;
@@ -115,7 +115,7 @@ public class RecipeCreation extends AppCompatActivity{
                         .instruction(instructions)
                         .cookingTime(Double.parseDouble(cookingTimeText.getText().toString()))
                         .imageUrl("xxxx").build();
-                RecipeDBHelper db = RecipeDBHelper.getInstance(RecipeCreation.this);
+                RecipeDBHelper db = RecipeDBHelper.getInstance(RecipeCreationActivity.this);
                 db.insertRecipe(r);
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
             }
@@ -309,6 +309,6 @@ public class RecipeCreation extends AppCompatActivity{
     }
     public void viewRecipeCreation(View v)
     {
-        startActivity(new Intent(getApplicationContext(), RecipeCreation.class));
+        startActivity(new Intent(getApplicationContext(), RecipeCreationActivity.class));
     }
 }
