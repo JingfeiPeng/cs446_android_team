@@ -166,9 +166,7 @@ public class RecipeOverviewActivity extends AppCompatActivity {
                 db.updateCookingTime(Double.parseDouble(cookingTimeField.getText().toString()), recipeID);
                 db.updateInstruction(instructions,recipeID);
                 db.updateIngredients(ingredients,recipeID);
-                Intent back = new Intent(getApplicationContext(), RecipeListActivity.class);
-                back.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(back);
+                finish();
             }
 
 
@@ -178,7 +176,7 @@ public class RecipeOverviewActivity extends AppCompatActivity {
             public void onClick(View v) {
                 RecipeDBHelper db = RecipeDBHelper.getInstance(RecipeOverviewActivity.this);
                 db.deleteRecipe(recipeID);
-                startActivity(new Intent(getApplicationContext(), RecipeListActivity.class));
+                finish();
             }
         });
     }
