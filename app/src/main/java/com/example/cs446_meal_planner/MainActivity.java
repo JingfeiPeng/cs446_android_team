@@ -17,7 +17,8 @@ import com.example.cs446_meal_planner.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private static DBHelper db;
+    private static RecipeDBHelper db;
+    private static CalenderDBHelper calenderDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        db = new DBHelper(this);
+        db = RecipeDBHelper.getInstance(this);
+        calenderDB = CalenderDBHelper.getInstance(this);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -42,5 +44,17 @@ public class MainActivity extends AppCompatActivity {
     public void viewCalender(View view) {
         Intent moveToCalender = new Intent(getApplicationContext(), CalenderActivity.class);
         startActivity(moveToCalender);
+    }
+    public void viewRecipeCreation(View v)
+    {
+        startActivity(new Intent(getApplicationContext(), RecipeCreationActivity.class));
+    }
+
+    public void viewRecipes(View view) {
+        Intent intent = new Intent(getApplicationContext(), RecipeListActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("cameFrom", "home");
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }
