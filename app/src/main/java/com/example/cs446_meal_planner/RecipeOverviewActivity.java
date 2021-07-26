@@ -166,6 +166,7 @@ public class RecipeOverviewActivity extends AppCompatActivity {
                 db.updateCookingTime(Double.parseDouble(cookingTimeField.getText().toString()), recipeID);
                 db.updateInstruction(instructions,recipeID);
                 db.updateIngredients(ingredients,recipeID);
+                db.notifyObservers();
                 finish();
             }
 

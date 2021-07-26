@@ -73,7 +73,6 @@ public class RecipeDBHelper extends DBHelper {
         contentValues.put(RECIPE_INSTRUCTION, recipe.getInstruction());
         contentValues.put(RECIPE_COOKING_TIME, recipe.getCookingTime());
         db.insert(RECIPE_TABLE_NAME, null, contentValues);
-        notifyObservers();
         return true;
     }
 
@@ -83,7 +82,6 @@ public class RecipeDBHelper extends DBHelper {
         Integer deletedId = db.delete(RECIPE_TABLE_NAME,
                 "id = ? ",
                 new String[] { Integer.toString(id) });
-        notifyObservers();
         return deletedId;
     }
 
@@ -116,7 +114,6 @@ public class RecipeDBHelper extends DBHelper {
         cv.put(RECIPE_NAME, name);
         SQLiteDatabase db = this.getReadableDatabase();
         db.update(RECIPE_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(id)});
-        notifyObservers();
         return true;
     }
 
@@ -125,7 +122,6 @@ public class RecipeDBHelper extends DBHelper {
         cv.put(RECIPE_IMAGE_URL, imageUrl);
         SQLiteDatabase db = this.getReadableDatabase();
         db.update(RECIPE_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(id)});
-        notifyObservers();
         return true;
     }
 
@@ -134,7 +130,6 @@ public class RecipeDBHelper extends DBHelper {
         cv.put(RECIPE_INSTRUCTION, instruction);
         SQLiteDatabase db = this.getReadableDatabase();
         db.update(RECIPE_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(id)});
-        notifyObservers();
         return true;
     }
 
@@ -143,7 +138,6 @@ public class RecipeDBHelper extends DBHelper {
         cv.put(RECIPE_COOKING_TIME, cookingTime);
         SQLiteDatabase db = this.getReadableDatabase();
         db.update(RECIPE_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(id)});
-        notifyObservers();
         return true;
     }
 
@@ -153,7 +147,6 @@ public class RecipeDBHelper extends DBHelper {
         cv.put(RECIPE_INGREDIENTS, ingredients);
         SQLiteDatabase db = this.getReadableDatabase();
         db.update(RECIPE_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(id)});
-        notifyObservers();
         return true;
     }
 
@@ -161,7 +154,6 @@ public class RecipeDBHelper extends DBHelper {
     public boolean deleteAllRecipes(){
         SQLiteDatabase db = this.getReadableDatabase();
         db.execSQL("DELETE FROM " + RECIPE_TABLE_NAME);
-        notifyObservers();
         return true;
     }
 
