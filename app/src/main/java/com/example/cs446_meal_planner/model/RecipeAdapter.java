@@ -69,9 +69,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
                 public void onClick(View v) {
                     CalenderDBHelper db = CalenderDBHelper.getInstance(mcon);
                     CalenderBooking booking = CalenderBooking.builder()
-                            .meal_type(bookingData.mealType)
-                            .meal_date(bookingData.date.getIntger())
-                            .recipe_id(r.getId())
+                            .mealType(bookingData.mealType)
+                            .mealDate(bookingData.date.getIntger())
+                            .recipeId(r.getId())
                             .build();
                     db.insertCalenderBooking(booking);
                     Intent back = new Intent(mcon, CalenderActivity.class);

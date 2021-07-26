@@ -1,16 +1,24 @@
 package com.example.cs446_meal_planner;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -20,15 +28,25 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.cs446_meal_planner.model.Recipe;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
+
+import static com.example.cs446_meal_planner.DriveServiceHelper.getGoogleDriveService;
 
 
 public class RecipeCreationActivity extends AppCompatActivity{
@@ -39,6 +57,15 @@ public class RecipeCreationActivity extends AppCompatActivity{
     Button parse_recipe_url;
     Button submit_recipe;
     String recipe_url;
+    String image_url;
+
+    RecipeDBHelper db;
+    DriveServiceHelper driveServiceHelper;
+
+    ActivityResultLauncher<Intent> selectPictureActivityResultLauncher;
+
+    private static ActivityResultLauncher<Intent> signInActivityResultLauncher;
+
     ArrayAdapter<String> adapter;
     // List of available units of ingredients
     String [] units = {"whole", "gram", "teaspoon", "cup", "pound", "tablespoon"};
@@ -48,6 +75,20 @@ public class RecipeCreationActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.recipe_creation_view);
+
+        signInActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            // There are no request codes
+                            Intent data = result.getData();
+                            handleSignInResult(data);
+                        }
+                    }
+                });
+
         add_ingredient_layoutlist=findViewById(R.id.ingredient_list);
         add_instruction_layoutlist=findViewById(R.id.instruction_list);
 
@@ -56,8 +97,29 @@ public class RecipeCreationActivity extends AppCompatActivity{
         parse_recipe_url = findViewById(R.id.button_parse_recipe_url);
         submit_recipe = findViewById(R.id.button_submit_recipe);
 
+        db = RecipeDBHelper.getInstance(RecipeCreationActivity.this);
+
         adapter = new ArrayAdapter<String>(this,android.R.layout.select_dialog_singlechoice, units);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        selectPictureActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            // There are no request codes
+                            Intent data = result.getData();
+                            Uri selectedImageUri = data.getData();
+
+                            if(null != selectedImageUri){
+                                image_url = driveServiceHelper.createImage(selectedImageUri.getPath()).getResult();
+                            }
+                        }
+                    }
+                });
+
 
         add_ingredient.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,12 +176,12 @@ public class RecipeCreationActivity extends AppCompatActivity{
                         .ingredients(ingredients)
                         .instruction(instructions)
                         .cookingTime(Double.parseDouble(cookingTimeText.getText().toString()))
-                        .imageUrl("xxxx").build();
-                RecipeDBHelper db = RecipeDBHelper.getInstance(RecipeCreationActivity.this);
+                        .imageUrl(image_url).build();
                 db.insertRecipe(r);
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
             }
         });
+
 
     }
 
@@ -307,8 +369,57 @@ public class RecipeCreationActivity extends AppCompatActivity{
     {
 
     }
+
     public void viewRecipeCreation(View v)
     {
         startActivity(new Intent(getApplicationContext(), RecipeCreationActivity.class));
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void uploadImage(View v){
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        selectPictureActivityResultLauncher.launch(i);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+
+        if (account == null) {
+            signIn();
+        } else {
+            driveServiceHelper = new DriveServiceHelper(getGoogleDriveService(getApplicationContext(), account, "MealPlanner"));
+        }
+    }
+
+    private void signIn() {
+        GoogleSignInOptions signInOptions =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestScopes(new Scope("https://www.googleapis.com/auth/drive"))
+                        .requestEmail()
+                        .build();
+
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getApplicationContext(), signInOptions);
+        signInActivityResultLauncher.launch(mGoogleSignInClient.getSignInIntent());
+    }
+
+    private void handleSignInResult(Intent result) {
+        GoogleSignIn.getSignedInAccountFromIntent(result)
+                .addOnSuccessListener(new OnSuccessListener<GoogleSignInAccount>() {
+                    @Override
+                    public void onSuccess(GoogleSignInAccount googleSignInAccount) {
+                        driveServiceHelper = new DriveServiceHelper(getGoogleDriveService(getApplicationContext(), googleSignInAccount, "MealPlanner"));
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(null, "Unable to sign in.", e);
+                    }
+                });
+    }
+
 }
