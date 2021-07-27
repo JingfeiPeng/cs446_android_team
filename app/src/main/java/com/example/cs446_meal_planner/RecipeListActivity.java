@@ -17,22 +17,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class RecipeListActivity extends AppCompatActivity {
+public class RecipeListActivity extends ObserverActivity {
 
     private AppBarConfiguration appBarConfiguration;
 
     RecyclerView recyclerRecipes;
     ArrayList<Recipe> recipes = new ArrayList<>();
+    RecipeDBHelper db;
+    private boolean cameFromCalender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.recipe_overview_layout);
 
+        db = RecipeDBHelper.getInstance(this);
+        db.attachActivity(this);
+
         // decide if came here from calender or recipe tab
-        boolean cameFromCalender = false;
-        if( getIntent().getExtras() != null) {
+        cameFromCalender = false;
+        if (getIntent().getExtras() != null) {
             String cameFrom = getIntent().getExtras().getString("cameFrom");
             cameFromCalender = cameFrom.equals("calender");
         }
@@ -40,7 +44,10 @@ public class RecipeListActivity extends AppCompatActivity {
         recyclerRecipes = findViewById(R.id.recycler_recipes);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
         recyclerRecipes.setLayoutManager(layoutManager);
-        RecipeDBHelper db = RecipeDBHelper.getInstance(this);
+        update();
+    }
+
+    public void update() {
         recipes = db.getAllRecipes();
         if (cameFromCalender) {
             CalenderDate assignedDate = new CalenderDate(getIntent().getExtras().getInt("date"));
@@ -50,11 +57,16 @@ public class RecipeListActivity extends AppCompatActivity {
         } else {
             recyclerRecipes.setAdapter(new RecipeAdapter(this,recipes, null));
         }
-
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         return super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onDestroy() {
+        db.detchActivity(this);
+        super.onDestroy();
     }
 }

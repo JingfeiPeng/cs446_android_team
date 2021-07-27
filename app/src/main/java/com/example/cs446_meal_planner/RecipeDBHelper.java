@@ -79,9 +79,10 @@ public class RecipeDBHelper extends DBHelper {
     // remove recipe
     public Integer deleteRecipe(Integer id){
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.delete(RECIPE_TABLE_NAME,
+        Integer deletedId = db.delete(RECIPE_TABLE_NAME,
                 "id = ? ",
                 new String[] { Integer.toString(id) });
+        return deletedId;
     }
 
     //get recipe
