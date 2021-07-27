@@ -51,12 +51,110 @@ public class IngredientCaloriesCalculator {
         return calculator;
     }
 
+    public Double unit_conversion(Unit from, Unit to, Double curr_amount) {
+        if (from == to) {
+            return curr_amount;
+        } else {
+            if (from == Unit.CUP) {
+                if (to == Unit.TEASPOON) {
+                    return curr_amount * 48.0;
+                } else if (to == Unit.TABLESPOON) {
+                    return curr_amount * 16.0;
+                } else if (to == Unit.WHOLE) {
+                    return curr_amount/2.0;
+                } else if (to == Unit.GRAM) {
+                    return curr_amount * 236.6;
+                } else if (to == Unit.POUND) {
+                    return curr_amount * 0.52;
+                }
+            } else if (from == Unit.TABLESPOON) {
+                if (to == Unit.TEASPOON) {
+                    return curr_amount * 3.0;
+                } else if (to == Unit.CUP) {
+                    return curr_amount / 16.0;
+                } else if (to == Unit.WHOLE) {
+                    return curr_amount/96.0;
+                } else if (to == Unit.GRAM) {
+                    return curr_amount * 14.8;
+                } else if (to == Unit.POUND) {
+                    return curr_amount * 0.033;
+                }
+            } else if (from == Unit.TEASPOON) {
+                if (to == Unit.CUP) {
+                    return curr_amount / 48.0;
+                } else if (to == Unit.TABLESPOON) {
+                    return curr_amount / 3.0;
+                } else if (to == Unit.WHOLE) {
+                    return curr_amount/32.0;
+                } else if (to == Unit.GRAM) {
+                    return curr_amount * 4.9;
+                } else if (to == Unit.POUND) {
+                    return curr_amount * 0.011;
+                }
+            } else if (from == Unit.WHOLE) {
+                if (to == Unit.TEASPOON) {
+                    return curr_amount * 96.0;
+                } else if (to == Unit.TABLESPOON) {
+                    return curr_amount * 32.0;
+                } else if (to == Unit.CUP) {
+                    return curr_amount * 2.0;
+                } else if (to == Unit.GRAM) {
+                    return curr_amount * 236.6 * 2;
+                } else if (to == Unit.POUND) {
+                    return curr_amount * 0.52 * 2;
+                }
+            } else if (from == Unit.GRAM) {
+                if (to == Unit.TEASPOON) {
+                    return curr_amount * 0.2029;
+                } else if (to == Unit.TABLESPOON) {
+                    return curr_amount * 0.6763;
+                } else if (to == Unit.WHOLE) {
+                    return curr_amount/(236.6 * 2);
+                } else if (to == Unit.CUP) {
+                    return curr_amount / 236.6;
+                } else if (to == Unit.POUND) {
+                    return curr_amount / 0.52;
+                }
+            } else if (from == Unit.POUND) {
+                if (to == Unit.TEASPOON) {
+                    return curr_amount * 92.03;
+                } else if (to == Unit.TABLESPOON) {
+                    return curr_amount * 30.68;
+                } else if (to == Unit.WHOLE) {
+                    return curr_amount * (1.92/2.0);
+                } else if (to == Unit.GRAM) {
+                    return curr_amount * 453.59;
+                } else if (to == Unit.CUP) {
+                    return curr_amount * 1.92;
+                }
+            }
+        }
+        return curr_amount;
+    }
+
     public Double calculateCalories(String ingredientName, String amount, String unit) {
         Ingredient ingredient = energy_table.get(ingredientName);
-        if (ingredient == null) {
-            return 1.0; //Double.parseDouble(amount)/10;
+        Unit u = Unit.GRAM; // default unit
+        if (unit.toLowerCase() == "cup") {
+            u = Unit.CUP;
+        } else if (unit.toLowerCase() == "teaspoon") {
+            u = Unit.TEASPOON;
+        } else if (unit.toLowerCase() == "tablespoon") {
+            u = Unit.TABLESPOON;
+        } else if (unit.toLowerCase() == "whole") {
+            u = Unit.WHOLE;
+        } else if (unit.toLowerCase() == "pound") {
+            u = Unit.POUND;
         }
+
+        if (ingredient == null) {
+            Double new_amount = unit_conversion(u, Unit.GRAM, Double.parseDouble(amount));
+            return new_amount/10; //Double.parseDouble(amount)/10;
+        }
+
+        Unit ingredient_default = ingredient.getUnit();
+        Double new_amount = unit_conversion(u, ingredient_default, Double.parseDouble(amount));
         // we have the ingredient, do logic of calculating ingredient calories value
-        return 0.0;
+        return (new_amount/ingredient.getAmount())*ingredient.getCalorie();
     }
 }
