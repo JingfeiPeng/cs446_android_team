@@ -117,9 +117,6 @@ public class RecipeCreationActivity extends AppCompatActivity{
                     total_calories += curCal;
                 }
 
-                String TAG = "Calories";
-                Log.d(TAG, "calories: " + total_calories);
-
                 // get recipe name
                 EditText recipeNameText = (EditText)findViewById(R.id.edit_recipe_name);
                 String recipeName = recipeNameText.getText().toString();
