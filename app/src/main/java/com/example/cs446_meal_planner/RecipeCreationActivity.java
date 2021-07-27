@@ -47,7 +47,7 @@ public class RecipeCreationActivity extends AppCompatActivity{
     ArrayAdapter<String> adapter;
     // List of available units of ingredients
     String [] units = {"whole", "gram", "teaspoon", "cup", "pound", "tablespoon"};
-    IngredientCaloriesCalculator calories_calculator = new IngredientCaloriesCalculator();
+    IngredientCaloriesCalculator calories_calculator = IngredientCaloriesCalculator.getInstance();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,7 +100,7 @@ public class RecipeCreationActivity extends AppCompatActivity{
                     instructions += curInstructionText.getText().toString()+"#";
                 }
                 String ingredients = "";
-                Integer total_calories = 0;
+                Double total_calories = 0.0;
                 for (int i = 0; i < add_ingredient_layoutlist.getChildCount(); i++)
                 {
                     View curIngredientView = add_ingredient_layoutlist.getChildAt(i);
@@ -109,7 +109,7 @@ public class RecipeCreationActivity extends AppCompatActivity{
                     EditText curIngredientText = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_name);
                     //EditText curIngredientGram = (EditText) curIngredientView.findViewById(R.id.edit_ingredient_gram);
                     ingredients += curIngredientText.getText().toString()+"%"+curIngredientNumber.getText().toString()+"%"+curIngredientUnit.getText().toString()+"#";
-                    Integer curCal = calories_calculator.calculateCalories(
+                    Double curCal = calories_calculator.calculateCalories(
                             curIngredientText.getText().toString(),
                             curIngredientNumber.getText().toString(),
                             curIngredientUnit.getText().toString()

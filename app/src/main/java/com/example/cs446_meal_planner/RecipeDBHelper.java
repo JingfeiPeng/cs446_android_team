@@ -103,7 +103,7 @@ public class RecipeDBHelper extends DBHelper {
                     .ingredients(res.getString(res.getColumnIndex(RECIPE_INGREDIENTS)))
                     .instruction(res.getString(res.getColumnIndex(RECIPE_INSTRUCTION)))
                     .cookingTime(Double.parseDouble(res.getString(res.getColumnIndex(RECIPE_COOKING_TIME))))
-                    .calorie(res.getInt(res.getColumnIndex(RECIPE_CALORIE)))
+                    .calorie(Double.parseDouble(res.getString(res.getColumnIndex(RECIPE_CALORIE))))
                     .build();
             result.add(recipe);
             res.moveToNext();
@@ -153,7 +153,7 @@ public class RecipeDBHelper extends DBHelper {
         return true;
     }
 
-    public boolean updateCalorie(Integer newCal, Integer id) {
+    public boolean updateCalorie(Double newCal, Integer id) {
         ContentValues cv = new ContentValues();
         cv.put(RECIPE_CALORIE, newCal);
         SQLiteDatabase db = this.getReadableDatabase();
@@ -176,7 +176,7 @@ public class RecipeDBHelper extends DBHelper {
             "ingredients TEXT, " +
             "instruction TEXT, " +
             "cooking_time REAL," +
-            "calorie INTEGER" +
+            "calorie REAL" +
             ")";
 
     private final String QUERY_UPGRADE_DB = "DROP TABLE IF EXISTS RecipeTable";
