@@ -22,7 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.cs446_meal_planner.model.Ingredient;
-import com.example.cs446_meal_planner.model.IngredientEnergyTable;
+import com.example.cs446_meal_planner.model.IngredientCaloriesCalculator;
 import com.example.cs446_meal_planner.model.Recipe;
 
 import org.jsoup.Jsoup;
@@ -47,7 +47,7 @@ public class RecipeCreationActivity extends AppCompatActivity{
     ArrayAdapter<String> adapter;
     // List of available units of ingredients
     String [] units = {"whole", "gram", "teaspoon", "cup", "pound", "tablespoon"};
-    Hashtable<String, Ingredient> energy_table = new IngredientEnergyTable().getEnergyTable();
+    IngredientCaloriesCalculator calories_calculator = new IngredientCaloriesCalculator();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,8 +109,11 @@ public class RecipeCreationActivity extends AppCompatActivity{
                     EditText curIngredientText = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_name);
                     //EditText curIngredientGram = (EditText) curIngredientView.findViewById(R.id.edit_ingredient_gram);
                     ingredients += curIngredientText.getText().toString()+"%"+curIngredientNumber.getText().toString()+"%"+curIngredientUnit.getText().toString()+"#";
-                    Editable ingredientName = curIngredientText.getText();
-                    Integer curCal = energy_table.get(ingredientName).getCalorie();
+                    Integer curCal = calories_calculator.calculateCalories(
+                            curIngredientText.getText().toString(),
+                            curIngredientNumber.getText().toString(),
+                            curIngredientUnit.getText().toString()
+                    );
                     total_calories += curCal;
                 }
 
