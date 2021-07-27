@@ -20,6 +20,7 @@ public class RecipeDBHelper extends DBHelper {
     public static final String RECIPE_INGREDIENTS = "ingredients";
     public static final String RECIPE_INSTRUCTION = "instruction";
     public static final String RECIPE_COOKING_TIME = "cooking_time";
+    public static final String RECIPE_CALORIE = "calorie";
 
     private static RecipeDBHelper recipeDBHelper = null;
 
@@ -59,7 +60,7 @@ public class RecipeDBHelper extends DBHelper {
         ContentValues contentValues = new ContentValues();
 
         int n = numberOfRows();
-        if(n == 0){
+        if (n == 0) {
             contentValues.put(RECIPE_ID, 1);
         }
         else {
@@ -72,6 +73,7 @@ public class RecipeDBHelper extends DBHelper {
         contentValues.put(RECIPE_INGREDIENTS, recipe.getIngredients());
         contentValues.put(RECIPE_INSTRUCTION, recipe.getInstruction());
         contentValues.put(RECIPE_COOKING_TIME, recipe.getCookingTime());
+        contentValues.put(RECIPE_CALORIE, recipe.getCalorie());
         db.insert(RECIPE_TABLE_NAME, null, contentValues);
         return true;
     }
@@ -85,7 +87,7 @@ public class RecipeDBHelper extends DBHelper {
         return deletedId;
     }
 
-    //get recipe
+    // get recipe
     public ArrayList<Recipe> getAllRecipes(){
         ArrayList<Recipe> result = new ArrayList<>();
 
@@ -101,6 +103,7 @@ public class RecipeDBHelper extends DBHelper {
                     .ingredients(res.getString(res.getColumnIndex(RECIPE_INGREDIENTS)))
                     .instruction(res.getString(res.getColumnIndex(RECIPE_INSTRUCTION)))
                     .cookingTime(Double.parseDouble(res.getString(res.getColumnIndex(RECIPE_COOKING_TIME))))
+                    .calorie(res.getInt(res.getColumnIndex(RECIPE_CALORIE)))
                     .build();
             result.add(recipe);
             res.moveToNext();
@@ -150,6 +153,14 @@ public class RecipeDBHelper extends DBHelper {
         return true;
     }
 
+    public boolean updateCalorie(Integer newCal, Integer id) {
+        ContentValues cv = new ContentValues();
+        cv.put(RECIPE_CALORIE, newCal);
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.update(RECIPE_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(id)});
+        return true;
+    }
+
     //delete all recipe
     public boolean deleteAllRecipes(){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -164,7 +175,8 @@ public class RecipeDBHelper extends DBHelper {
             "image_url TEXT, " +
             "ingredients TEXT, " +
             "instruction TEXT, " +
-            "cooking_time REAL" +
+            "cooking_time REAL," +
+            "calorie INTEGER" +
             ")";
 
     private final String QUERY_UPGRADE_DB = "DROP TABLE IF EXISTS RecipeTable";

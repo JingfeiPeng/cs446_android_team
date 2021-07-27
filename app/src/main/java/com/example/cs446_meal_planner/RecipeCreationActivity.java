@@ -11,6 +11,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Looper;
+import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -19,6 +21,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.example.cs446_meal_planner.model.Ingredient;
+import com.example.cs446_meal_planner.model.IngredientEnergyTable;
 import com.example.cs446_meal_planner.model.Recipe;
 
 import org.jsoup.Jsoup;
@@ -28,6 +32,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.Optional;
 
 
@@ -42,6 +47,7 @@ public class RecipeCreationActivity extends AppCompatActivity{
     ArrayAdapter<String> adapter;
     // List of available units of ingredients
     String [] units = {"whole", "gram", "teaspoon", "cup", "pound", "tablespoon"};
+    Hashtable<String, Ingredient> energy_table = new IngredientEnergyTable().getEnergyTable();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,14 +93,15 @@ public class RecipeCreationActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 String instructions = "";
-                for(int i=0;i<add_instruction_layoutlist.getChildCount();i++)
+                for(int i = 0; i < add_instruction_layoutlist.getChildCount(); i++)
                 {
                     View curInstructionView = add_instruction_layoutlist.getChildAt(i);
                     EditText curInstructionText = (EditText)curInstructionView.findViewById(R.id.edit_instruction_name);
                     instructions += curInstructionText.getText().toString()+"#";
                 }
                 String ingredients = "";
-                for(int i=0;i<add_ingredient_layoutlist.getChildCount();i++)
+                Integer total_calories = 0;
+                for (int i = 0; i < add_ingredient_layoutlist.getChildCount(); i++)
                 {
                     View curIngredientView = add_ingredient_layoutlist.getChildAt(i);
                     EditText curIngredientNumber = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_number);
@@ -102,7 +109,14 @@ public class RecipeCreationActivity extends AppCompatActivity{
                     EditText curIngredientText = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_name);
                     //EditText curIngredientGram = (EditText) curIngredientView.findViewById(R.id.edit_ingredient_gram);
                     ingredients += curIngredientText.getText().toString()+"%"+curIngredientNumber.getText().toString()+"%"+curIngredientUnit.getText().toString()+"#";
+                    Editable ingredientName = curIngredientText.getText();
+                    Integer curCal = energy_table.get(ingredientName).getCalorie();
+                    total_calories += curCal;
                 }
+
+                String TAG = "Calories";
+                Log.d(TAG, "calories: " + total_calories);
+
                 // get recipe name
                 EditText recipeNameText = (EditText)findViewById(R.id.edit_recipe_name);
                 String recipeName = recipeNameText.getText().toString();
@@ -114,6 +128,7 @@ public class RecipeCreationActivity extends AppCompatActivity{
                         .ingredients(ingredients)
                         .instruction(instructions)
                         .cookingTime(Double.parseDouble(cookingTimeText.getText().toString()))
+                        .calorie(total_calories)
                         .imageUrl("xxxx").build();
                 RecipeDBHelper db = RecipeDBHelper.getInstance(RecipeCreationActivity.this);
                 db.insertRecipe(r);
