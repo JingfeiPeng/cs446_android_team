@@ -134,7 +134,7 @@ public class IngredientCaloriesCalculator {
 
     public Double calculateCalories(String ingredientName, String amount, String unit) {
         Ingredient ingredient = energy_table.get(ingredientName);
-        Unit u = Unit.GRAM; // default unit
+        Unit u;
         if (unit.toLowerCase() == "cup") {
             u = Unit.CUP;
         } else if (unit.toLowerCase() == "teaspoon") {
@@ -145,6 +145,8 @@ public class IngredientCaloriesCalculator {
             u = Unit.WHOLE;
         } else if (unit.toLowerCase() == "pound") {
             u = Unit.POUND;
+        } else {
+            u = Unit.GRAM; // default
         }
 
         if (ingredient == null) {
