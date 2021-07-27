@@ -43,6 +43,7 @@ public class RecipeCreationActivity extends AppCompatActivity{
     Button add_instruction;
     Button parse_recipe_url;
     Button submit_recipe;
+    Button get_calorie_estimate;
     String recipe_url;
     ArrayAdapter<String> adapter;
     // List of available units of ingredients
@@ -61,6 +62,7 @@ public class RecipeCreationActivity extends AppCompatActivity{
         add_instruction = findViewById(R.id.button_add_instruction);
         parse_recipe_url = findViewById(R.id.button_parse_recipe_url);
         submit_recipe = findViewById(R.id.button_submit_recipe);
+        get_calorie_estimate = findViewById(R.id.button_get_estimated_calories_total);
 
         adapter = new ArrayAdapter<String>(this,android.R.layout.select_dialog_singlechoice, units);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -71,14 +73,15 @@ public class RecipeCreationActivity extends AppCompatActivity{
                 addNewIngredient("","","");
             }
         });
+
         add_instruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addNewInstruction("");
             }
         });
-        parse_recipe_url.setOnClickListener(new View.OnClickListener() {
 
+        parse_recipe_url.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText edit_recipe_url = findViewById(R.id.edit_recipe_url);
@@ -89,6 +92,28 @@ public class RecipeCreationActivity extends AppCompatActivity{
 
             }
         });
+
+        get_calorie_estimate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText edit_calorie = findViewById(R.id.edit_calories_total);
+                Double total_calories = 0.0;
+                for (int i = 0; i < add_ingredient_layoutlist.getChildCount(); i++){
+                    View curIngredientView = add_ingredient_layoutlist.getChildAt(i);
+                    EditText curIngredientNumber = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_number);
+                    EditText curIngredientUnit = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_unit);
+                    EditText curIngredientText = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_name);
+                    Double curCal = calories_calculator.calculateCalories(
+                            curIngredientText.getText().toString(),
+                            curIngredientNumber.getText().toString(),
+                            curIngredientUnit.getText().toString()
+                    );
+                    total_calories += curCal;
+                }
+                edit_calorie.setText(total_calories.toString());
+            }
+        });
+
         submit_recipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +126,14 @@ public class RecipeCreationActivity extends AppCompatActivity{
                 }
                 String ingredients = "";
                 Double total_calories = 0.0;
+                Boolean is_calorie_edited = false;
+
+                EditText edit_calorie = findViewById(R.id.edit_calories_total);
+                if (edit_calorie.getText() != null) {
+                    total_calories = Double.parseDouble(String.valueOf(edit_calorie.getText()));
+                    is_calorie_edited = true;
+                }
+
                 for (int i = 0; i < add_ingredient_layoutlist.getChildCount(); i++)
                 {
                     View curIngredientView = add_ingredient_layoutlist.getChildAt(i);
@@ -109,12 +142,16 @@ public class RecipeCreationActivity extends AppCompatActivity{
                     EditText curIngredientText = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_name);
                     //EditText curIngredientGram = (EditText) curIngredientView.findViewById(R.id.edit_ingredient_gram);
                     ingredients += curIngredientText.getText().toString()+"%"+curIngredientNumber.getText().toString()+"%"+curIngredientUnit.getText().toString()+"#";
-                    Double curCal = calories_calculator.calculateCalories(
-                            curIngredientText.getText().toString(),
-                            curIngredientNumber.getText().toString(),
-                            curIngredientUnit.getText().toString()
-                    );
-                    total_calories += curCal;
+
+                    if (!is_calorie_edited) {
+                        Double curCal = calories_calculator.calculateCalories(
+                                curIngredientText.getText().toString(),
+                                curIngredientNumber.getText().toString(),
+                                curIngredientUnit.getText().toString()
+                        );
+                        total_calories += curCal;
+                    }
+
                 }
 
                 // get recipe name
