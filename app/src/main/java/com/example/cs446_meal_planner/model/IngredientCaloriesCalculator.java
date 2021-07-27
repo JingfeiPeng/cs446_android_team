@@ -2,10 +2,10 @@ package com.example.cs446_meal_planner.model;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-public class IngredientEnergyTable {
+public class IngredientCaloriesCalculator {
     private Hashtable<String, Ingredient> energy_table;
 
-    public IngredientEnergyTable() {
+    public IngredientCaloriesCalculator() {
         energy_table = new Hashtable<String, Ingredient>();
         // construct some common ingredients
         Ingredient sugar = new Ingredient("sugar", 1, Unit.TABLESPOON, 19);
@@ -46,7 +46,12 @@ public class IngredientEnergyTable {
         energy_table.put("cucumber", cucumber);
     }
 
-    public Hashtable<String, Ingredient> getEnergyTable() {
-        return energy_table;
+    public Integer calculateCalories(String ingredientName, String amount, String unit) {
+        Ingredient ingredient = energy_table.get(ingredientName);
+        if (ingredient == null) {
+            return 1; //Double.parseDouble(amount)/10;
+        }
+        // we have the ingredient, do logic of calculating ingredient calories value
+        return 0;
     }
 }
