@@ -58,16 +58,16 @@ public class Recipe {
         this.cookingTime = cookingTime;
     }
 
-    public Integer getCalorie() {
+    public Double getCalorie() {
         return calorie;
     }
 
-    public void setCalorie(Integer calorie) {
+    public void setCalorie(Double calorie) {
         this.calorie = calorie;
     }
 
     private String ingredients;
     private String instruction;
     private Double cookingTime;
-    private Integer calorie;
+    private Double calorie;
 }

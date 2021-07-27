@@ -6,11 +6,11 @@ import lombok.Data;
 @Data
 public class Ingredient {
     private String name;
-    private Integer calorie;
-    private Integer amount;
+    private Double calorie;
+    private Double amount;
     private Unit unit;
 
-    public Ingredient(String name, Integer amount, Unit unit, Integer calorie) {
+    public Ingredient(String name, Double amount, Unit unit, Double calorie) {
         this.name = name;
         this.amount = amount;
         this.unit = unit;
@@ -25,11 +25,11 @@ public class Ingredient {
         this.name = name;
     }
 
-    public Integer getCalorie() {
+    public Double getCalorie() {
         return calorie;
     }
 
-    public void setCalorie(Integer calorie) {
+    public void setCalorie(Double calorie) {
         this.calorie = calorie;
     }
 
@@ -41,11 +41,11 @@ public class Ingredient {
         this.unit = unit;
     }
 
-    public Integer getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 }
