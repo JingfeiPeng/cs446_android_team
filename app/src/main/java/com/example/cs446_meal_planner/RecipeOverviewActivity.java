@@ -16,7 +16,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 
 
 public class RecipeOverviewActivity extends AppCompatActivity {
-
+    private RecipeDBHelper db;
     private AppBarConfiguration appBarConfiguration;
     LinearLayout add_ingredient_layoutlist;
     LinearLayout add_instruction_layoutlist;
@@ -28,6 +28,8 @@ public class RecipeOverviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recipe_view_layout);
+        db = RecipeDBHelper.getInstance(RecipeOverviewActivity.this);
+
         String instructions = getIntent().getExtras().getString("instructions");
         String ingredients =getIntent().getExtras().getString("ingredients");
         String recipeName = getIntent().getExtras().getString("recipeName");
@@ -161,7 +163,6 @@ public class RecipeOverviewActivity extends AppCompatActivity {
                     EditText curIngredientNumber = (EditText) curIngredientView.findViewById(R.id.edit_ingredient_number);
                     ingredients += curIngredientText.getText().toString()+"%"+curIngredientNumber.getText().toString()+"%"+curIngredientUnit.getText().toString()+"#";
                 }
-                RecipeDBHelper db = RecipeDBHelper.getInstance(RecipeOverviewActivity.this);
                 db.updateName(curRecipeName.getText().toString(),recipeID);
                 db.updateCookingTime(Double.parseDouble(cookingTimeField.getText().toString()), recipeID);
                 db.updateInstruction(instructions,recipeID);
@@ -175,8 +176,8 @@ public class RecipeOverviewActivity extends AppCompatActivity {
         delete_recipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RecipeDBHelper db = RecipeDBHelper.getInstance(RecipeOverviewActivity.this);
                 db.deleteRecipe(recipeID);
+                db.notifyObservers();
                 finish();
             }
         });

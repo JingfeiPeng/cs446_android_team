@@ -1,23 +1,17 @@
 package com.example.cs446_meal_planner;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Looper;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -27,26 +21,21 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.example.cs446_meal_planner.model.Ingredient;
+import com.example.cs446_meal_planner.model.IngredientCaloriesCalculator;
 import com.example.cs446_meal_planner.model.Recipe;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.File;
 import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.Optional;
-
-import static com.example.cs446_meal_planner.DriveServiceHelper.getGoogleDriveService;
 
 
 public class RecipeCreationActivity extends AppCompatActivity{
@@ -56,39 +45,18 @@ public class RecipeCreationActivity extends AppCompatActivity{
     Button add_instruction;
     Button parse_recipe_url;
     Button submit_recipe;
+    Button get_calorie_estimate;
     String recipe_url;
-    String image_url;
-
-    RecipeDBHelper db;
-    DriveServiceHelper driveServiceHelper;
-
-    ActivityResultLauncher<Intent> selectPictureActivityResultLauncher;
-
-    private static ActivityResultLauncher<Intent> signInActivityResultLauncher;
-
     ArrayAdapter<String> adapter;
     // List of available units of ingredients
     String [] units = {"whole", "gram", "teaspoon", "cup", "pound", "tablespoon"};
+    IngredientCaloriesCalculator calories_calculator = IngredientCaloriesCalculator.getInstance();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.recipe_creation_view);
-
-        signInActivityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            // There are no request codes
-                            Intent data = result.getData();
-                            handleSignInResult(data);
-                        }
-                    }
-                });
-
         add_ingredient_layoutlist=findViewById(R.id.ingredient_list);
         add_instruction_layoutlist=findViewById(R.id.instruction_list);
 
@@ -96,30 +64,10 @@ public class RecipeCreationActivity extends AppCompatActivity{
         add_instruction = findViewById(R.id.button_add_instruction);
         parse_recipe_url = findViewById(R.id.button_parse_recipe_url);
         submit_recipe = findViewById(R.id.button_submit_recipe);
-
-        db = RecipeDBHelper.getInstance(RecipeCreationActivity.this);
+        get_calorie_estimate = findViewById(R.id.button_get_estimated_calories_total);
 
         adapter = new ArrayAdapter<String>(this,android.R.layout.select_dialog_singlechoice, units);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-
-        selectPictureActivityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @RequiresApi(api = Build.VERSION_CODES.O)
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            // There are no request codes
-                            Intent data = result.getData();
-                            Uri selectedImageUri = data.getData();
-
-                            if(null != selectedImageUri){
-                                image_url = driveServiceHelper.createImage(selectedImageUri.getPath()).getResult();
-                            }
-                        }
-                    }
-                });
-
 
         add_ingredient.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,14 +75,15 @@ public class RecipeCreationActivity extends AppCompatActivity{
                 addNewIngredient("","","");
             }
         });
+
         add_instruction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addNewInstruction("");
             }
         });
-        parse_recipe_url.setOnClickListener(new View.OnClickListener() {
 
+        parse_recipe_url.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText edit_recipe_url = findViewById(R.id.edit_recipe_url);
@@ -145,18 +94,55 @@ public class RecipeCreationActivity extends AppCompatActivity{
 
             }
         });
+
+        get_calorie_estimate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText edit_calorie = findViewById(R.id.edit_calories_total);
+                Double total_calories = 0.0;
+                String total_cal = "";
+                for (int i = 0; i < add_ingredient_layoutlist.getChildCount(); i++){
+                    View curIngredientView = add_ingredient_layoutlist.getChildAt(i);
+                    EditText curIngredientNumber = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_number);
+                    EditText curIngredientUnit = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_unit);
+                    EditText curIngredientText = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_name);
+                    Double curCal = calories_calculator.calculateCalories(
+                            curIngredientText.getText().toString(),
+                            curIngredientNumber.getText().toString(),
+                            curIngredientUnit.getText().toString()
+                    );
+                    total_calories += curCal;
+                    DecimalFormat df = new DecimalFormat("#.#");
+                    df.setRoundingMode(RoundingMode.CEILING);
+                    total_cal = df.format(total_calories);
+                }
+                edit_calorie.setText(total_cal);
+            }
+        });
+
         submit_recipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String instructions = "";
-                for(int i=0;i<add_instruction_layoutlist.getChildCount();i++)
+                for(int i = 0; i < add_instruction_layoutlist.getChildCount(); i++)
                 {
                     View curInstructionView = add_instruction_layoutlist.getChildAt(i);
                     EditText curInstructionText = (EditText)curInstructionView.findViewById(R.id.edit_instruction_name);
                     instructions += curInstructionText.getText().toString()+"#";
                 }
                 String ingredients = "";
-                for(int i=0;i<add_ingredient_layoutlist.getChildCount();i++)
+                Double total_calories = 0.0;
+                Boolean is_calorie_edited = false;
+                DecimalFormat df = new DecimalFormat("#.#");
+                df.setRoundingMode(RoundingMode.CEILING);
+                String formated_calories = "";
+                EditText edit_calorie = findViewById(R.id.edit_calories_total);
+                if (!edit_calorie.getText().toString().equals("")) {
+                    total_calories = Double.parseDouble(String.valueOf(edit_calorie.getText()));
+                    is_calorie_edited = true;
+                }
+
+                for (int i = 0; i < add_ingredient_layoutlist.getChildCount(); i++)
                 {
                     View curIngredientView = add_ingredient_layoutlist.getChildAt(i);
                     EditText curIngredientNumber = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_number);
@@ -164,24 +150,42 @@ public class RecipeCreationActivity extends AppCompatActivity{
                     EditText curIngredientText = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_name);
                     //EditText curIngredientGram = (EditText) curIngredientView.findViewById(R.id.edit_ingredient_gram);
                     ingredients += curIngredientText.getText().toString()+"%"+curIngredientNumber.getText().toString()+"%"+curIngredientUnit.getText().toString()+"#";
+
+                    if (!is_calorie_edited && !curIngredientNumber.getText().toString().equals("")) {
+                        Double curCal = calories_calculator.calculateCalories(
+                                curIngredientText.getText().toString(),
+                                curIngredientNumber.getText().toString(),
+                                curIngredientUnit.getText().toString()
+                        );
+                        total_calories += curCal;
+                    }
                 }
+
+                formated_calories = df.format(total_calories);
+                total_calories = Double.parseDouble(formated_calories);
+
                 // get recipe name
                 EditText recipeNameText = (EditText)findViewById(R.id.edit_recipe_name);
                 String recipeName = recipeNameText.getText().toString();
 
                 // get cooking time
-                EditText cookingTimeText = (EditText)findViewById(R.id.edit_cooking_time);
+                String cookingTimeText = ((EditText)findViewById(R.id.edit_cooking_time)).getText().toString();
+                Double cookingTime  = cookingTimeText.equals("")
+                        ? 0.0
+                        :Double.parseDouble(cookingTimeText);
+
                 Recipe r = Recipe.builder()
                         .name(recipeName)
                         .ingredients(ingredients)
                         .instruction(instructions)
-                        .cookingTime(Double.parseDouble(cookingTimeText.getText().toString()))
-                        .imageUrl(image_url).build();
+                        .cookingTime(cookingTime)
+                        .calorie(total_calories)
+                        .imageUrl("xxxx").build();
+                RecipeDBHelper db = RecipeDBHelper.getInstance(RecipeCreationActivity.this);
                 db.insertRecipe(r);
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
             }
         });
-
 
     }
 
@@ -369,57 +373,8 @@ public class RecipeCreationActivity extends AppCompatActivity{
     {
 
     }
-
     public void viewRecipeCreation(View v)
     {
         startActivity(new Intent(getApplicationContext(), RecipeCreationActivity.class));
     }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void uploadImage(View v){
-        Intent i = new Intent();
-        i.setType("image/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-        selectPictureActivityResultLauncher.launch(i);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-
-        if (account == null) {
-            signIn();
-        } else {
-            driveServiceHelper = new DriveServiceHelper(getGoogleDriveService(getApplicationContext(), account, "MealPlanner"));
-        }
-    }
-
-    private void signIn() {
-        GoogleSignInOptions signInOptions =
-                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestScopes(new Scope("https://www.googleapis.com/auth/drive"))
-                        .requestEmail()
-                        .build();
-
-        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getApplicationContext(), signInOptions);
-        signInActivityResultLauncher.launch(mGoogleSignInClient.getSignInIntent());
-    }
-
-    private void handleSignInResult(Intent result) {
-        GoogleSignIn.getSignedInAccountFromIntent(result)
-                .addOnSuccessListener(new OnSuccessListener<GoogleSignInAccount>() {
-                    @Override
-                    public void onSuccess(GoogleSignInAccount googleSignInAccount) {
-                        driveServiceHelper = new DriveServiceHelper(getGoogleDriveService(getApplicationContext(), googleSignInAccount, "MealPlanner"));
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(null, "Unable to sign in.", e);
-                    }
-                });
-    }
-
 }
