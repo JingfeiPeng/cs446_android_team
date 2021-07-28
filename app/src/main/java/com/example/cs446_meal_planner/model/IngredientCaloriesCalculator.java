@@ -133,7 +133,15 @@ public class IngredientCaloriesCalculator {
     }
 
     public Double calculateCalories(String ingredientName, String amount, String unit) {
-        Ingredient ingredient = energy_table.get(ingredientName);
+        Ingredient ingredient = null;
+        String[] possible_ingredients = ingredientName.split(" ");
+        for (int i = possible_ingredients.length - 1; i >= 0; i--){
+            ingredient = energy_table.get(possible_ingredients[i]);
+            if (ingredient != null) {
+                break;
+            }
+        }
+
         Unit u;
         if (unit.toLowerCase() == "cup") {
             u = Unit.CUP;
