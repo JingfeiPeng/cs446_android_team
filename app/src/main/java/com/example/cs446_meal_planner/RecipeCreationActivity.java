@@ -139,7 +139,6 @@ public class RecipeCreationActivity extends AppCompatActivity{
                 EditText edit_calorie = findViewById(R.id.edit_calories_total);
                 if (!edit_calorie.getText().toString().equals("")) {
                     total_calories = Double.parseDouble(String.valueOf(edit_calorie.getText()));
-                    formated_calories = df.format(total_calories);
                     is_calorie_edited = true;
                 }
 
@@ -159,11 +158,10 @@ public class RecipeCreationActivity extends AppCompatActivity{
                                 curIngredientUnit.getText().toString()
                         );
                         total_calories += curCal;
-                        formated_calories = df.format(total_calories);
                     }
-
                 }
 
+                formated_calories = df.format(total_calories);
                 total_calories = Double.parseDouble(formated_calories);
 
                 // get recipe name
