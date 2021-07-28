@@ -129,7 +129,7 @@ public class RecipeCreationActivity extends AppCompatActivity{
                 Boolean is_calorie_edited = false;
 
                 EditText edit_calorie = findViewById(R.id.edit_calories_total);
-                if (edit_calorie.getText() != null) {
+                if (!edit_calorie.getText().toString().equals("")) {
                     total_calories = Double.parseDouble(String.valueOf(edit_calorie.getText()));
                     is_calorie_edited = true;
                 }
@@ -143,7 +143,7 @@ public class RecipeCreationActivity extends AppCompatActivity{
                     //EditText curIngredientGram = (EditText) curIngredientView.findViewById(R.id.edit_ingredient_gram);
                     ingredients += curIngredientText.getText().toString()+"%"+curIngredientNumber.getText().toString()+"%"+curIngredientUnit.getText().toString()+"#";
 
-                    if (!is_calorie_edited) {
+                    if (!is_calorie_edited && !curIngredientNumber.getText().toString().equals("")) {
                         Double curCal = calories_calculator.calculateCalories(
                                 curIngredientText.getText().toString(),
                                 curIngredientNumber.getText().toString(),
@@ -159,12 +159,16 @@ public class RecipeCreationActivity extends AppCompatActivity{
                 String recipeName = recipeNameText.getText().toString();
 
                 // get cooking time
-                EditText cookingTimeText = (EditText)findViewById(R.id.edit_cooking_time);
+                String cookingTimeText = ((EditText)findViewById(R.id.edit_cooking_time)).getText().toString();
+                Double cookingTime  = cookingTimeText.equals("")
+                        ? 0.0
+                        :Double.parseDouble(cookingTimeText);
+
                 Recipe r = Recipe.builder()
                         .name(recipeName)
                         .ingredients(ingredients)
                         .instruction(instructions)
-                        .cookingTime(Double.parseDouble(cookingTimeText.getText().toString()))
+                        .cookingTime(cookingTime)
                         .calorie(total_calories)
                         .imageUrl("xxxx").build();
                 RecipeDBHelper db = RecipeDBHelper.getInstance(RecipeCreationActivity.this);
