@@ -31,6 +31,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Optional;
@@ -98,6 +100,7 @@ public class RecipeCreationActivity extends AppCompatActivity{
             public void onClick(View v) {
                 EditText edit_calorie = findViewById(R.id.edit_calories_total);
                 Double total_calories = 0.0;
+                String total_cal = "";
                 for (int i = 0; i < add_ingredient_layoutlist.getChildCount(); i++){
                     View curIngredientView = add_ingredient_layoutlist.getChildAt(i);
                     EditText curIngredientNumber = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_number);
@@ -109,8 +112,11 @@ public class RecipeCreationActivity extends AppCompatActivity{
                             curIngredientUnit.getText().toString()
                     );
                     total_calories += curCal;
+                    DecimalFormat df = new DecimalFormat("#.#");
+                    df.setRoundingMode(RoundingMode.CEILING);
+                    total_cal = df.format(total_calories);
                 }
-                edit_calorie.setText(total_calories.toString());
+                edit_calorie.setText(total_cal);
             }
         });
 
@@ -127,10 +133,13 @@ public class RecipeCreationActivity extends AppCompatActivity{
                 String ingredients = "";
                 Double total_calories = 0.0;
                 Boolean is_calorie_edited = false;
-
+                DecimalFormat df = new DecimalFormat("#.#");
+                df.setRoundingMode(RoundingMode.CEILING);
+                String formated_calories = "";
                 EditText edit_calorie = findViewById(R.id.edit_calories_total);
                 if (!edit_calorie.getText().toString().equals("")) {
                     total_calories = Double.parseDouble(String.valueOf(edit_calorie.getText()));
+                    formated_calories = df.format(total_calories);
                     is_calorie_edited = true;
                 }
 
@@ -150,9 +159,12 @@ public class RecipeCreationActivity extends AppCompatActivity{
                                 curIngredientUnit.getText().toString()
                         );
                         total_calories += curCal;
+                        formated_calories = df.format(total_calories);
                     }
 
                 }
+
+                total_calories = Double.parseDouble(formated_calories);
 
                 // get recipe name
                 EditText recipeNameText = (EditText)findViewById(R.id.edit_recipe_name);
