@@ -58,6 +58,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
                     bundle.putString("ingredients",r.getIngredients());
                     bundle.putString("recipeName",r.getName());
                     bundle.putInt("id",r.getId());
+                    bundle.putDouble("calories",r.getCalorie());
                     bundle.putDouble("cookingTime", r.getCookingTime());
                     intent.putExtras(bundle);
                     mcon.startActivity(intent);
