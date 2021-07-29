@@ -7,7 +7,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.cs446_meal_planner.model.CalenderBooking;
+import com.example.cs446_meal_planner.model.CalendarBooking;
 import com.example.cs446_meal_planner.model.Recipe;
 
 import java.util.ArrayList;
@@ -48,22 +48,21 @@ public class RecipeDBHelper extends DBHelper {
     }
 
     // number of recipes
-    public int numberOfRows(){
-        SQLiteDatabase db  = this.getReadableDatabase();
+    public int numberOfRows() {
+        SQLiteDatabase db = this.getReadableDatabase();
         int numRows = (int) DatabaseUtils.queryNumEntries(db, RECIPE_TABLE_NAME);
         return numRows;
     }
 
     // add recipe
-    public boolean insertRecipe(Recipe recipe){
+    public boolean insertRecipe(Recipe recipe) {
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
 
         int n = numberOfRows();
         if (n == 0) {
             contentValues.put(RECIPE_ID, 1);
-        }
-        else {
+        } else {
             Cursor res = db.rawQuery(QUERY_LAST_ROW, null);
             res.moveToFirst();
             contentValues.put(RECIPE_ID, Integer.parseInt(res.getString(res.getColumnIndex(RECIPE_ID))) + 1);
@@ -79,23 +78,23 @@ public class RecipeDBHelper extends DBHelper {
     }
 
     // remove recipe
-    public Integer deleteRecipe(Integer id){
+    public Integer deleteRecipe(Integer id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Integer deletedId = db.delete(RECIPE_TABLE_NAME,
                 "id = ? ",
-                new String[] { Integer.toString(id) });
+                new String[]{Integer.toString(id)});
         return deletedId;
     }
 
     // get recipe
-    public ArrayList<Recipe> getAllRecipes(){
+    public ArrayList<Recipe> getAllRecipes() {
         ArrayList<Recipe> result = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery(QUERY_ALL_RECIPE, null);
         res.moveToFirst();
 
-        while(res.isAfterLast() == false){
+        while (res.isAfterLast() == false) {
             Recipe recipe = Recipe.builder()
                     .id(res.getInt(res.getColumnIndex(RECIPE_ID)))
                     .name(res.getString(res.getColumnIndex(RECIPE_NAME)))
@@ -112,7 +111,7 @@ public class RecipeDBHelper extends DBHelper {
         return result;
     }
 
-    public boolean updateName(String name, Integer id){
+    public boolean updateName(String name, Integer id) {
         ContentValues cv = new ContentValues();
         cv.put(RECIPE_NAME, name);
         SQLiteDatabase db = this.getReadableDatabase();
@@ -120,7 +119,7 @@ public class RecipeDBHelper extends DBHelper {
         return true;
     }
 
-    public boolean updateImageUrl(String imageUrl, Integer id){
+    public boolean updateImageUrl(String imageUrl, Integer id) {
         ContentValues cv = new ContentValues();
         cv.put(RECIPE_IMAGE_URL, imageUrl);
         SQLiteDatabase db = this.getReadableDatabase();
@@ -128,7 +127,7 @@ public class RecipeDBHelper extends DBHelper {
         return true;
     }
 
-    public boolean updateInstruction(String instruction, Integer id){
+    public boolean updateInstruction(String instruction, Integer id) {
         ContentValues cv = new ContentValues();
         cv.put(RECIPE_INSTRUCTION, instruction);
         SQLiteDatabase db = this.getReadableDatabase();
@@ -136,7 +135,7 @@ public class RecipeDBHelper extends DBHelper {
         return true;
     }
 
-    public boolean updateCookingTime(Double cookingTime, Integer id){
+    public boolean updateCookingTime(Double cookingTime, Integer id) {
         ContentValues cv = new ContentValues();
         cv.put(RECIPE_COOKING_TIME, cookingTime);
         SQLiteDatabase db = this.getReadableDatabase();
@@ -145,7 +144,7 @@ public class RecipeDBHelper extends DBHelper {
     }
 
 
-    public boolean updateIngredients(String ingredients, Integer id){
+    public boolean updateIngredients(String ingredients, Integer id) {
         ContentValues cv = new ContentValues();
         cv.put(RECIPE_INGREDIENTS, ingredients);
         SQLiteDatabase db = this.getReadableDatabase();
@@ -162,7 +161,7 @@ public class RecipeDBHelper extends DBHelper {
     }
 
     //delete all recipe
-    public boolean deleteAllRecipes(){
+    public boolean deleteAllRecipes() {
         SQLiteDatabase db = this.getReadableDatabase();
         db.execSQL("DELETE FROM " + RECIPE_TABLE_NAME);
         return true;

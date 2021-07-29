@@ -4,59 +4,56 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
-import com.example.cs446_meal_planner.model.CalenderBooking;
-import com.example.cs446_meal_planner.model.CalenderDate;
+import com.example.cs446_meal_planner.model.CalendarBooking;
+import com.example.cs446_meal_planner.model.CalendarDate;
 import com.example.cs446_meal_planner.model.Recipe;
 
-import java.util.ArrayList;
-
-public class CalenderDBHelper extends DBHelper{
+public class CalendarDBHelper extends DBHelper {
     public static final String CALENDER_TABLE_NAME = "CalenderTable";
-    private static CalenderDBHelper calenderDBHelper = null;
+    private static CalendarDBHelper calendarDBHelper = null;
     private final String MEAL_DATE = "meal_date";
     private final String MEAL_TYPE = "meal_type";
     private final String RECIPE_ID = "recipe_id";
 
-    private CalenderDBHelper(Context context) {
+    private CalendarDBHelper(Context context) {
         super(context);
     }
 
-    public static CalenderDBHelper getInstance(Context ctx) {
-        if (calenderDBHelper == null) {
-            calenderDBHelper = new CalenderDBHelper(ctx.getApplicationContext());
+    public static CalendarDBHelper getInstance(Context ctx) {
+        if (calendarDBHelper == null) {
+            calendarDBHelper = new CalendarDBHelper(ctx.getApplicationContext());
         }
 
-        return calenderDBHelper;
+        return calendarDBHelper;
     }
     // add booking of meal on calender
-    public boolean insertCalenderBooking(CalenderBooking booking) {
+    public boolean insertCalenderBooking(CalendarBooking booking) {
         SQLiteDatabase db = this.getReadableDatabase();
         this.onCreate(db);
         ContentValues contentValues = new ContentValues();
         contentValues.put("meal_date", booking.getMealDate());
         contentValues.put("meal_type", booking.getMealType());
         contentValues.put("recipe_id", booking.getRecipeId());
-        if (getMealBookingOnDate(new CalenderDate(booking.getMealDate()), booking.getMealType()) == null){
+        if (getMealBookingOnDate(new CalendarDate(booking.getMealDate()), booking.getMealType()) == null){
             db.insert("CalenderTable", null, contentValues);
         } else {
             db.update(CALENDER_TABLE_NAME, contentValues,
                     "meal_date = ? AND meal_type= ?",
-                    new String[]{String.valueOf(booking.getMealDate()), booking.getMeal_type()});
+                    new String[]{String.valueOf(booking.getMealDate()), booking.getMealType()});
         }
         return true;
     }
 
-    public CalenderBooking getMealBookingOnDate(CalenderDate date, String mealType) {
+    public CalendarBooking getMealBookingOnDate(CalendarDate date, String mealType) {
         SQLiteDatabase db = this.getReadableDatabase();
         this.onCreate(db);
         Cursor res = db.rawQuery(FIND_BOOKING, new String[]{mealType, String.valueOf(date.getIntger())});
         res.moveToFirst();
-        CalenderBooking retVal = null;
+        CalendarBooking retVal = null;
         if (res.isAfterLast() == false) {
             Integer attachedRecipeId = res.getInt(res.getColumnIndex(RECIPE_ID));
-            Cursor recipeResult = db.rawQuery("select * from "+RecipeDBHelper.RECIPE_TABLE_NAME +
+            Cursor recipeResult = db.rawQuery("select * from "+ RecipeDBHelper.RECIPE_TABLE_NAME +
                     " WHERE id=?", new String[]{ attachedRecipeId.toString() });
             recipeResult.moveToFirst();
             Recipe booked_recipe = Recipe.builder()
@@ -68,11 +65,11 @@ public class CalenderDBHelper extends DBHelper{
                     .imageUrl(recipeResult.getString(recipeResult.getColumnIndex(RecipeDBHelper.RECIPE_IMAGE_URL)))
                     .build();
 
-            retVal = CalenderBooking.builder()
-                    .meal_date(res.getInt(res.getColumnIndex(MEAL_DATE)))
-                    .meal_type(res.getString(res.getColumnIndex(MEAL_TYPE)))
-                    .recipe_id(attachedRecipeId)
-                    .booked_recipe(booked_recipe)
+            retVal = CalendarBooking.builder()
+                    .mealDate(res.getInt(res.getColumnIndex(MEAL_DATE)))
+                    .mealType(res.getString(res.getColumnIndex(MEAL_TYPE)))
+                    .recipeId(attachedRecipeId)
+                    .bookedRecipe(booked_recipe)
                     .build();
         }
         return retVal;

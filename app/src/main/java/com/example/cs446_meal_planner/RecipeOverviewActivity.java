@@ -1,15 +1,11 @@
 package com.example.cs446_meal_planner;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
-
-import android.view.View;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 
 import com.example.cs446_meal_planner.model.Recipe;
 

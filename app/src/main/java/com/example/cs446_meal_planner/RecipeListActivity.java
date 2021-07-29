@@ -1,14 +1,11 @@
 package com.example.cs446_meal_planner;
 
 import android.os.Bundle;
-import android.util.Log;
 
-import com.example.cs446_meal_planner.model.CalenderBookingData;
-import com.example.cs446_meal_planner.model.CalenderDate;
+import com.example.cs446_meal_planner.model.CalendarBookingData;
+import com.example.cs446_meal_planner.model.CalendarDate;
 import com.example.cs446_meal_planner.model.Recipe;
 import com.example.cs446_meal_planner.model.RecipeAdapter;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -50,9 +47,9 @@ public class RecipeListActivity extends ObserverActivity {
     public void update() {
         recipes = db.getAllRecipes();
         if (cameFromCalender) {
-            CalenderDate assignedDate = new CalenderDate(getIntent().getExtras().getInt("date"));
+            CalendarDate assignedDate = new CalendarDate(getIntent().getExtras().getInt("date"));
             String mealType = getIntent().getExtras().getString("mealType");
-            CalenderBookingData bookingdata = new CalenderBookingData(assignedDate, mealType);
+            CalendarBookingData bookingdata = new CalendarBookingData(assignedDate, mealType);
             recyclerRecipes.setAdapter(new RecipeAdapter(this,recipes, bookingdata));
         } else {
             recyclerRecipes.setAdapter(new RecipeAdapter(this,recipes, null));

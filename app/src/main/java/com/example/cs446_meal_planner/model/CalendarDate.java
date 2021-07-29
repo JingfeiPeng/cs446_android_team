@@ -5,14 +5,14 @@ import android.util.Log;
 
 import org.joda.time.DateTime;
 
-public class CalenderDate {
+public class CalendarDate {
     public DateTime date;
 
-    public CalenderDate(DateTime date){
+    public CalendarDate(DateTime date){
         this.date = date;
     }
 
-    public CalenderDate(int dateInt) {
+    public CalendarDate(int dateInt) {
         int year = dateInt / 10000;
         int month  = (dateInt % 10000) / 100;
         int day = dateInt % 100;

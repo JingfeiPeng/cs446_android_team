@@ -3,8 +3,7 @@ package com.example.cs446_meal_planner;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -13,12 +12,21 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.cs446_meal_planner.databinding.ActivityMainBinding;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.joda.time.DateTime;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private static RecipeDBHelper db;
-    private static CalenderDBHelper calenderDB;
+    private static CalendarDBHelper calenderDB;
+
+    public static DateTime reportStartDate;
+    public static DateTime reportEndDate;
+    public static Button reportStartButton;
+    public static Button reportEndButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +35,14 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+
         db = RecipeDBHelper.getInstance(this);
-        calenderDB = CalenderDBHelper.getInstance(this);
+        calenderDB = CalendarDBHelper.getInstance(this);
+        reportStartButton = findViewById(R.id.button_pick_date_1);
+        reportEndButton = findViewById(R.id.button_pick_date_2);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
@@ -39,15 +51,25 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+        reportEndDate = DateTime.now();
+        reportStartDate = DateTime.now().minusDays(7);
     }
 
     public void viewCalender(View view) {
-        Intent moveToCalender = new Intent(getApplicationContext(), CalenderActivity.class);
+        Intent moveToCalender = new Intent(getApplicationContext(), CalendarActivity.class);
         startActivity(moveToCalender);
     }
+
     public void viewRecipeCreation(View v)
     {
         startActivity(new Intent(getApplicationContext(), RecipeCreationActivity.class));
+    }
+
+    public void viewReport(View v)
+    {
+        Intent switchActivityIntent = new Intent(this, ReportActivity.class);
+        startActivity(switchActivityIntent);
     }
 
     public void viewRecipes(View view) {
@@ -57,4 +79,15 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtras(bundle);
         startActivity(intent);
     }
+
+    public void getDate1(View view) {
+        Intent intent = new Intent(getApplicationContext(), ReportDateActivity.class);
+        startActivity(intent);
+    }
+
+    public void getDate2(View view) {
+        Intent intent = new Intent(getApplicationContext(), ReportDate2Activity.class);
+        startActivity(intent);
+    }
+
 }

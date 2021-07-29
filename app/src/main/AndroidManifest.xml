@@ -2,7 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.cs446_meal_planner">
 
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,18 +13,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CS446_Meal_Planner">
-        <activity 
-            android:name=".CalenderActivity"
-            android:label="@string/Calender"
-        ></activity>
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/activity_report" />
+
+        <activity
+            android:name=".CalendarActivity"
+            android:label="@string/Calender" />
         <activity
             android:name=".RecipeOverviewActivity"
             android:label="@string/title_activity_view_recipe"
-            android:theme="@style/Theme.CS446_Meal_Planner"></activity>
+            android:theme="@style/Theme.CS446_Meal_Planner" />
         <activity
             android:name=".RecipeListActivity"
             android:label="@string/view_recipes"
-            android:theme="@style/Theme.CS446_Meal_Planner"/>
+            android:theme="@style/Theme.CS446_Meal_Planner" />
         <activity
             android:name=".RecipeCreationActivity"
             android:label="@string/title_activity_recipe_creation"
@@ -35,6 +41,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ReportActivity"
+            android:label="@string/generate_report"
+            android:theme="@style/Theme.CS446_Meal_Planner" />
+        <activity
+            android:name=".CalorieReportActivity"
+            android:label="@string/generate_calorie_report"
+            android:theme="@style/Theme.CS446_Meal_Planner" />
+
+        <activity
+            android:name=".ReportDateActivity"
+            android:label="Pick Report Date1"
+            android:theme="@style/Theme.CS446_Meal_Planner" />
+
+        <activity
+            android:name=".ReportDate2Activity"
+            android:label="Pick Report Date2"
+            android:theme="@style/Theme.CS446_Meal_Planner" />
+
     </application>
 
 </manifest>
