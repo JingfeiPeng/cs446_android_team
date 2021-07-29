@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cs446_meal_planner.CalenderDBHelper;
+import com.example.cs446_meal_planner.CalendarDBHelper;
 import com.example.cs446_meal_planner.R;
 import com.example.cs446_meal_planner.RecipeListActivity;
 
@@ -21,11 +21,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class CalenderAdapter extends RecyclerView.Adapter<CalenderAdapter.CalenderDateView> {
+public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalenderDateView> {
     private Context mcon;
-    private ArrayList<CalenderDate> dateList = new ArrayList<>();
+    private ArrayList<CalendarDate> dateList = new ArrayList<>();
 
-    public CalenderAdapter(Context con, ArrayList<CalenderDate> l) {
+    public CalendarAdapter(Context con, ArrayList<CalendarDate> l) {
         dateList = l;
         mcon = con;
     }
@@ -33,14 +33,14 @@ public class CalenderAdapter extends RecyclerView.Adapter<CalenderAdapter.Calend
     @NonNull
     @NotNull
     @Override
-    public CalenderAdapter.CalenderDateView onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public CalendarAdapter.CalenderDateView onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_calender_date,parent,false);
-        return new CalenderAdapter.CalenderDateView(view);
+        return new CalendarAdapter.CalenderDateView(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull CalenderAdapter.CalenderDateView holder, int position) {
-        CalenderDate date = dateList.get(position);
+    public void onBindViewHolder(@NonNull @NotNull CalendarAdapter.CalenderDateView holder, int position) {
+        CalendarDate date = dateList.get(position);
         holder.calender_date.setText(date.getString());
         TextView[] meals = {holder.mealBreakfast, holder.mealLunch, holder.mealDinner};
         HashMap<String, TextView> mealTypes = new HashMap() {{
@@ -50,8 +50,8 @@ public class CalenderAdapter extends RecyclerView.Adapter<CalenderAdapter.Calend
         }};
         for (String mealtype : mealTypes.keySet()) {
             TextView curTextView = mealTypes.get(mealtype);
-            CalenderDBHelper db = CalenderDBHelper.getInstance(mcon);
-            CalenderBooking booking = db.getMealBookingOnDate(date, mealtype);
+            CalendarDBHelper db = CalendarDBHelper.getInstance(mcon);
+            CalendarBooking booking = db.getMealBookingOnDate(date, mealtype);
 
             // if booking already exists
             if (booking != null) {
