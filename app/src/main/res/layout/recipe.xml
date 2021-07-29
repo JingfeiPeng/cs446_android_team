@@ -27,6 +27,25 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"></EditText>
 
+    <ImageView
+        android:id="@+id/imageView_recipe_image"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"></ImageView>
+    <Button
+    android:id="@+id/button_upload_image"
+    android:background="@drawable/round_primary"
+    android:layout_width="wrap_content"
+    android:layout_height="40dp"
+    android:text="Upload Image"
+    android:layout_marginTop="20dp"
+    android:layout_marginLeft="15dp"
+    android:textColor="@color/white"
+    android:textAllCaps="false"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    ></Button>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
