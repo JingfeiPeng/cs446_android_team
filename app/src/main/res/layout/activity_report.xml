@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView_number_of_recipes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You Have Cooked ? Number of Recipes This Week"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="30dp"
+            android:textSize="26sp"
+            android:fontFamily="sans-serif-medium"
+            android:lineSpacingExtra="10dp"/>
+
+        <TextView
+            android:id="@+id/textView_favoured_ingredient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You Most Favoured Ingredient is Water"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_number_of_recipes"
+            android:layout_marginTop="60dp"
+            android:textSize="26sp"
+            android:fontFamily="sans-serif-medium"
+            android:lineSpacingExtra="10dp"/>
+
+        <TextView
+            android:id="@+id/textView_consumed_calories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You consumed 0 calories on average this week. Keep it up!"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_favoured_ingredient"
+            android:layout_marginTop="60dp"
+            android:textSize="26sp"
+            android:fontFamily="sans-serif-medium"
+            android:lineSpacingExtra="10dp"/>
+
+        <Button
+            android:id="@+id/button_view_calorie"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="VIEW CALORIE REPORT"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="60dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_consumed_calories"
+            app:layout_constraintWidth_percent="0.9"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CalenderBooking {
+public class CalendarBooking {
     private String mealType;
     private Integer recipeId;
     private Integer mealDate;
