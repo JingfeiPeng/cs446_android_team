@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.example.cs446_meal_planner.model.CalendarAdapter;
@@ -19,13 +20,14 @@ import java.util.Date;
 
 public class CalendarActivity extends AppCompatActivity {
 
-    private int week = 0;
+    private int week;
     private int daysToShow = 7;
     RecyclerView recyclerCalender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        week = 0;
         setContentView(R.layout.activity_calendar);
         this.updateDates();
     }
@@ -45,9 +47,8 @@ public class CalendarActivity extends AppCompatActivity {
         Date dt = new Date();
 
         DateTime datePtr = new DateTime(dt);
-        datePtr = datePtr.plusDays(daysToShow*this.week);
         ArrayList<CalendarDate> dates = new ArrayList<>();
-        dates.add(new CalendarDate(datePtr));
+        dates.add(new CalendarDate(datePtr.plusDays(daysToShow*this.week)));
         for (int i=1; i<daysToShow;i++){
             dates.add(new CalendarDate(datePtr.plusDays(i+daysToShow*this.week)));
         }
