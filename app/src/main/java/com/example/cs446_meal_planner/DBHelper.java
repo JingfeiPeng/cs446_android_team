@@ -3,6 +3,8 @@ package com.example.cs446_meal_planner;
 import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.cs446_meal_planner.ObserverActivity;
+
 import java.util.ArrayList;
 
 abstract class DBHelper extends SQLiteOpenHelper {

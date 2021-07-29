@@ -12,8 +12,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Looper;
-import android.text.Editable;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -22,7 +20,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.example.cs446_meal_planner.model.Ingredient;
 import com.example.cs446_meal_planner.model.IngredientCaloriesCalculator;
 import com.example.cs446_meal_planner.model.Recipe;
 
@@ -35,7 +32,6 @@ import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Arrays;
-import java.util.Hashtable;
 import java.util.Optional;
 
 

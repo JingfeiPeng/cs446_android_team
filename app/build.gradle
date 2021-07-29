@@ -12,8 +12,13 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders = [
+                'appAuthRedirectScheme': 'com.googleusercontent.apps.115004971414-72reob0ec0t3bcufhjjp8ainjeittpr8'
+        ]
     }
 
     buildTypes {
@@ -32,6 +37,7 @@ android {
     dataBinding{
         enabled=true
     }
+
 }
 
 dependencies {
@@ -44,6 +50,11 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'androidx.navigation:navigation-fragment:2.3.5'
     implementation 'androidx.navigation:navigation-ui:2.3.5'
+    implementation 'com.android.support:multidex:1.0.3'
+
+    //for graph
+    implementation 'com.jjoe64:graphview:4.2.2'
+
     implementation files('lib/jsoup-1.14.1.jar')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

@@ -5,9 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.cs446_meal_planner.model.CalenderBooking;
 import com.example.cs446_meal_planner.model.Recipe;
 
 import java.util.ArrayList;
