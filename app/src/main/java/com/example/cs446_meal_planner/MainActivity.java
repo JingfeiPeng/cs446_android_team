@@ -3,6 +3,7 @@ package com.example.cs446_meal_planner;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -21,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     private static RecipeDBHelper db;
     private static CalendarDBHelper calenderDB;
 
-    public static DateTime tempDate;
     public static DateTime reportStartDate;
     public static DateTime reportEndDate;
 
@@ -46,8 +46,22 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-
+        reportEndDate = DateTime.now();
+        reportStartDate = DateTime.now().minusDays(7);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Button picker1 = findViewById(R.id.button_pick_date_1);
+        Button picker2 = findViewById(R.id.button_pick_date_2);
+
+        picker1.setText(reportStartDate.getMonthOfYear() + "/" + reportStartDate.getDayOfMonth());
+        picker2.setText(reportEndDate.getMonthOfYear() + "/" + reportEndDate.getDayOfMonth());
+    }
+
+
+
 
     public void viewCalender(View view) {
         Intent moveToCalender = new Intent(getApplicationContext(), CalendarActivity.class);
