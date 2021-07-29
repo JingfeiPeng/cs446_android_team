@@ -22,15 +22,14 @@ public class MainActivity extends AppCompatActivity {
     private static RecipeDBHelper db;
     private static CalendarDBHelper calenderDB;
 
-    public static DateTime reportStartDate;
-    public static DateTime reportEndDate;
-    public static Button reportStartButton;
-    public static Button reportEndButton;
+    public static DateTime reportStartDate = DateTime.now().minusDays(7);
+    public static DateTime reportEndDate = DateTime.now();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -38,8 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
         db = RecipeDBHelper.getInstance(this);
         calenderDB = CalendarDBHelper.getInstance(this);
-        reportStartButton = findViewById(R.id.button_pick_date_1);
-        reportEndButton = findViewById(R.id.button_pick_date_2);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
@@ -52,8 +49,15 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        reportEndDate = DateTime.now();
-        reportStartDate = DateTime.now().minusDays(7);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Button picker1 = findViewById(R.id.button_pick_date_1);
+        Button picker2 = findViewById(R.id.button_pick_date_2);
+        picker1.setText(MainActivity.reportStartDate.getMonthOfYear() + "/" + MainActivity.reportStartDate.getDayOfMonth());
+        picker2.setText(MainActivity.reportEndDate.getMonthOfYear() + "/" + MainActivity.reportEndDate.getDayOfMonth());
     }
 
     public void viewCalender(View view) {
