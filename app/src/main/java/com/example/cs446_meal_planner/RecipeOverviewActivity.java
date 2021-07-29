@@ -1,75 +1,61 @@
 package com.example.cs446_meal_planner;
 
-import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
 
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
-import androidx.navigation.ui.AppBarConfiguration;
+import com.example.cs446_meal_planner.model.Recipe;
 
 
-public class RecipeOverviewActivity extends AppCompatActivity {
-    private RecipeDBHelper db;
-    private AppBarConfiguration appBarConfiguration;
-    LinearLayout add_ingredient_layoutlist;
-    LinearLayout add_instruction_layoutlist;
-    Button add_ingredient;
-    Button add_instruction;
+public class RecipeOverviewActivity extends RecipeActivity {
+    RecipeDBHelper db;
     Button modify_recipe;
     Button delete_recipe;
+    @LayoutRes
+    int layout_id = R.layout.recipe_view_layout;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        setContentView(layout_id);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.recipe_view_layout);
         db = RecipeDBHelper.getInstance(RecipeOverviewActivity.this);
+        modify_recipe = findViewById(R.id.button_modify_recipe);
+        delete_recipe = findViewById(R.id.button_delete_recipe);
 
         String instructions = getIntent().getExtras().getString("instructions");
         String ingredients =getIntent().getExtras().getString("ingredients");
         String recipeName = getIntent().getExtras().getString("recipeName");
+        Double calories = getIntent().getExtras().getDouble("calories");
         int recipeID = getIntent().getExtras().getInt("id");
         double cookingTime = getIntent().getExtras().getDouble("cookingTime");
-        if(recipeName == null)
-        {
+        if(recipeName == null) {
             recipeName = "";
         }
-        if (instructions == null)
-        {
+        if (instructions == null) {
             instructions="";
         }
-        if(ingredients==null)
-        {
+        if(ingredients==null) {
             ingredients="";
         }
-        add_ingredient_layoutlist=findViewById(R.id.ingredient_list_view);
-        add_instruction_layoutlist=findViewById(R.id.instruction_list_view);
-        EditText curRecipeName = (EditText) findViewById(R.id.edit_recipe_name_view);
-        curRecipeName.setText(recipeName);
-        EditText cookingTimeField = (EditText) findViewById(R.id.edit_cooking_time);
+        if (calories==null) {
+            calories = 0.0;
+        }
+
+        recipeNameEdit.setText(recipeName);
         cookingTimeField.setText(Double.toString(cookingTime));
+        edit_calories_total.setText(Double.toString(calories));
 
         if (!instructions.equals("")) {
             String[] instructionList = instructions.split("#");
             for (int i = 0; i < instructionList.length; i++) {
-                final View instructionView = getLayoutInflater().inflate(R.layout.row_add_instruction,null,false);
-                EditText instructionText = instructionView.findViewById(R.id.edit_instruction_name);
-                instructionText.setText(instructionList[i]);
-                add_instruction_layoutlist.addView(instructionView);
-
-                // handle button close
-                ImageView imageClose = instructionView.findViewById(R.id.image_remove);
-                imageClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        add_instruction_layoutlist.removeView(instructionView);
-                    }
-                });
+                addNewInstruction(instructionList[i]);
             }
         }
 
@@ -81,98 +67,24 @@ public class RecipeOverviewActivity extends AppCompatActivity {
                 String ingredientName = ingredientGram[0];
                 String ingredientNumber = ingredientGram[1];
                 String ingredientUnit = ingredientGram[2];
-                final View ingredientView = getLayoutInflater().inflate(R.layout.row_add_ingredient,null,false);
-                EditText ingredientText = ingredientView.findViewById(R.id.edit_ingredient_name);
-                ingredientText.setText(ingredientName);
-                EditText ingredientUnitNumber = ingredientView.findViewById(R.id.edit_ingredient_number);
-                ingredientUnitNumber.setText(ingredientNumber);
-                AutoCompleteTextView unitEditText = ingredientView.findViewById(R.id.edit_ingredient_unit);
-                unitEditText.setText(ingredientUnit);
-                add_ingredient_layoutlist.addView(ingredientView);
-
-                // handle close button
-                ImageView imageClose = ingredientView.findViewById(R.id.image_remove);
-                imageClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        add_ingredient_layoutlist.removeView(ingredientView);
-                    }
-                });
+                addNewIngredient(ingredientNumber, ingredientUnit, ingredientName);
             }
         }
-
-        add_ingredient = findViewById(R.id.button_add_ingredient_view);
-        add_instruction = findViewById(R.id.button_add_instruction_view);
-        modify_recipe = findViewById(R.id.button_modify_recipe);
-        delete_recipe = findViewById(R.id.button_delete_recipe);
-
-        add_ingredient.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final View ingredientView = getLayoutInflater().inflate(R.layout.row_add_ingredient,null,false);
-
-                EditText editText = (EditText)ingredientView.findViewById(R.id.edit_ingredient_name);
-                ImageView imageClose = (ImageView)ingredientView.findViewById(R.id.image_remove);
-
-                imageClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        add_ingredient_layoutlist.removeView(ingredientView);
-                    }
-                });
-
-                add_ingredient_layoutlist.addView(ingredientView);
-            }
-        });
-
-        add_instruction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final View instructionView = getLayoutInflater().inflate(R.layout.row_add_instruction,null,false);
-
-                EditText editText = (EditText)instructionView.findViewById(R.id.edit_instruction_name);
-                ImageView imageClose = (ImageView)instructionView.findViewById(R.id.image_remove);
-
-                imageClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        add_instruction_layoutlist.removeView(instructionView);
-                    }
-                });
-
-                add_instruction_layoutlist.addView(instructionView);
-            }
-        });
 
         modify_recipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String instructions = "";
-                for(int i=0;i<add_instruction_layoutlist.getChildCount();i++)
-                {
-                    View curInstructionView = add_instruction_layoutlist.getChildAt(i);
-                    EditText curInstructionText = (EditText)curInstructionView.findViewById(R.id.edit_instruction_name);
-                    instructions += curInstructionText.getText().toString()+"#";
-                }
-                String ingredients = "";
-                for(int i=0;i<add_ingredient_layoutlist.getChildCount();i++)
-                {
-                    View curIngredientView = add_ingredient_layoutlist.getChildAt(i);
-                    EditText curIngredientText = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_name);
-                    AutoCompleteTextView curIngredientUnit = (AutoCompleteTextView) curIngredientView.findViewById(R.id.edit_ingredient_unit);
-                    EditText curIngredientNumber = (EditText) curIngredientView.findViewById(R.id.edit_ingredient_number);
-                    ingredients += curIngredientText.getText().toString()+"%"+curIngredientNumber.getText().toString()+"%"+curIngredientUnit.getText().toString()+"#";
-                }
-                db.updateName(curRecipeName.getText().toString(),recipeID);
-                db.updateCookingTime(Double.parseDouble(cookingTimeField.getText().toString()), recipeID);
-                db.updateInstruction(instructions,recipeID);
-                db.updateIngredients(ingredients,recipeID);
+                Recipe r = processRecipeData();
+                db.updateName(r.getName(),recipeID);
+                db.updateCookingTime(r.getCookingTime(), recipeID);
+                db.updateInstruction(r.getInstruction(),recipeID);
+                db.updateIngredients(r.getIngredients(),recipeID);
+                db.updateCalorie(r.getCalorie(), recipeID);
                 db.notifyObservers();
                 finish();
             }
-
-
         });
+
         delete_recipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,10 +93,5 @@ public class RecipeOverviewActivity extends AppCompatActivity {
                 finish();
             }
         });
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        return super.onSupportNavigateUp();
     }
 }

@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,50 +39,22 @@ import java.util.Hashtable;
 import java.util.Optional;
 
 
-public class RecipeCreationActivity extends AppCompatActivity{
-    LinearLayout add_ingredient_layoutlist;
-    LinearLayout add_instruction_layoutlist;
-    Button add_ingredient;
-    Button add_instruction;
+public class RecipeCreationActivity extends RecipeActivity{
+
     Button parse_recipe_url;
     Button submit_recipe;
-    Button get_calorie_estimate;
     String recipe_url;
-    ArrayAdapter<String> adapter;
-    // List of available units of ingredients
-    String [] units = {"whole", "gram", "teaspoon", "cup", "pound", "tablespoon"};
-    IngredientCaloriesCalculator calories_calculator = IngredientCaloriesCalculator.getInstance();
+    @LayoutRes
+    int layout_id = R.layout.recipe_creation_view;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        setContentView(layout_id);
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.recipe_creation_view);
-        add_ingredient_layoutlist=findViewById(R.id.ingredient_list);
-        add_instruction_layoutlist=findViewById(R.id.instruction_list);
-
-        add_ingredient = findViewById(R.id.button_add_ingredient);
-        add_instruction = findViewById(R.id.button_add_instruction);
         parse_recipe_url = findViewById(R.id.button_parse_recipe_url);
         submit_recipe = findViewById(R.id.button_submit_recipe);
-        get_calorie_estimate = findViewById(R.id.button_get_estimated_calories_total);
 
-        adapter = new ArrayAdapter<String>(this,android.R.layout.select_dialog_singlechoice, units);
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-
-        add_ingredient.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addNewIngredient("","","");
-            }
-        });
-
-        add_instruction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addNewInstruction("");
-            }
-        });
 
         parse_recipe_url.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,151 +64,20 @@ public class RecipeCreationActivity extends AppCompatActivity{
 
                 ParseURL parseURL = new ParseURL();
                 parseURL.execute();
-
             }
         });
 
-        get_calorie_estimate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText edit_calorie = findViewById(R.id.edit_calories_total);
-                Double total_calories = 0.0;
-                String total_cal = "";
-                for (int i = 0; i < add_ingredient_layoutlist.getChildCount(); i++){
-                    View curIngredientView = add_ingredient_layoutlist.getChildAt(i);
-                    EditText curIngredientNumber = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_number);
-                    EditText curIngredientUnit = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_unit);
-                    EditText curIngredientText = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_name);
-                    Double curCal = calories_calculator.calculateCalories(
-                            curIngredientText.getText().toString(),
-                            curIngredientNumber.getText().toString(),
-                            curIngredientUnit.getText().toString()
-                    );
-                    total_calories += curCal;
-                    DecimalFormat df = new DecimalFormat("#.#");
-                    df.setRoundingMode(RoundingMode.CEILING);
-                    total_cal = df.format(total_calories);
-                }
-                edit_calorie.setText(total_cal);
-            }
-        });
 
         submit_recipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String instructions = "";
-                for(int i = 0; i < add_instruction_layoutlist.getChildCount(); i++)
-                {
-                    View curInstructionView = add_instruction_layoutlist.getChildAt(i);
-                    EditText curInstructionText = (EditText)curInstructionView.findViewById(R.id.edit_instruction_name);
-                    instructions += curInstructionText.getText().toString()+"#";
-                }
-                String ingredients = "";
-                Double total_calories = 0.0;
-                Boolean is_calorie_edited = false;
-                DecimalFormat df = new DecimalFormat("#.#");
-                df.setRoundingMode(RoundingMode.CEILING);
-                String formated_calories = "";
-                EditText edit_calorie = findViewById(R.id.edit_calories_total);
-                if (!edit_calorie.getText().toString().equals("")) {
-                    total_calories = Double.parseDouble(String.valueOf(edit_calorie.getText()));
-                    is_calorie_edited = true;
-                }
-
-                for (int i = 0; i < add_ingredient_layoutlist.getChildCount(); i++)
-                {
-                    View curIngredientView = add_ingredient_layoutlist.getChildAt(i);
-                    EditText curIngredientNumber = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_number);
-                    EditText curIngredientUnit = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_unit);
-                    EditText curIngredientText = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_name);
-                    //EditText curIngredientGram = (EditText) curIngredientView.findViewById(R.id.edit_ingredient_gram);
-                    ingredients += curIngredientText.getText().toString()+"%"+curIngredientNumber.getText().toString()+"%"+curIngredientUnit.getText().toString()+"#";
-
-                    if (!is_calorie_edited && !curIngredientNumber.getText().toString().equals("")) {
-                        Double curCal = calories_calculator.calculateCalories(
-                                curIngredientText.getText().toString(),
-                                curIngredientNumber.getText().toString(),
-                                curIngredientUnit.getText().toString()
-                        );
-                        total_calories += curCal;
-                    }
-                }
-
-                formated_calories = df.format(total_calories);
-                total_calories = Double.parseDouble(formated_calories);
-
-                // get recipe name
-                EditText recipeNameText = (EditText)findViewById(R.id.edit_recipe_name);
-                String recipeName = recipeNameText.getText().toString();
-
-                // get cooking time
-                String cookingTimeText = ((EditText)findViewById(R.id.edit_cooking_time)).getText().toString();
-                Double cookingTime  = cookingTimeText.equals("")
-                        ? 0.0
-                        :Double.parseDouble(cookingTimeText);
-
-                Recipe r = Recipe.builder()
-                        .name(recipeName)
-                        .ingredients(ingredients)
-                        .instruction(instructions)
-                        .cookingTime(cookingTime)
-                        .calorie(total_calories)
-                        .imageUrl("xxxx").build();
+                Recipe r = processRecipeData();
                 RecipeDBHelper db = RecipeDBHelper.getInstance(RecipeCreationActivity.this);
                 db.insertRecipe(r);
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
             }
         });
 
-    }
-
-    public void addNewInstruction(String instruction) {
-        final View instructionView = getLayoutInflater().inflate(R.layout.row_add_instruction,null,false);
-
-        EditText editText = (EditText)instructionView.findViewById(R.id.edit_instruction_name);
-        ImageView imageClose = (ImageView)instructionView.findViewById(R.id.image_remove);
-
-        if (!instruction.equals("")) {
-            editText.setText(instruction);
-        }
-
-        imageClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                add_instruction_layoutlist.removeView(instructionView);
-            }
-        });
-
-        add_instruction_layoutlist.addView(instructionView);
-    }
-
-    public void addNewIngredient(String number, String unit, String name) {
-        final View ingredientView = getLayoutInflater().inflate(R.layout.row_add_ingredient,null,false);
-
-        // number
-        EditText editIngredientNumber = ingredientView.findViewById(R.id.edit_ingredient_number);
-        editIngredientNumber.setText(number);
-
-        // unit
-        AutoCompleteTextView editIngredientUnit = ingredientView.findViewById(R.id.edit_ingredient_unit);
-        editIngredientUnit.setThreshold(1);
-        editIngredientUnit.setAdapter(adapter);
-        editIngredientUnit.setText(unit);  // checks to be done before calling this function
-
-        // name
-        EditText editIngredientName = ingredientView.findViewById(R.id.edit_ingredient_name);
-        editIngredientName.setText(name);
-
-        ImageView imageClose = ingredientView.findViewById(R.id.image_remove);
-
-        imageClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                add_ingredient_layoutlist.removeView(ingredientView);
-            }
-        });
-
-        add_ingredient_layoutlist.addView(ingredientView);
     }
 
     private class ParseURL extends AsyncTask<String,String,String> {
@@ -367,14 +209,5 @@ public class RecipeCreationActivity extends AppCompatActivity{
                 edit_cooking_time.setText(values[1]);
             }
         }
-    }
-
-    public void submitRecipe(View v)
-    {
-
-    }
-    public void viewRecipeCreation(View v)
-    {
-        startActivity(new Intent(getApplicationContext(), RecipeCreationActivity.class));
     }
 }
