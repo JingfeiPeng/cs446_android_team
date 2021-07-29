@@ -43,8 +43,6 @@
         android:paddingRight="10dp"
         ></Button>
 
-    <include layout="@layout/recipe" />
-
     <Button
         android:id="@+id/button_submit_recipe"
         android:background="@drawable/round_primary"

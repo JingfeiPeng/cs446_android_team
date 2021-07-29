@@ -43,7 +43,7 @@ public class CalenderDBHelper extends DBHelper{
         } else {
             db.update(CALENDER_TABLE_NAME, contentValues,
                     "meal_date = ? AND meal_type= ?",
-                    new String[]{String.valueOf(booking.getMealDate()), booking.getMeal_type()});
+                    new String[]{String.valueOf(booking.getMealDate()), booking.getMealType()});
         }
         return true;
     }
@@ -69,10 +69,10 @@ public class CalenderDBHelper extends DBHelper{
                     .build();
 
             retVal = CalenderBooking.builder()
-                    .meal_date(res.getInt(res.getColumnIndex(MEAL_DATE)))
-                    .meal_type(res.getString(res.getColumnIndex(MEAL_TYPE)))
-                    .recipe_id(attachedRecipeId)
-                    .booked_recipe(booked_recipe)
+                    .mealDate(res.getInt(res.getColumnIndex(MEAL_DATE)))
+                    .mealType(res.getString(res.getColumnIndex(MEAL_TYPE)))
+                    .recipeId(attachedRecipeId)
+                    .bookedRecipe(booked_recipe)
                     .build();
         }
         return retVal;
