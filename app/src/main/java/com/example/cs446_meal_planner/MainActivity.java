@@ -56,8 +56,14 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         Button picker1 = findViewById(R.id.button_pick_date_1);
         Button picker2 = findViewById(R.id.button_pick_date_2);
-        picker1.setText(MainActivity.reportStartDate.getMonthOfYear() + "/" + MainActivity.reportStartDate.getDayOfMonth());
-        picker2.setText(MainActivity.reportEndDate.getMonthOfYear() + "/" + MainActivity.reportEndDate.getDayOfMonth());
+        if(picker1 != null){
+            picker1.setText(MainActivity.reportStartDate.getMonthOfYear() + "/" + MainActivity.reportStartDate.getDayOfMonth());
+        }
+
+        if(picker2 != null){
+            picker2.setText(MainActivity.reportEndDate.getMonthOfYear() + "/" + MainActivity.reportEndDate.getDayOfMonth());
+        }
+
     }
 
     public void viewCalender(View view) {
