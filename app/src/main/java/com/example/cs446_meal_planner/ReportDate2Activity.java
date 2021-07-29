@@ -1,5 +1,6 @@
 package com.example.cs446_meal_planner;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -26,6 +27,10 @@ public class ReportDate2Activity extends AppCompatActivity {
 
     private void getDate() {
         MainActivity.reportEndDate = new DateTime(picker.getYear(), picker.getMonth()+1, picker.getDayOfMonth(), 0, 0, 0);
+//        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//        intent.putExtra("date2", picker.getMonth()+1 + "/" + picker.getDayOfMonth());
+//        startActivity(intent);
+        MainActivity.reportEndButton.setText(picker.getMonth()+1 + "/" + picker.getDayOfMonth());
         finish();
     }
 }
