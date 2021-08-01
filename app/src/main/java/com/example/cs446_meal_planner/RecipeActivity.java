@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -56,7 +57,7 @@ public class RecipeActivity extends AppCompatActivity {
     protected String [] units = {"whole", "gram", "teaspoon", "cup", "pound", "tablespoon"};
     protected IngredientCaloriesCalculator calories_calculator = IngredientCaloriesCalculator.getInstance();
 
-    private String image_path;
+    protected String image_path;
 
     ActivityResultLauncher<Intent> uploadImageActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),

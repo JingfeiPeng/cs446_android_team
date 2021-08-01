@@ -108,7 +108,7 @@ public class HomeFragment extends Fragment {
         if (nextBooking != null) {
             recipe = nextBooking.getBookedRecipe();
             if (recipe.getImageUrl() != null) {
-                imageViewNextRecipe.setImageBitmap(Utils.getImage(root.getContext(),
+                imageViewNextRecipe.setImageBitmap(Utils.getImage(binding.getRoot().getContext(),
                         recipe.getImageUrl()));
             }
             textViewNextCalorie.setText("Calorie: " + recipe.getCalorie() + "kCal");
@@ -124,7 +124,6 @@ public class HomeFragment extends Fragment {
             }
 
         }
-
 
         //set plan
         CalendarDate cur = new CalendarDate(DateTime.now());

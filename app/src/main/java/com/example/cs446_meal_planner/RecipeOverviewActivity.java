@@ -54,6 +54,7 @@ public class RecipeOverviewActivity extends RecipeActivity {
         recipeNameEdit.setText(recipeName);
         cookingTimeField.setText(Double.toString(cookingTime));
         edit_calories_total.setText(Double.toString(calories));
+        image_path = imageUrl;
 
         if (!instructions.equals("")) {
             String[] instructionList = instructions.split("#");
