@@ -63,6 +63,7 @@ public class CalendarDBHelper extends DBHelper {
                     .ingredients(recipeResult.getString(recipeResult.getColumnIndex(RecipeDBHelper.RECIPE_INGREDIENTS)))
                     .instruction(recipeResult.getString(recipeResult.getColumnIndex(RecipeDBHelper.RECIPE_INSTRUCTION)))
                     .imageUrl(recipeResult.getString(recipeResult.getColumnIndex(RecipeDBHelper.RECIPE_IMAGE_URL)))
+                    .calorie(recipeResult.getDouble(recipeResult.getColumnIndex(RecipeDBHelper.RECIPE_CALORIE)))
                     .build();
 
             retVal = CalendarBooking.builder()

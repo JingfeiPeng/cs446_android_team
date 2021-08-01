@@ -1,7 +1,5 @@
 package com.example.cs446_meal_planner.model;
 
-import java.sql.Date;
-
 import lombok.Builder;
 import lombok.Data;
 

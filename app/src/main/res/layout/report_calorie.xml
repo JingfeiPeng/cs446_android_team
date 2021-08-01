@@ -5,83 +5,85 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="match_parent">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/textView_calorie_intake"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Your Calorie Intake This Week:"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="30dp"
-            android:textSize="26sp"
             android:fontFamily="sans-serif-medium"
-            android:lineSpacingExtra="10dp"/>
+            android:lineSpacingExtra="10dp"
+            android:text="Your Calorie Intake This Week:"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.8"/>
 
         <com.jjoe64.graphview.GraphView
-            android:id = "@+id/graph_calorie"
-            android:layout_width= "match_parent"
-            android:layout_height = "200dip"
-            app:layout_constraintTop_toBottomOf="@+id/textView_calorie_intake"
+            android:id="@+id/graph_calorie"
+            android:layout_width="match_parent"
+            android:layout_height="200dip"
             android:layout_marginTop="60dp"
-            app:layout_constraintLeft_toLeftOf="parent" />
-
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_calorie_intake" />
 
 
         <Button
             android:id="@+id/button_view_breakfast"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="VIEW BY BREAKFAST"
-            android:onClick="viewBreakfastReport"
             android:layout_marginLeft="0dp"
             android:layout_marginTop="60dp"
+            android:onClick="viewBreakfastReport"
+            android:text="VIEW BY BREAKFAST"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/graph_calorie"
-            app:layout_constraintWidth_percent="0.9"/>
+            app:layout_constraintWidth_percent="0.9" />
 
         <Button
             android:id="@+id/button_view_lunch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="VIEW BY LUNCH"
-            android:onClick="viewLunchReport"
             android:layout_marginLeft="0dp"
             android:layout_marginTop="20dp"
+            android:onClick="viewLunchReport"
+            android:text="VIEW BY LUNCH"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_view_breakfast"
-            app:layout_constraintWidth_percent="0.9"/>
+            app:layout_constraintWidth_percent="0.9" />
 
         <Button
             android:id="@+id/button_view_dinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="VIEW BY DINNER"
-            android:onClick="viewDinnerReport"
             android:layout_marginLeft="0dp"
             android:layout_marginTop="20dp"
+            android:onClick="viewDinnerReport"
+            android:text="VIEW BY DINNER"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_view_lunch"
-            app:layout_constraintWidth_percent="0.9"/>
+            app:layout_constraintWidth_percent="0.9" />
 
         <Button
             android:id="@+id/button_view_total"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="VIEW BY TOTAL"
-            android:onClick="viewTotalReport"
             android:layout_marginLeft="0dp"
             android:layout_marginTop="20dp"
+            android:onClick="viewTotalReport"
+            android:text="VIEW BY TOTAL"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_view_dinner"
-            app:layout_constraintWidth_percent="0.9"/>
+            app:layout_constraintWidth_percent="0.9" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

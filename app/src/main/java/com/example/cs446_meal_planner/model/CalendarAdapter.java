@@ -2,6 +2,8 @@ package com.example.cs446_meal_planner.model;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cs446_meal_planner.CalendarDBHelper;
+import com.example.cs446_meal_planner.Utils;
 import com.example.cs446_meal_planner.R;
 import com.example.cs446_meal_planner.RecipeListActivity;
 
@@ -55,7 +58,14 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
             // if booking already exists
             if (booking != null) {
-                curTextView.setText(booking.getBookedRecipe().getName());
+                String imageUrl = booking.getBookedRecipe().getImageUrl();
+                if(imageUrl != null){
+                    Bitmap image = Utils.getImage(mcon.getApplicationContext(), booking.getBookedRecipe().getImageUrl());
+                    curTextView.setBackground(new BitmapDrawable(mcon.getResources(), image));
+                }
+                else{
+                    curTextView.setText(booking.getBookedRecipe().getName());
+                }
             }
 
             curTextView.setOnClickListener(new View.OnClickListener() {

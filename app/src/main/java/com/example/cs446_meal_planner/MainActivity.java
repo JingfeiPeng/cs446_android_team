@@ -1,6 +1,9 @@
 package com.example.cs446_meal_planner;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,18 +19,37 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.joda.time.DateTime;
 
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private static RecipeDBHelper db;
     private static CalendarDBHelper calenderDB;
 
-    public static DateTime reportStartDate = DateTime.now().minusDays(7);
-    public static DateTime reportEndDate = DateTime.now();
+    public static DateTime reportEndDate = new DateTime(DateTime.now().getYear(),
+            DateTime.now().getMonthOfYear(), DateTime.now().getDayOfMonth(),
+            0,0,0);
+    public static DateTime reportStartDate = reportEndDate.minusDays(7);
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            int REQUEST_CODE_PERMISSION_STORAGE = 100;
+            String[] permissions = {
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            };
+
+            for (String str : permissions) {
+                if (this.checkSelfPermission(str) != PackageManager.PERMISSION_GRANTED) {
+                    this.requestPermissions(permissions, REQUEST_CODE_PERMISSION_STORAGE);
+                    return;
+                }
+            }
+        }
+
         super.onCreate(savedInstanceState);
 
 
