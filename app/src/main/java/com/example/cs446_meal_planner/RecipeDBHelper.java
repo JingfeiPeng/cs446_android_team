@@ -26,6 +26,7 @@ public class RecipeDBHelper extends DBHelper {
 
     private RecipeDBHelper(Context context) {
         super(context);
+        onCreate(this.getReadableDatabase());
     }
 
     public static RecipeDBHelper getInstance(Context ctx) {
@@ -38,6 +39,7 @@ public class RecipeDBHelper extends DBHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         db.execSQL(QUERY_CREATE_RECIPE_DB);
     }
 

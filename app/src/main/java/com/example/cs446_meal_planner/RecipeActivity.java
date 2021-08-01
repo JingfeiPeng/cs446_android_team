@@ -1,6 +1,19 @@
 package com.example.cs446_meal_planner;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -9,8 +22,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.cs446_meal_planner.model.IngredientCaloriesCalculator;
@@ -18,6 +36,8 @@ import com.example.cs446_meal_planner.model.Recipe;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+
+import static android.view.View.GONE;
 
 // The concrete component, interface component is not needed
 public class RecipeActivity extends AppCompatActivity {
@@ -29,10 +49,24 @@ public class RecipeActivity extends AppCompatActivity {
     protected Button add_instruction;
     protected Button get_calorie_estimate;
     protected EditText cookingTimeField;
+    protected ImageView imageView;
+
     protected ArrayAdapter<String> adapter;
     // List of available units of ingredients
     protected String [] units = {"whole", "gram", "teaspoon", "cup", "pound", "tablespoon"};
     protected IngredientCaloriesCalculator calories_calculator = IngredientCaloriesCalculator.getInstance();
+
+    private String image_path;
+
+    ActivityResultLauncher<Intent> uploadImageActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    uploadImage(data);
+                }
+            });
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,18 +74,21 @@ public class RecipeActivity extends AppCompatActivity {
         cookingTimeField = findViewById(R.id.edit_cooking_time);
         recipeNameEdit = findViewById(R.id.edit_recipe_name);
         edit_calories_total = findViewById(R.id.edit_calories_total);
-        add_ingredient_layoutlist=findViewById(R.id.ingredient_list);
-        add_instruction_layoutlist=findViewById(R.id.instruction_list);
+        add_ingredient_layoutlist = findViewById(R.id.ingredient_list);
+        add_instruction_layoutlist = findViewById(R.id.instruction_list);
         add_ingredient = findViewById(R.id.button_add_ingredient);
         add_instruction = findViewById(R.id.button_add_instruction);
         get_calorie_estimate = findViewById(R.id.button_get_estimated_calories_total);
+        imageView = (ImageView) findViewById(R.id.imageView_recipe_image);
 
-        adapter = new ArrayAdapter<String>(this,android.R.layout.select_dialog_singlechoice, units);
+        imageView.setVisibility(View.GONE);
+
+        adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_singlechoice, units);
 
         add_ingredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewIngredient("","","");
+                addNewIngredient("", "", "");
             }
         });
 
@@ -68,11 +105,11 @@ public class RecipeActivity extends AppCompatActivity {
                 EditText edit_calorie = findViewById(R.id.edit_calories_total);
                 Double total_calories = 0.0;
                 String total_cal = "";
-                for (int i = 0; i < add_ingredient_layoutlist.getChildCount(); i++){
+                for (int i = 0; i < add_ingredient_layoutlist.getChildCount(); i++) {
                     View curIngredientView = add_ingredient_layoutlist.getChildAt(i);
-                    EditText curIngredientNumber = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_number);
-                    EditText curIngredientUnit = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_unit);
-                    EditText curIngredientText = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_name);
+                    EditText curIngredientNumber = (EditText) curIngredientView.findViewById(R.id.edit_ingredient_number);
+                    EditText curIngredientUnit = (EditText) curIngredientView.findViewById(R.id.edit_ingredient_unit);
+                    EditText curIngredientText = (EditText) curIngredientView.findViewById(R.id.edit_ingredient_name);
                     Double curCal = calories_calculator.calculateCalories(
                             curIngredientText.getText().toString(),
                             curIngredientNumber.getText().toString(),
@@ -86,6 +123,19 @@ public class RecipeActivity extends AppCompatActivity {
                 edit_calorie.setText(total_cal);
             }
         });
+
+
+        //upload recipe image
+        Button buttonUploadImage = findViewById(R.id.button_upload_image);
+        buttonUploadImage.setOnClickListener(view -> {
+            Intent intent = new Intent(
+                    Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            uploadImageActivityResultLauncher.launch(intent);
+        });
+
+
+
     }
 
     protected Recipe processRecipeData() {
@@ -146,7 +196,7 @@ public class RecipeActivity extends AppCompatActivity {
                 .instruction(instructions)
                 .cookingTime(cookingTime)
                 .calorie(total_calories)
-                .imageUrl("xxxx").build();
+                .imageUrl(image_path).build();
         return r;
     }
 
@@ -198,4 +248,19 @@ public class RecipeActivity extends AppCompatActivity {
 
         add_instruction_layoutlist.addView(instructionView);
     }
+
+    public void uploadImage(Intent data){
+        Uri selectedImage = data.getData();
+        image_path = selectedImage.toString();
+        String[] filePathColumn = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getContentResolver().query(selectedImage,
+                filePathColumn, null, null, null);
+        cursor.moveToFirst();
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        String picturePath = cursor.getString(columnIndex);
+        cursor.close();
+        imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+        imageView.setVisibility(View.VISIBLE);
+    }
+
 }

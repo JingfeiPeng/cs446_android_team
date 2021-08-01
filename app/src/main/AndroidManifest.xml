@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -12,7 +14,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CS446_Meal_Planner">
+        android:theme="@style/Theme.CS446_Meal_Planner"
+        android:requestLegacyExternalStorage="true">
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/activity_report" />
@@ -55,10 +58,8 @@
             android:label="Pick Report Date1"
             android:theme="@style/Theme.CS446_Meal_Planner" />
 
-        <activity
-            android:name=".ReportDate2Activity"
-            android:label="Pick Report Date2"
-            android:theme="@style/Theme.CS446_Meal_Planner" />
+
+
 
     </application>
 
