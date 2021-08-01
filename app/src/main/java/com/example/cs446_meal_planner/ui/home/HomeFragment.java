@@ -2,6 +2,7 @@ package com.example.cs446_meal_planner.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class HomeFragment extends Fragment {
     private ImageView imageViewNextRecipe;
     private TextView textViewNextCalorie;
     private TextView textViewNextCookingTime;
+    private TextView textView_next_meal;
     private Button buttonNextRecipe;
     private ImageView imageViewBreakfast;
     private ImageView imageViewLunch;
@@ -66,6 +68,7 @@ public class HomeFragment extends Fragment {
         imageViewBreakfast = root.findViewById(R.id.imageView_breakfast);
         imageViewLunch = root.findViewById(R.id.imageView_lunch);
         imageViewDinner = root.findViewById(R.id.imageView_dinner);
+        textView_next_meal = root.findViewById(R.id.textView_next_meal);
         return root;
     }
 
@@ -104,10 +107,13 @@ public class HomeFragment extends Fragment {
 
         if (nextBooking != null) {
             recipe = nextBooking.getBookedRecipe();
-            imageViewNextRecipe.setImageBitmap(Utils.getImage(root.getContext(),
-                    recipe.getImageUrl()));
+            if (recipe.getImageUrl() != null) {
+                imageViewNextRecipe.setImageBitmap(Utils.getImage(root.getContext(),
+                        recipe.getImageUrl()));
+            }
             textViewNextCalorie.setText("Calorie: " + recipe.getCalorie() + "kCal");
             textViewNextCookingTime.setText("Cooking Time: " + (int) Math.round(recipe.getCookingTime()) + "min");
+            textView_next_meal.setText("Next Meal: "+recipe.getName());
 
             if (nextBooking.getMealType().equals("breakfast")) {
                 buttonNextRecipe.setText("VIEW BREAKFAST RECIPE");
@@ -132,7 +138,7 @@ public class HomeFragment extends Fragment {
         curBooking = calendarDBHelper.getMealBookingOnDate(new CalendarDate(cur),
                 "lunch");
 
-        if(curBooking != null){
+        if(curBooking != null && curBooking.getBookedRecipe().getImageUrl() != null){
             imageViewLunch.setImageBitmap(Utils.getImage(this.root.getContext(), curBooking.getBookedRecipe().getImageUrl()));
         }
 
