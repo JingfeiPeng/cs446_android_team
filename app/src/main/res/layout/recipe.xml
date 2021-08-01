@@ -30,7 +30,7 @@
     <ImageView
         android:id="@+id/imageView_recipe_image"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         android:layout_weight="1"></ImageView>
     <Button
     android:id="@+id/button_upload_image"

@@ -37,6 +37,8 @@ import com.example.cs446_meal_planner.model.Recipe;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
+import static android.view.View.GONE;
+
 // The concrete component, interface component is not needed
 public class RecipeActivity extends AppCompatActivity {
     protected EditText recipeNameEdit;
@@ -47,6 +49,8 @@ public class RecipeActivity extends AppCompatActivity {
     protected Button add_instruction;
     protected Button get_calorie_estimate;
     protected EditText cookingTimeField;
+    protected ImageView imageView;
+
     protected ArrayAdapter<String> adapter;
     // List of available units of ingredients
     protected String [] units = {"whole", "gram", "teaspoon", "cup", "pound", "tablespoon"};
@@ -75,6 +79,9 @@ public class RecipeActivity extends AppCompatActivity {
         add_ingredient = findViewById(R.id.button_add_ingredient);
         add_instruction = findViewById(R.id.button_add_instruction);
         get_calorie_estimate = findViewById(R.id.button_get_estimated_calories_total);
+        imageView = (ImageView) findViewById(R.id.imageView_recipe_image);
+
+        imageView.setVisibility(View.GONE);
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_singlechoice, units);
 
@@ -252,22 +259,8 @@ public class RecipeActivity extends AppCompatActivity {
         int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
         String picturePath = cursor.getString(columnIndex);
         cursor.close();
-        ImageView imageView = (ImageView) findViewById(R.id.imageView_recipe_image);
-        imageView.setImageBitmap(loadImage(picturePath));
-        //imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-    }
-
-    private Bitmap loadImage(String imgPath) {
-        BitmapFactory.Options options;
-        try {
-            options = new BitmapFactory.Options();
-            options.inSampleSize = 2;
-            Bitmap bitmap = BitmapFactory.decodeFile(imgPath, options);
-            return bitmap;
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+        imageView.setVisibility(View.VISIBLE);
     }
 
 }

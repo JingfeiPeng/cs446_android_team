@@ -79,6 +79,11 @@ public class RecipeOverviewActivity extends RecipeActivity {
         if(!imageUrl.equals("")){
             ImageView recipeImage = findViewById(R.id.imageView_recipe_image);
             recipeImage.setImageBitmap(Utils.getImage(this.getApplicationContext(), imageUrl));
+            imageView.setVisibility(View.VISIBLE);
+        }
+        else{
+            ImageView recipeImage = findViewById(R.id.imageView_recipe_image);
+            recipeImage.setVisibility(View.GONE);
         }
 
         modify_recipe.setOnClickListener(new View.OnClickListener() {

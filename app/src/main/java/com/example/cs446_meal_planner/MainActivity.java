@@ -7,25 +7,29 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.cs446_meal_planner.databinding.ActivityMainBinding;
+import com.example.cs446_meal_planner.model.CalendarBooking;
+import com.example.cs446_meal_planner.model.CalendarDate;
+import com.example.cs446_meal_planner.model.Recipe;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.joda.time.DateTime;
-
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private static RecipeDBHelper db;
-    private static CalendarDBHelper calenderDB;
+    private static CalendarDBHelper calendarDBHelper;
 
     public static DateTime reportEndDate = new DateTime(DateTime.now().getYear(),
             DateTime.now().getMonthOfYear(), DateTime.now().getDayOfMonth(),
@@ -35,6 +39,29 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getPermission();
+
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+
+        db = RecipeDBHelper.getInstance(this);
+        calendarDBHelper = CalendarDBHelper.getInstance(this);
+
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.navigation_home, R.id.navigation_recipe, R.id.navigation_setting)
+                .build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(binding.navView, navController);
+    }
+
+    private void getPermission(){
         if (Build.VERSION.SDK_INT >= 23) {
             int REQUEST_CODE_PERMISSION_STORAGE = 100;
             String[] permissions = {
@@ -49,44 +76,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-
-        super.onCreate(savedInstanceState);
-
-
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-
-        db = RecipeDBHelper.getInstance(this);
-        calenderDB = CalendarDBHelper.getInstance(this);
-
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_recipe, R.id.navigation_setting)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(binding.navView, navController);
-
     }
-
     @Override
-    protected void onResume() {
+    protected void onResume(){
         super.onResume();
-        Button picker1 = findViewById(R.id.button_pick_date_1);
-        Button picker2 = findViewById(R.id.button_pick_date_2);
-        if(picker1 != null){
-            picker1.setText(MainActivity.reportStartDate.getMonthOfYear() + "/" + MainActivity.reportStartDate.getDayOfMonth());
-        }
-
-        if(picker2 != null){
-            picker2.setText(MainActivity.reportEndDate.getMonthOfYear() + "/" + MainActivity.reportEndDate.getDayOfMonth());
-        }
-
     }
+
 
     public void viewCalender(View view) {
         Intent moveToCalender = new Intent(getApplicationContext(), CalendarActivity.class);
