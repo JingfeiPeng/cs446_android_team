@@ -9,6 +9,8 @@ import com.example.cs446_meal_planner.model.CalendarBooking;
 import com.example.cs446_meal_planner.model.CalendarDate;
 import com.example.cs446_meal_planner.model.Recipe;
 
+import org.joda.time.DateTime;
+
 public class CalendarDBHelper extends DBHelper {
     public static final String CALENDER_TABLE_NAME = "CalenderTable";
     private static CalendarDBHelper calendarDBHelper = null;
@@ -56,6 +58,48 @@ public class CalendarDBHelper extends DBHelper {
             Cursor recipeResult = db.rawQuery("select * from "+ RecipeDBHelper.RECIPE_TABLE_NAME +
                     " WHERE id=?", new String[]{ attachedRecipeId.toString() });
             recipeResult.moveToFirst();
+
+            if(recipeResult.isAfterLast()){
+                return null;
+            }
+
+            Recipe booked_recipe = Recipe.builder()
+                    .id(attachedRecipeId)
+                    .name(recipeResult.getString(recipeResult.getColumnIndex(RecipeDBHelper.RECIPE_NAME)))
+                    .cookingTime(Double.parseDouble(recipeResult.getString(recipeResult.getColumnIndex(RecipeDBHelper.RECIPE_COOKING_TIME))))
+                    .ingredients(recipeResult.getString(recipeResult.getColumnIndex(RecipeDBHelper.RECIPE_INGREDIENTS)))
+                    .instruction(recipeResult.getString(recipeResult.getColumnIndex(RecipeDBHelper.RECIPE_INSTRUCTION)))
+                    .imageUrl(recipeResult.getString(recipeResult.getColumnIndex(RecipeDBHelper.RECIPE_IMAGE_URL)))
+                    .calorie(recipeResult.getDouble(recipeResult.getColumnIndex(RecipeDBHelper.RECIPE_CALORIE)))
+                    .build();
+
+            retVal = CalendarBooking.builder()
+                    .mealDate(res.getInt(res.getColumnIndex(MEAL_DATE)))
+                    .mealType(res.getString(res.getColumnIndex(MEAL_TYPE)))
+                    .recipeId(attachedRecipeId)
+                    .bookedRecipe(booked_recipe)
+                    .build();
+        }
+        return retVal;
+    }
+
+    public CalendarBooking getNextMealBooking() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        this.onCreate(db);
+        CalendarDate cur = new CalendarDate(DateTime.now());
+        Cursor res = db.rawQuery(FIND_NEXT_BOOKING, new String[]{String.valueOf(cur.getIntger())});
+        res.moveToFirst();
+        CalendarBooking retVal = null;
+        if (!res.isAfterLast()) {
+            Integer attachedRecipeId = res.getInt(res.getColumnIndex(RECIPE_ID));
+            Cursor recipeResult = db.rawQuery("select * from "+ RecipeDBHelper.RECIPE_TABLE_NAME +
+                    " WHERE id=?", new String[]{ attachedRecipeId.toString() });
+            recipeResult.moveToFirst();
+
+            if(recipeResult.isAfterLast()){
+                return null;
+            }
+
             Recipe booked_recipe = Recipe.builder()
                     .id(attachedRecipeId)
                     .name(recipeResult.getString(recipeResult.getColumnIndex(RecipeDBHelper.RECIPE_NAME)))
@@ -98,5 +142,10 @@ public class CalendarDBHelper extends DBHelper {
     private final String QUERY_UPGRADE_DB = "DROP TABLE IF EXISTS CalenderTable";
     private final String FIND_BOOKING = "SELECT * FROM CalenderTable" +
             " WHERE meal_type=? AND meal_date=?";
+    private final String FIND_NEXT_BOOKING = "SELECT * FROM CalenderTable" +
+            " WHERE meal_date >= ?" +
+            " ORDER BY meal_date ASC," +
+            " CASE WHEN meal_type = 'breakfast' THEN 0 WHEN meal_type = 'lunch' THEN 1 WHEN meal_type = 'dinner' THEN 2 END" +
+            " LIMIT 1";
 
 }
