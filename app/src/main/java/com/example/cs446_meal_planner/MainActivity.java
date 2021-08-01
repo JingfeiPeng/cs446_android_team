@@ -17,15 +17,17 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.cs446_meal_planner.databinding.ActivityMainBinding;
+import com.example.cs446_meal_planner.model.PersonalInfo;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.joda.time.DateTime;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ObserverActivity {
 
     private ActivityMainBinding binding;
     private static RecipeDBHelper db;
     private static CalendarDBHelper calenderDB;
+    private static SettingDBHelper settingDB;
 
     public static DateTime reportStartDate = DateTime.now().minusDays(7);
     public static DateTime reportEndDate = DateTime.now();
@@ -41,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
 
         db = RecipeDBHelper.getInstance(this);
         calenderDB = CalendarDBHelper.getInstance(this);
+        settingDB = SettingDBHelper.getInstance(this);
+        // observer
+        settingDB.attachActivity(this);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
@@ -52,6 +57,13 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+    }
+
+    @Override
+    public void update() {
+        // TO-DO: Karina do progress bar logic
+        PersonalInfo info = settingDB.get_personal_info();
+        Log.d("current calories goal", info.getGoal().toString());
     }
 
     @Override

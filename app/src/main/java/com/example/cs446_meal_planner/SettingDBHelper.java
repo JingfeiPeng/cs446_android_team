@@ -95,6 +95,7 @@ public class SettingDBHelper extends DBHelper {
         ContentValues cv = new ContentValues();
         cv.put(SETTING_GOAL, goal);
         db.update(SETTING_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(default_id)});
+        this.notifyObservers();
         return true;
     }
 
