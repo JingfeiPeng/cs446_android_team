@@ -127,27 +127,17 @@ public class HomeFragment extends Fragment {
 
 
         //set plan
-        DateTime cur = DateTime.now();
-        CalendarBooking curBooking = calendarDBHelper.getMealBookingOnDate(new CalendarDate(cur),
-                "breakfast");
+        CalendarDate cur = new CalendarDate(DateTime.now());
+        this.initializeSpecificMeal(imageViewBreakfast, cur, "breakfast");
+        this.initializeSpecificMeal(imageViewLunch, cur, "lunch");
+        this.initializeSpecificMeal(imageViewDinner, cur, "dinner");
+    }
 
-        if(curBooking != null){
-            imageViewBreakfast.setImageBitmap(Utils.getImage(root.getContext(), curBooking.getBookedRecipe().getImageUrl()));
-        }
-
-        curBooking = calendarDBHelper.getMealBookingOnDate(new CalendarDate(cur),
-                "lunch");
+    private void initializeSpecificMeal(ImageView mealImage, CalendarDate today, String mealType) {
+        CalendarBooking curBooking = calendarDBHelper.getMealBookingOnDate(today, mealType);
 
         if(curBooking != null && curBooking.getBookedRecipe().getImageUrl() != null){
-            imageViewLunch.setImageBitmap(Utils.getImage(this.root.getContext(), curBooking.getBookedRecipe().getImageUrl()));
-        }
-
-
-        curBooking = calendarDBHelper.getMealBookingOnDate(new CalendarDate(cur),
-                "dinner");
-
-        if(curBooking != null){
-            imageViewDinner.setImageBitmap(Utils.getImage(this.root.getContext(), curBooking.getBookedRecipe().getImageUrl()));
+            mealImage.setImageBitmap(Utils.getImage(root.getContext(), curBooking.getBookedRecipe().getImageUrl()));
         }
     }
 }
