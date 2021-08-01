@@ -59,7 +59,7 @@ public class RecipeActivity extends AppCompatActivity {
     protected ArrayAdapter<String> adapter;
     // List of available units of ingredients
     protected String [] units = {"whole", "gram", "teaspoon", "cup", "pound", "tablespoon"};
-    protected String [] feedbacks = {"too sweet", "too briny", "too sour", "too spicy", "not sweet enough", "not briny enough", "not sour enough", "not spicy enough"};
+    protected String [] feedbacks = {"too sweet", "too salty", "too sour", "too spicy", "not sweet enough", "not salty enough", "not sour enough", "not spicy enough"};
     protected IngredientCaloriesCalculator calories_calculator = IngredientCaloriesCalculator.getInstance();
 
     protected String image_path;
