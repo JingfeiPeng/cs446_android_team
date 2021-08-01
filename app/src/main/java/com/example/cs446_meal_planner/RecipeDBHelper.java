@@ -21,6 +21,7 @@ public class RecipeDBHelper extends DBHelper {
     public static final String RECIPE_INSTRUCTION = "instruction";
     public static final String RECIPE_COOKING_TIME = "cooking_time";
     public static final String RECIPE_CALORIE = "calorie";
+    public static final String RECIPE_FEEDBACK = "feedback";
 
     private static RecipeDBHelper recipeDBHelper = null;
 
@@ -162,6 +163,14 @@ public class RecipeDBHelper extends DBHelper {
         return true;
     }
 
+    public boolean updateFeedbacks(String feedbackStrings, Integer recipeId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(RECIPE_FEEDBACK, feedbackStrings);
+        db.update(RECIPE_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(recipeId)});
+        return true;
+    }
+
     //delete all recipe
     public boolean deleteAllRecipes() {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -177,7 +186,8 @@ public class RecipeDBHelper extends DBHelper {
             "ingredients TEXT, " +
             "instruction TEXT, " +
             "cooking_time REAL," +
-            "calorie REAL" +
+            "calorie REAL," +
+            "feedbacks TEXT" +
             ")";
 
     private final String QUERY_UPGRADE_DB = "DROP TABLE IF EXISTS RecipeTable";
