@@ -3,6 +3,7 @@ package com.example.cs446_meal_planner;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
@@ -25,12 +26,15 @@ public class RecipeOverviewActivity extends RecipeActivity {
         modify_recipe = findViewById(R.id.button_modify_recipe);
         delete_recipe = findViewById(R.id.button_delete_recipe);
 
+
+
         String instructions = getIntent().getExtras().getString("instructions");
         String ingredients =getIntent().getExtras().getString("ingredients");
         String recipeName = getIntent().getExtras().getString("recipeName");
         Double calories = getIntent().getExtras().getDouble("calories");
         int recipeID = getIntent().getExtras().getInt("id");
         double cookingTime = getIntent().getExtras().getDouble("cookingTime");
+        String imageUrl = getIntent().getExtras().getString("imageUrl");
         if(recipeName == null) {
             recipeName = "";
         }
@@ -42,6 +46,9 @@ public class RecipeOverviewActivity extends RecipeActivity {
         }
         if (calories==null) {
             calories = 0.0;
+        }
+        if(imageUrl == null){
+            imageUrl = "";
         }
 
         recipeNameEdit.setText(recipeName);
@@ -67,6 +74,13 @@ public class RecipeOverviewActivity extends RecipeActivity {
             }
         }
 
+
+        //display image
+        if(!imageUrl.equals("")){
+            ImageView recipeImage = findViewById(R.id.imageView_recipe_image);
+            recipeImage.setImageBitmap(Utils.getImage(this.getApplicationContext(), imageUrl));
+        }
+
         modify_recipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +90,7 @@ public class RecipeOverviewActivity extends RecipeActivity {
                 db.updateInstruction(r.getInstruction(),recipeID);
                 db.updateIngredients(r.getIngredients(),recipeID);
                 db.updateCalorie(r.getCalorie(), recipeID);
+                db.updateImageUrl(r.getImageUrl(), recipeID);
                 db.notifyObservers();
                 finish();
             }

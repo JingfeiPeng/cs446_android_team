@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-public class ReportActivity extends AppCompatActivity {
+public class ReportActivity extends CalorieReportActivity {
 
     private TextView textViewRecipe;
     private TextView textViewIngredient;
@@ -44,7 +44,7 @@ public class ReportActivity extends AppCompatActivity {
     public static Map<MonthDay, Double> dinnerList;
     public static Map<MonthDay, Double> totalList;
     private DateTime startDate;
-    private int days;
+    public static int days;
 
 
 
@@ -52,14 +52,12 @@ public class ReportActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
 
         calenderDB = CalendarDBHelper.getInstance(this);
         textViewRecipe = findViewById(R.id.textView_number_of_recipes);
         textViewIngredient = findViewById(R.id.textView_favoured_ingredient);
         textViewCalorie = findViewById(R.id.textView_consumed_calories);
-        buttonViewCalorie = findViewById(R.id.button_view_calorie);
 
         breakfastList = new LinkedHashMap<>();
         lunchList = new LinkedHashMap<>();
@@ -67,28 +65,13 @@ public class ReportActivity extends AppCompatActivity {
         totalList = new LinkedHashMap<>();
         startDate = new DateTime(MainActivity.reportStartDate);
 
+        days = (int) ChronoUnit.DAYS.between(MainActivity.reportStartDate.toDate().toInstant(), MainActivity.reportEndDate.toDate().toInstant())+1;
+
         setAllTextView();
 
-        buttonViewCalorie.setOnClickListener(v -> {
-            viewCalorieReport();
-        });
+        super.onCreate(savedInstanceState);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void viewCalorieReport()
-    {
-        DateTime temp1 = MainActivity.reportStartDate;
-        DateTime temp2 = MainActivity.reportEndDate;
-        days = (int) ChronoUnit.DAYS.between(MainActivity.reportStartDate.toDate().toInstant(), MainActivity.reportEndDate.toDate().toInstant());
-        Intent switchActivityIntent = new Intent(this, CalorieReportActivity.class);
-//        switchActivityIntent.putExtra("breakfastList", (Serializable) breakfastList);
-//        switchActivityIntent.putExtra("lunchList", (Serializable) lunchList);
-//        switchActivityIntent.putExtra("dinnerList", (Serializable) dinnerList);
-//        switchActivityIntent.putExtra("totalList", (Serializable) totalList);
-        switchActivityIntent.putExtra("startDate", startDate);
-        switchActivityIntent.putExtra("index", days);
-        startActivity(switchActivityIntent);
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void setAllTextView(){
@@ -117,7 +100,14 @@ public class ReportActivity extends AppCompatActivity {
             //average calorie
             if(breakfast != null) {
                 Double calorie = breakfast.getBookedRecipe().getCalorie();
-                breakfastAverage += calorie;
+
+                if(calorie != null){
+                    breakfastAverage += calorie;
+                }
+                else{
+                    calorie = 0.0;
+                }
+
                 ++countRecipe;
                 ingredientList.addAll(getIngredients(breakfast.getBookedRecipe().getIngredients()));
                 breakfastList.put(temp, calorie);
@@ -126,7 +116,14 @@ public class ReportActivity extends AppCompatActivity {
 
             if(lunch != null) {
                 Double calorie = lunch.getBookedRecipe().getCalorie();
-                lunchAverage += calorie;
+
+                if(calorie != null){
+                    lunchAverage += calorie;
+                }
+                else{
+                    calorie = 0.0;
+                }
+
                 ++countRecipe;
                 ingredientList.addAll(getIngredients(lunch.getBookedRecipe().getIngredients()));
                 lunchList.put(temp, calorie);
@@ -135,7 +132,14 @@ public class ReportActivity extends AppCompatActivity {
 
             if(dinner != null) {
                 Double calorie = dinner.getBookedRecipe().getCalorie();
-                dinnerAverage += calorie;
+
+                if(calorie != null){
+                    dinnerAverage += calorie;
+                }
+                else{
+                    calorie = 0.0;
+                }
+
                 ++countRecipe;
                 ingredientList.addAll(getIngredients(dinner.getBookedRecipe().getIngredients()));
                 dinnerList.put(temp, calorie);

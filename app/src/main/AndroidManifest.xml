@@ -59,6 +59,8 @@
             android:theme="@style/Theme.CS446_Meal_Planner" />
 
 
+
+
     </application>
 
 </manifest>
