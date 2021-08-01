@@ -92,12 +92,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void getDate1(View view) {
         Intent intent = new Intent(getApplicationContext(), ReportDateActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("startDate", "StartDate");
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 
     public void getDate2(View view) {
-        Intent intent = new Intent(getApplicationContext(), ReportDate2Activity.class);
+        Intent intent = new Intent(getApplicationContext(), ReportDateActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("endDate", "endDate");
+        intent.putExtras(bundle);
         startActivity(intent);
     }
-
 }

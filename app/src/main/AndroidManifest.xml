@@ -55,10 +55,6 @@
             android:label="Pick Report Date1"
             android:theme="@style/Theme.CS446_Meal_Planner" />
 
-        <activity
-            android:name=".ReportDate2Activity"
-            android:label="Pick Report Date2"
-            android:theme="@style/Theme.CS446_Meal_Planner" />
 
     </application>
 
