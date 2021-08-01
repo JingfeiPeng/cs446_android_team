@@ -5,9 +5,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.ImageView;
+
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +23,9 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.cs446_meal_planner.databinding.ActivityMainBinding;
+
+import com.example.cs446_meal_planner.model.PersonalInfo;
+
 import com.example.cs446_meal_planner.model.CalendarBooking;
 import com.example.cs446_meal_planner.model.CalendarDate;
 import com.example.cs446_meal_planner.model.Recipe;
@@ -25,17 +33,20 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.joda.time.DateTime;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ObserverActivity {
 
     private ActivityMainBinding binding;
     private static RecipeDBHelper db;
+
+    private static CalendarDBHelper calenderDB;
+    private static SettingDBHelper settingDB;
     private static CalendarDBHelper calendarDBHelper;
+
 
     public static DateTime reportEndDate = new DateTime(DateTime.now().getYear(),
             DateTime.now().getMonthOfYear(), DateTime.now().getDayOfMonth(),
             0,0,0);
     public static DateTime reportStartDate = reportEndDate.minusDays(7);
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +58,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         db = RecipeDBHelper.getInstance(this);
+        calenderDB = CalendarDBHelper.getInstance(this);
+        settingDB = SettingDBHelper.getInstance(this);
+        // observer
+        settingDB.attachActivity(this);
         calendarDBHelper = CalendarDBHelper.getInstance(this);
+
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
@@ -59,6 +75,13 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+    }
+
+    @Override
+    public void update() {
+        // TO-DO: Karina do progress bar logic
+        PersonalInfo info = settingDB.get_personal_info();
+        Log.d("current calories goal", info.getGoal().toString());
     }
 
     private void getPermission(){
