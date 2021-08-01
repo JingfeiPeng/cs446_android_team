@@ -32,8 +32,8 @@ public class SettingDBHelper extends DBHelper {
     public static SettingDBHelper getInstance(Context ctx) {
         if (settingDBHelper == null) {
             settingDBHelper = new SettingDBHelper(ctx.getApplicationContext());
+            settingDBHelper.initialize();
         }
-        settingDBHelper.initialize();
 
         return settingDBHelper;
     }
