@@ -21,7 +21,7 @@ public class RecipeDBHelper extends DBHelper {
     public static final String RECIPE_INSTRUCTION = "instruction";
     public static final String RECIPE_COOKING_TIME = "cooking_time";
     public static final String RECIPE_CALORIE = "calorie";
-    public static final String RECIPE_FEEDBACK = "feedback";
+    public static final String RECIPE_FEEDBACK = "feedbacks";
 
     private static RecipeDBHelper recipeDBHelper = null;
 
@@ -76,6 +76,7 @@ public class RecipeDBHelper extends DBHelper {
         contentValues.put(RECIPE_INSTRUCTION, recipe.getInstruction());
         contentValues.put(RECIPE_COOKING_TIME, recipe.getCookingTime());
         contentValues.put(RECIPE_CALORIE, recipe.getCalorie());
+        contentValues.put(RECIPE_FEEDBACK,recipe.getFeedbacks());
         db.insert(RECIPE_TABLE_NAME, null, contentValues);
         return true;
     }
@@ -106,6 +107,7 @@ public class RecipeDBHelper extends DBHelper {
                     .instruction(res.getString(res.getColumnIndex(RECIPE_INSTRUCTION)))
                     .cookingTime(Double.parseDouble(res.getString(res.getColumnIndex(RECIPE_COOKING_TIME))))
                     .calorie(Double.parseDouble(res.getString(res.getColumnIndex(RECIPE_CALORIE))))
+                    .feedbacks(res.getString(res.getColumnIndex(RECIPE_FEEDBACK)))
                     .build();
             result.add(recipe);
             res.moveToNext();
