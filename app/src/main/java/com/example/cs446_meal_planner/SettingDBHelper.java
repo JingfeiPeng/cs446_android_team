@@ -33,6 +33,7 @@ public class SettingDBHelper extends DBHelper {
         if (settingDBHelper == null) {
             settingDBHelper = new SettingDBHelper(ctx.getApplicationContext());
         }
+        settingDBHelper.initialize();
 
         return settingDBHelper;
     }
@@ -40,6 +41,11 @@ public class SettingDBHelper extends DBHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(QUERY_CREATE_SETTING_DB);
+    }
+
+    public void initialize() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        onCreate(db);
         // insert default row if not present
         if (get_personal_info() == null) {
             db.execSQL("insert into SettingTable (id,gender,age,goal) values (1,'male',18,2200)");
@@ -72,7 +78,6 @@ public class SettingDBHelper extends DBHelper {
 
     public boolean updateGender(String gender) {
         SQLiteDatabase db = this.getReadableDatabase();
-        onCreate(db);
         ContentValues cv = new ContentValues();
         cv.put(SETTING_GENDER, gender);
         db.update(SETTING_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(default_id)});
@@ -81,7 +86,6 @@ public class SettingDBHelper extends DBHelper {
 
     public boolean updateAge(Integer age) {
         SQLiteDatabase db = this.getReadableDatabase();
-        onCreate(db);
         ContentValues cv = new ContentValues();
         cv.put(SETTING_AGE, age);
         db.update(SETTING_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(default_id)});
@@ -91,7 +95,6 @@ public class SettingDBHelper extends DBHelper {
 
     public boolean updateGoal(Integer goal) {
         SQLiteDatabase db = this.getReadableDatabase();
-        onCreate(db);
         ContentValues cv = new ContentValues();
         cv.put(SETTING_GOAL, goal);
         db.update(SETTING_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(default_id)});
