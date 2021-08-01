@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,12 +13,19 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.cs446_meal_planner.MainActivity;
+import com.example.cs446_meal_planner.R;
+import com.example.cs446_meal_planner.SettingDBHelper;
+import com.example.cs446_meal_planner.databinding.FragmentHomeBinding;
+import com.example.cs446_meal_planner.SettingActivity;
+
 import com.example.cs446_meal_planner.databinding.FragmentSettingBinding;
 
 public class SettingFragment extends Fragment {
 
     private SettingViewModel settingViewModel;
     private FragmentSettingBinding binding;
+    private SettingDBHelper db;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -26,14 +34,6 @@ public class SettingFragment extends Fragment {
 
         binding = FragmentSettingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        final TextView textView = binding.textNotifications;
-        settingViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
         return root;
     }
 
