@@ -13,4 +13,5 @@ public class Recipe {
     private String instruction;
     private Double cookingTime;
     private Double calorie;
+    private String feedbacks;
 }
