@@ -81,37 +81,13 @@
         android:layout_height="40dp"></EditText>
 
 
-    <Button
-        android:id="@+id/button_submit_PersonalInfo"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_age"
-        app:layout_constraintWidth_percent="0.9"/>
-
-    <TextView
-        android:id="@+id/textView_GoalSetting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Goal Setting"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_submit_PersonalInfo"
-        android:layout_marginLeft="30dp"
-        android:textSize="26sp"
-        android:fontFamily="sans-serif-medium" />
-
     <TextView
         android:id="@+id/textView_recommend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Generally, the recommended daily calorie intake is 2,000 calories a day for women and 2,500 for men."
+        android:text="Based on your personal information, we estimate the suggested calories goal based on  Energy Requirements (EER) from the Institute of Medicine Dietary Reference Intakes macronutrients report( 2002)"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_GoalSetting"
+        app:layout_constraintTop_toBottomOf="@+id/edit_age"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:textSize="15sp"
@@ -131,6 +107,18 @@
         android:textColor="@color/black"
         android:fontFamily="sans-serif-medium" />
 
+    <TextView
+        android:id="@+id/textView_GoalSetting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Set Daily Goal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_suggestion"
+        android:layout_marginLeft="30dp"
+        android:textSize="26sp"
+        android:fontFamily="sans-serif-medium" />
+
     <EditText
         android:id="@+id/edit_goal"
         android:layout_marginLeft="10dp"
@@ -145,21 +133,8 @@
         android:layout_width="match_parent"
         android:inputType="number"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_suggestion"
+        app:layout_constraintTop_toBottomOf="@+id/textView_GoalSetting"
         android:layout_height="40dp"></EditText>
-
-
-    <Button
-        android:id="@+id/button_submit_Goal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_goal"
-        app:layout_constraintWidth_percent="0.9"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
