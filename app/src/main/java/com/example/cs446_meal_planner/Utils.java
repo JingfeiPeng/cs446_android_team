@@ -66,5 +66,6 @@ public class Utils {
         series.setThickness(8);
         return series;
     }
+
 }
 

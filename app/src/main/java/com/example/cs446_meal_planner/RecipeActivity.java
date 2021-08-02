@@ -196,7 +196,7 @@ public class RecipeActivity extends AppCompatActivity {
                 .instruction(instructions)
                 .cookingTime(cookingTime)
                 .calorie(total_calories)
-                .imageUrl(image_path).build();
+                .imageUrl(imageView.getTag().toString()).build();
         return r;
     }
 
@@ -260,6 +260,7 @@ public class RecipeActivity extends AppCompatActivity {
         String picturePath = cursor.getString(columnIndex);
         cursor.close();
         imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+        imageView.setTag(image_path);
         imageView.setVisibility(View.VISIBLE);
     }
 

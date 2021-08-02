@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,10 +20,12 @@ import com.example.cs446_meal_planner.MainActivity;
 import com.example.cs446_meal_planner.R;
 import com.example.cs446_meal_planner.RecipeDBHelper;
 import com.example.cs446_meal_planner.RecipeOverviewActivity;
+import com.example.cs446_meal_planner.SettingDBHelper;
 import com.example.cs446_meal_planner.Utils;
 import com.example.cs446_meal_planner.databinding.FragmentHomeBinding;
 import com.example.cs446_meal_planner.model.CalendarBooking;
 import com.example.cs446_meal_planner.model.CalendarDate;
+import com.example.cs446_meal_planner.model.PersonalInfo;
 import com.example.cs446_meal_planner.model.Recipe;
 
 import org.joda.time.DateTime;
@@ -33,7 +36,8 @@ public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
     private RecipeDBHelper db;
-    private CalendarDBHelper calendarDBHelper;
+    private CalendarDBHelper calendarDB;
+    private SettingDBHelper settingDB;
 
     private Button picker1;
     private Button picker2;
@@ -57,7 +61,8 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         root = binding.getRoot();
 
-        calendarDBHelper = CalendarDBHelper.getInstance(root.getContext());
+        calendarDB = CalendarDBHelper.getInstance(root.getContext());
+        settingDB = SettingDBHelper.getInstance(root.getContext());
 
         picker1 = root.findViewById(R.id.button_pick_date_1);
         picker2 = root.findViewById(R.id.button_pick_date_2);
@@ -102,7 +107,7 @@ public class HomeFragment extends Fragment {
         picker2.setText(MainActivity.reportEndDate.getMonthOfYear() + "/" + MainActivity.reportEndDate.getDayOfMonth());
 
         //set next recipe
-        CalendarBooking nextBooking = calendarDBHelper.getNextMealBooking();
+        CalendarBooking nextBooking = calendarDB.getNextMealBooking();
 
 
         if (nextBooking != null) {
@@ -125,6 +130,29 @@ public class HomeFragment extends Fragment {
 
         }
 
+        TextView calorie_1 = root.findViewById(R.id.textView_calorie_1);
+        TextView calorie_2 = root.findViewById(R.id.textView_calorie_2);
+        ProgressBar progressBar = root.findViewById(R.id.progressBar);
+
+        if(calorie_1 == null){
+            return;
+        }
+
+        PersonalInfo info = settingDB.get_personal_info();
+
+        double today = getDayCalorie(DateTime.now());
+
+        calorie_1.setText("Today's Calorie: " + today + "kCal");
+        int percent = 0;
+
+        if(info.getGoal() != 0){
+            percent =  (int)((today/info.getGoal().doubleValue()) * 100);
+        }
+
+        calorie_2.setText(percent + "% of your daily intake");
+        progressBar.setMax(info.getGoal());
+        progressBar.setProgress((int) today);
+
 
         //set plan
         CalendarDate cur = new CalendarDate(DateTime.now());
@@ -134,10 +162,44 @@ public class HomeFragment extends Fragment {
     }
 
     private void initializeSpecificMeal(ImageView mealImage, CalendarDate today, String mealType) {
-        CalendarBooking curBooking = calendarDBHelper.getMealBookingOnDate(today, mealType);
+        CalendarBooking curBooking = calendarDB.getMealBookingOnDate(today, mealType);
 
         if(curBooking != null && curBooking.getBookedRecipe().getImageUrl() != null){
             mealImage.setImageBitmap(Utils.getImage(root.getContext(), curBooking.getBookedRecipe().getImageUrl()));
         }
+    }
+
+    private double getDayCalorie(DateTime cur) {
+        double totalCalorie = 0.0;
+
+        CalendarBooking breakfast = calendarDB.getMealBookingOnDate(new CalendarDate(cur), "breakfast");
+        CalendarBooking lunch = calendarDB.getMealBookingOnDate(new CalendarDate(cur), "lunch");
+        CalendarBooking dinner = calendarDB.getMealBookingOnDate(new CalendarDate(cur), "dinner");
+
+        if (breakfast != null) {
+            Double calorie = breakfast.getBookedRecipe().getCalorie();
+
+            if (calorie != null) {
+                totalCalorie += calorie;
+            }
+        }
+
+        if (lunch != null) {
+            Double calorie = lunch.getBookedRecipe().getCalorie();
+
+            if (calorie != null) {
+                totalCalorie += calorie;
+            }
+        }
+
+        if (dinner != null) {
+            Double calorie = dinner.getBookedRecipe().getCalorie();
+
+            if (calorie != null) {
+                totalCalorie += calorie;
+            }
+        }
+
+        return totalCalorie;
     }
 }
