@@ -113,7 +113,7 @@ public class HomeFragment extends Fragment {
         if (nextBooking != null) {
             recipe = nextBooking.getBookedRecipe();
             if (recipe.getImageUrl() != null) {
-                imageViewNextRecipe.setImageBitmap(Utils.getImage(root.getContext(),
+                imageViewNextRecipe.setImageBitmap(Utils.getImage(binding.getRoot().getContext(),
                         recipe.getImageUrl()));
             }
             textViewNextCalorie.setText("Calorie: " + recipe.getCalorie() + "kCal");
@@ -129,6 +129,7 @@ public class HomeFragment extends Fragment {
             }
 
         }
+
 
         TextView calorie_1 = root.findViewById(R.id.textView_calorie_1);
         TextView calorie_2 = root.findViewById(R.id.textView_calorie_2);
@@ -152,7 +153,6 @@ public class HomeFragment extends Fragment {
         calorie_2.setText(percent + "% of your daily intake");
         progressBar.setMax(info.getGoal());
         progressBar.setProgress((int) today);
-
 
         //set plan
         CalendarDate cur = new CalendarDate(DateTime.now());
