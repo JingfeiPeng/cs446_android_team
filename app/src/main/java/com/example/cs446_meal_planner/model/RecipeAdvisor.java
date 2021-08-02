@@ -37,7 +37,7 @@ public class RecipeAdvisor {
     }
     public String recommend()
     {
-        if (feedbacks.length == 0)
+        if (feedbacks.length == 0 || feedbacks[0]=="")
         {
             return "We noticed that you did not enter any feedback. If you are not satisfied with the recipe, feel free to add any feedback in the Feedback section.";
         }
