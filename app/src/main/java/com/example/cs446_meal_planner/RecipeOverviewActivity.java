@@ -2,6 +2,7 @@ package com.example.cs446_meal_planner;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ import com.example.cs446_meal_planner.model.RecipeAdvisor;
 
 public class RecipeOverviewActivity extends RecipeActivity {
     RecipeDBHelper db;
+    RecipeAdvisor advisor;
     protected LinearLayout add_feedback_layoutlist;
     protected TextView feedback_view;
     Button modify_recipe;
@@ -25,6 +27,9 @@ public class RecipeOverviewActivity extends RecipeActivity {
     Button add_feedback;
     @LayoutRes
     int layout_id = R.layout.recipe_view_layout;
+    String[] instructionList = new String[0];
+    String[] ingredientGramList = new String[0];
+    String[] feedbackList = new String[0];
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,9 +77,6 @@ public class RecipeOverviewActivity extends RecipeActivity {
         edit_calories_total.setText(Double.toString(calories));
         image_path = imageUrl;
 
-        String[] instructionList = new String[0];
-        String[] ingredientGramList = new String[0];
-        String[] feedbackList = new String[0];
         if (!instructions.equals("")) {
             instructionList = instructions.split("#");
             for (String s : instructionList) {
@@ -100,9 +102,8 @@ public class RecipeOverviewActivity extends RecipeActivity {
                 addNewFeedback(Integer.parseInt(s));
             }
         }
-
-        RecipeAdvisor advisor = new RecipeAdvisor(ingredientGramList,feedbackList);
-        feedback_view.setText(advisor.recommend());
+        advisor = new RecipeAdvisor(ingredientGramList,feedbackList);
+        updateRecommendation();
         //display image
         if(!imageUrl.equals("")){
             ImageView recipeImage = findViewById(R.id.imageView_recipe_image);
@@ -118,13 +119,7 @@ public class RecipeOverviewActivity extends RecipeActivity {
             @Override
             public void onClick(View v) {
                 Recipe r = processRecipeData();
-                String feedbacks = "";
-                for(int i=0;i< add_feedback_layoutlist.getChildCount();i++)
-                {
-                    final View feedbackView = add_feedback_layoutlist.getChildAt(i);
-                    AppCompatSpinner feedback_item = feedbackView.findViewById(R.id.feedback_item);
-                    feedbacks+=String.valueOf(feedback_item.getSelectedItemPosition())+"!";
-                }
+                String feedbacks=collectFeedback();
                 db.updateName(r.getName(),recipeID);
                 db.updateCookingTime(r.getCookingTime(), recipeID);
                 db.updateInstruction(r.getInstruction(),recipeID);
@@ -153,6 +148,24 @@ public class RecipeOverviewActivity extends RecipeActivity {
             }
         });
     }
+
+    public String collectFeedback()
+    {
+        String feedbacks = "";
+        for(int i=0;i< add_feedback_layoutlist.getChildCount();i++)
+        {
+            final View feedbackView = add_feedback_layoutlist.getChildAt(i);
+            AppCompatSpinner feedback_item = feedbackView.findViewById(R.id.feedback_item);
+            feedbacks+=String.valueOf(feedback_item.getSelectedItemPosition())+"!";
+        }
+        return feedbacks;
+    }
+    public void updateRecommendation()
+    {
+        advisor.setIngredients(ingredientGramList);
+        advisor.setFeedbacks(feedbackList);
+        feedback_view.setText(advisor.recommend());
+    }
     public void addNewFeedback()
     {
         final View feedback_view = getLayoutInflater().inflate(R.layout.feedback_add,null,false);
@@ -160,13 +173,30 @@ public class RecipeOverviewActivity extends RecipeActivity {
         AppCompatSpinner feedback_select = feedback_view.findViewById(R.id.feedback_item);
         ImageView imageClose = feedback_view.findViewById(R.id.image_remove);
         feedback_select.setAdapter(feedback_adapter);
+        feedback_select.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                feedbackList = collectFeedback().split("!");
+                updateRecommendation();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                return;
+            }
+        });
         imageClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 add_feedback_layoutlist.removeView(feedback_view);
+                feedbackList = collectFeedback().split("!");
+                updateRecommendation();
             }
         });
         add_feedback_layoutlist.addView(feedback_view);
+        feedbackList = collectFeedback().split("!");
+        updateRecommendation();
+
     }
     public void addNewFeedback(int position)
     {
@@ -176,6 +206,18 @@ public class RecipeOverviewActivity extends RecipeActivity {
         ImageView imageClose = feedback_view.findViewById(R.id.image_remove);
         feedback_select.setAdapter(feedback_adapter);
         feedback_select.setSelection(position);
+        feedback_select.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                feedbackList = collectFeedback().split("!");
+                updateRecommendation();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                return;
+            }
+        });
         imageClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
