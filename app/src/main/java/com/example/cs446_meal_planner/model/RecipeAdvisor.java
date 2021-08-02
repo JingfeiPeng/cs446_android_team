@@ -3,8 +3,8 @@ package com.example.cs446_meal_planner.model;
 import java.util.ArrayList;
 
 public class RecipeAdvisor {
-    String []ingredients;
-    String feedbacks[];
+    private String []ingredients;
+    private String feedbacks[];
     private final int FEEDBACK_TYPE_COUNT = 4;
     private final String [] FEEDBACK = {"too sweet", "too salty", "too sour", "too spicy", "not sweet enough", "not salty enough", "not sour enough", "not spicy enough"};
     private final String [] SWEET_INGREDIETNS={"cacao","fruit","sugar","cocoa","vanilla","cardamom","star anise","cloves","cinnamon","nutmeg","saffron","syrup","honey","jam"};
@@ -81,4 +81,19 @@ public class RecipeAdvisor {
         return advice;
     }
 
+    public String[] getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(String[] ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public String[] getFeedbacks() {
+        return feedbacks;
+    }
+
+    public void setFeedbacks(String[] feedbacks) {
+        this.feedbacks = feedbacks;
+    }
 }
