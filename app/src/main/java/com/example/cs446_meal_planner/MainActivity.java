@@ -9,12 +9,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ImageView;
 
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -79,13 +81,6 @@ public class MainActivity extends ObserverActivity {
         //getContentResolver().insert();
     }
 
-    @Override
-    public void update() {
-        // TO-DO: Karina do progress bar logic
-        PersonalInfo info = settingDB.get_personal_info();
-        Log.d("current calories goal", info.getGoal().toString());
-    }
-
     private void getPermission(){
         if (Build.VERSION.SDK_INT >= 23) {
             int REQUEST_CODE_PERMISSION_STORAGE = 100;
@@ -147,4 +142,6 @@ public class MainActivity extends ObserverActivity {
         intent.putExtras(bundle);
         startActivity(intent);
     }
+
+
 }
