@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -58,10 +59,10 @@ public class RecipeActivity extends AppCompatActivity {
     protected ArrayAdapter<String> adapter;
     // List of available units of ingredients
     protected String [] units = {"whole", "gram", "teaspoon", "cup", "pound", "tablespoon"};
-    protected String [] feedbacks = {"too sweet", "too briny", "too sour", "too spicy", "not sweet enough", "not briny enough", "not sour enough", "not spicy enough"};
+    protected String [] feedbacks = {"too sweet", "too salty", "too sour", "too spicy", "not sweet enough", "not salty enough", "not sour enough", "not spicy enough"};
     protected IngredientCaloriesCalculator calories_calculator = IngredientCaloriesCalculator.getInstance();
 
-    private String image_path;
+    protected String image_path;
 
 
 

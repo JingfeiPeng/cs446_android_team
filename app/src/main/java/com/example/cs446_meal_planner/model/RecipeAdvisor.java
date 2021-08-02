@@ -6,7 +6,7 @@ public class RecipeAdvisor {
     String []ingredients;
     String feedbacks[];
     private final int FEEDBACK_TYPE_COUNT = 4;
-    private final String [] FEEDBACK = {"too sweet", "too briny", "too sour", "too spicy", "not sweet enough", "not briny enough", "not sour enough", "not spicy enough"};
+    private final String [] FEEDBACK = {"too sweet", "too salty", "too sour", "too spicy", "not sweet enough", "not salty enough", "not sour enough", "not spicy enough"};
     private final String [] SWEET_INGREDIETNS={"cacao","fruit","sugar","cocoa","vanilla","cardamom","star anise","cloves","cinnamon","nutmeg","saffron","syrup","honey","jam"};
     private final String [] SOUR_INGREDIETNS={"buttermilk","sour cream","lemon","lime","vinegar"};
     private final String [] SALTY_INGREDIETNS={"salt","soy sauce","fish sauce"};

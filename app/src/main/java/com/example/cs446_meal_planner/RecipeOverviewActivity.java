@@ -70,6 +70,7 @@ public class RecipeOverviewActivity extends RecipeActivity {
         recipeNameEdit.setText(recipeName);
         cookingTimeField.setText(Double.toString(cookingTime));
         edit_calories_total.setText(Double.toString(calories));
+        image_path = imageUrl;
 
         String[] instructionList = new String[0];
         String[] ingredientGramList = new String[0];
