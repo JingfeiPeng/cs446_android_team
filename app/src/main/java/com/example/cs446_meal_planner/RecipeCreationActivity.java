@@ -60,7 +60,7 @@ public class RecipeCreationActivity extends RecipeActivity{
                 Recipe r = processRecipeData();
                 RecipeDBHelper db = RecipeDBHelper.getInstance(RecipeCreationActivity.this);
                 db.insertRecipe(r);
-                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                finish();
             }
         });
 

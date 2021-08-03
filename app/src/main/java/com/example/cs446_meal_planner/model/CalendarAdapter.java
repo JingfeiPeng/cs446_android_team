@@ -59,7 +59,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
             // if booking already exists
             if (booking != null) {
                 String imageUrl = booking.getBookedRecipe().getImageUrl();
-                if(imageUrl != null){
+                if(imageUrl != null && !imageUrl.equals("")){
                     Bitmap image = Utils.getImage(mcon.getApplicationContext(), booking.getBookedRecipe().getImageUrl());
                     curTextView.setBackground(new BitmapDrawable(mcon.getResources(), image));
                 }

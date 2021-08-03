@@ -112,7 +112,7 @@ public class HomeFragment extends Fragment {
 
         if (nextBooking != null) {
             recipe = nextBooking.getBookedRecipe();
-            if (recipe.getImageUrl() != null) {
+            if (recipe.getImageUrl() != null && !recipe.getImageUrl().equals("")) {
                 imageViewNextRecipe.setImageBitmap(Utils.getImage(binding.getRoot().getContext(),
                         recipe.getImageUrl()));
             }
@@ -164,7 +164,7 @@ public class HomeFragment extends Fragment {
     private void initializeSpecificMeal(ImageView mealImage, CalendarDate today, String mealType) {
         CalendarBooking curBooking = calendarDB.getMealBookingOnDate(today, mealType);
 
-        if(curBooking != null && curBooking.getBookedRecipe().getImageUrl() != null){
+        if(curBooking != null && curBooking.getBookedRecipe().getImageUrl() != null && !curBooking.getBookedRecipe().getImageUrl().equals("")){
             mealImage.setImageBitmap(Utils.getImage(root.getContext(), curBooking.getBookedRecipe().getImageUrl()));
         }
     }
