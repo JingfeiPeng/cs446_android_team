@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cs446_meal_planner.CalendarActivity;
 import com.example.cs446_meal_planner.CalendarDBHelper;
 import com.example.cs446_meal_planner.R;
+import com.example.cs446_meal_planner.RecipeListActivity;
 import com.example.cs446_meal_planner.RecipeOverviewActivity;
 
 import org.jetbrains.annotations.NotNull;
@@ -77,12 +78,15 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
                             .recipeId(r.getId())
                             .build();
                     db.insertCalenderBooking(booking);
-                    Intent back = new Intent(mcon, CalendarActivity.class);
-                    back.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    mcon.startActivity(back);
+                    db.notifyObservers();
+                    returnToPrevActivity();
                 }
             });
         }
+    }
+
+    private void returnToPrevActivity() {
+        ((RecipeListActivity)this.mcon).finish();
     }
 
     @Override
