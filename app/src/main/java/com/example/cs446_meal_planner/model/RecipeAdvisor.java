@@ -78,6 +78,7 @@ public class RecipeAdvisor {
         {
             advice+=" Also, we recommend increasing the amount of "+form_advice(ingredient_in_advice[1]);
         }
+        advice += "\n Please note that our suggestions are merely suggestions and might not always be correct. Professional advice takes precedence over our suggestions";
         return advice;
     }
 
