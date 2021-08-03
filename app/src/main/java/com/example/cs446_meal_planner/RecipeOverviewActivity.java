@@ -87,6 +87,9 @@ public class RecipeOverviewActivity extends RecipeActivity {
         if (!ingredients.equals("")) {
             ingredientGramList = ingredients.split("#");
             for (String s : ingredientGramList) {
+                if (s.equals("%%")) {
+                    continue;
+                }
                 // ingredient at index 0 and weight at index 1
                 String[] ingredientGram = s.split("%");
                 String ingredientName = ingredientGram[0];
