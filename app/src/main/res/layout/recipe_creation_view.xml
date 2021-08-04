@@ -28,6 +28,7 @@
             android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="40dp"></EditText>
+
         <Button
             android:id="@+id/button_parse_recipe_url"
             android:background="@drawable/round_primary"
@@ -44,7 +45,6 @@
             ></Button>
 
         <include layout="@layout/recipe" />
-
         <Button
             android:id="@+id/button_submit_recipe"
             android:background="@drawable/round_primary"

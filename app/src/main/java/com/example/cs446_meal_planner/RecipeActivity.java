@@ -14,7 +14,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -22,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -35,6 +39,7 @@ import androidx.appcompat.widget.AppCompatSpinner;
 
 import com.example.cs446_meal_planner.model.IngredientCaloriesCalculator;
 import com.example.cs446_meal_planner.model.Recipe;
+import com.example.cs446_meal_planner.model.WarningMessageGenerator;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -47,6 +52,7 @@ import static android.view.View.GONE;
 public class RecipeActivity extends AppCompatActivity {
     protected EditText recipeNameEdit;
     protected EditText edit_calories_total;
+    protected TextView warning_message;
     protected LinearLayout add_ingredient_layoutlist;
     protected LinearLayout add_instruction_layoutlist;
     protected Button add_ingredient;
@@ -61,6 +67,7 @@ public class RecipeActivity extends AppCompatActivity {
     protected String [] units = {"whole", "gram", "teaspoon", "cup", "pound", "tablespoon"};
     protected String [] feedbacks = {"too sweet", "too salty", "too sour", "too spicy", "not sweet enough", "not salty enough", "not sour enough", "not spicy enough"};
     protected IngredientCaloriesCalculator calories_calculator = IngredientCaloriesCalculator.getInstance();
+    protected WarningMessageGenerator warningMessageGenerator = new WarningMessageGenerator();
 
     protected String image_path;
 
@@ -82,6 +89,7 @@ public class RecipeActivity extends AppCompatActivity {
         cookingTimeField = findViewById(R.id.edit_cooking_time);
         recipeNameEdit = findViewById(R.id.edit_recipe_name);
         edit_calories_total = findViewById(R.id.edit_calories_total);
+        warning_message = findViewById(R.id.warning_message);
         add_ingredient_layoutlist = findViewById(R.id.ingredient_list);
         add_instruction_layoutlist = findViewById(R.id.instruction_list);
         add_ingredient = findViewById(R.id.button_add_ingredient);
@@ -210,7 +218,31 @@ public class RecipeActivity extends AppCompatActivity {
                 .build();
         return r;
     }
-
+    public void collectIngredient()
+    {
+        warningMessageGenerator.clear_ingredients();
+        for (int i = 0; i < add_ingredient_layoutlist.getChildCount(); i++)
+        {
+            View curIngredientView = add_ingredient_layoutlist.getChildAt(i);
+            EditText curIngredientText = (EditText)curIngredientView.findViewById(R.id.edit_ingredient_name);
+            warningMessageGenerator.add_ingredients(curIngredientText.getText().toString());
+        }
+    }
+    public void setWarningMessage()
+    {
+        collectIngredient();
+        String warning = warningMessageGenerator.warning_msg();
+        if(!warning.equals(""))
+        {
+            warning_message.setText(warning);
+            warning_message.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            warning_message.setText("");
+            warning_message.setVisibility(GONE);
+        }
+    }
     public void addNewIngredient(String number, String unit, String name) {
         final View ingredientView = getLayoutInflater().inflate(R.layout.row_add_ingredient,null,false);
 
@@ -227,17 +259,30 @@ public class RecipeActivity extends AppCompatActivity {
         // name
         EditText editIngredientName = ingredientView.findViewById(R.id.edit_ingredient_name);
         editIngredientName.setText(name);
+        editIngredientName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                setWarningMessage();
+            }
+        });
         ImageView imageClose = ingredientView.findViewById(R.id.image_remove);
 
         imageClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 add_ingredient_layoutlist.removeView(ingredientView);
+                setWarningMessage();
             }
         });
-
         add_ingredient_layoutlist.addView(ingredientView);
+        setWarningMessage();
     }
 
     public void addNewInstruction(String instruction) {
