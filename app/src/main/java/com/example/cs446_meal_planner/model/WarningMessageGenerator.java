@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class WarningMessageGenerator {
     private String []SINGLE_INGREDIENTS={"peanut"};
-    private String [][]MULTI_INGREDIENTS={{"crabs","vitamin c"}};
+    private String [][]MULTI_INGREDIENTS={{"crab","orange"}};
     private ArrayList<String> ingredients;
 
     public WarningMessageGenerator() {
