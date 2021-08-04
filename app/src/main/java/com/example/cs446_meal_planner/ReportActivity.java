@@ -161,7 +161,7 @@ public class ReportActivity extends CalorieReportActivity {
     }
 
     private void setTextViewRecipe(int num){
-        textViewRecipe.setText("You Have Cooked " + num + " Number of Recipes This Week");
+        textViewRecipe.setText("You Have Cooked " + num + " Recipes This Week");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

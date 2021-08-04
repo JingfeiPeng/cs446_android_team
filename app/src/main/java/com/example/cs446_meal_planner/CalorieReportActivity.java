@@ -31,38 +31,20 @@ public class CalorieReportActivity extends AppCompatActivity {
         initializeGraph();
     }
 
-    public void viewBreakfastReport(View v)
-    {
-        reportContext = new ReportContext(new ReportBreakfast());
+    public void viewBreakfastReport(View v) { updateGraph(new ReportBreakfast()); }
+
+    public void viewLunchReport(View v) { updateGraph(new ReportLunch()); }
+
+    public void viewDinnerReport(View v) { updateGraph(new ReportDinner()); }
+
+    public void viewTotalReport(View v) { updateGraph(new ReportAll()); }
+
+    private void updateGraph(ReportStrategy strategy) {
+        reportContext = new ReportContext(strategy);
         LineGraphSeries series = reportContext.executeStrategy(calorieGraph);
         calorieGraph.removeAllSeries();
         calorieGraph.addSeries(series);
     }
-
-    public void viewLunchReport(View v)
-    {
-        reportContext = new ReportContext(new ReportLunch());
-        LineGraphSeries series = reportContext.executeStrategy(calorieGraph);
-        calorieGraph.removeAllSeries();
-        calorieGraph.addSeries(series);
-    }
-
-    public void viewDinnerReport(View v)
-    {
-        reportContext = new ReportContext(new ReportDinner());
-        LineGraphSeries series = reportContext.executeStrategy(calorieGraph);
-        calorieGraph.removeAllSeries();
-        calorieGraph.addSeries(series);
-    }
-
-    public void viewTotalReport(View v)
-    {
-        reportContext = new ReportContext(new ReportAll());
-        LineGraphSeries series = reportContext.executeStrategy(calorieGraph);
-        calorieGraph.removeAllSeries();
-        calorieGraph.addSeries(series);
-    }
-
 
     public String getMonth(int month) {
         return new DateFormatSymbols(new Locale("en")).getMonths()[month-1];

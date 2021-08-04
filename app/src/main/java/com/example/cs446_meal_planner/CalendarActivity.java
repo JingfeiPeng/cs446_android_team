@@ -18,31 +18,41 @@ import org.joda.time.format.ISODateTimeFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class CalendarActivity extends AppCompatActivity {
+public class CalendarActivity extends ObserverActivity {
 
     private int week;
     private int daysToShow = 7;
     RecyclerView recyclerCalender;
+    CalendarDBHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         week = 0;
         setContentView(R.layout.activity_calendar);
-        this.updateDates();
+        db = CalendarDBHelper.getInstance(this);
+        db.attachActivity(this);
+        this.update();
+    }
+
+    @Override
+    public void onDestroy() {
+        db.detchActivity(this);
+        super.onDestroy();
     }
 
     public void increaseWeek(View view) {
         this.week += 1;
-        updateDates();
+        update();
     }
 
     public void decreaseWeek(View view) {
         this.week -= 1;
-        updateDates();
+        update();
     }
 
-    public void updateDates() {
+    @Override
+    public void update() {
         DateTimeFormatter parser = ISODateTimeFormat.date();
         Date dt = new Date();
 

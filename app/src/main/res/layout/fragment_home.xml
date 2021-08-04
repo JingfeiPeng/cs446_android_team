@@ -30,7 +30,8 @@
             app:layout_constraintTop_toBottomOf="@+id/textView_calorie_1"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="40dp"
-            app:layout_constraintWidth_percent="0.6"/>
+            app:layout_constraintWidth_percent="0.6"
+            android:scaleY="4"/>
 
         <TextView
             android:id="@+id/textView_calorie_2"
