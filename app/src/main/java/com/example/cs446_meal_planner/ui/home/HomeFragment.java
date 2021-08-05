@@ -12,7 +12,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -153,6 +155,17 @@ public class HomeFragment extends Fragment {
         calorie_2.setText(percent + "% of your daily intake");
         progressBar.setMax(info.getGoal());
         progressBar.setProgress((int) today);
+        int colour = R.color.red;
+        if (percent < 80) {
+            colour = R.color.green;
+        } else if (percent <= 100) {
+            colour = R.color.orange;
+        }
+        progressBar.getProgressDrawable().setColorFilter(
+                ContextCompat.getColor(getContext(), colour),
+                android.graphics.PorterDuff.Mode.SRC_IN
+        );
+
 
         //set plan
         CalendarDate cur = new CalendarDate(DateTime.now());
