@@ -87,6 +87,10 @@ public class RecipeDBHelper extends DBHelper {
         Integer deletedId = db.delete(RECIPE_TABLE_NAME,
                 "id = ? ",
                 new String[]{Integer.toString(id)});
+        // delete calender bookings
+        db.delete(CalendarDBHelper.CALENDER_TABLE_NAME,
+                "recipe_id = ? ",
+                new String[]{Integer.toString(id)});
         return deletedId;
     }
 
