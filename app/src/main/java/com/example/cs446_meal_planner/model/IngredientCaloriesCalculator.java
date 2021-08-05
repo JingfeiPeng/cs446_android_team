@@ -27,6 +27,16 @@ public class IngredientCaloriesCalculator {
         Ingredient lettuce = new Ingredient("lettuce", 100.0, Unit.GRAM, 15.0);
         Ingredient mayonnaise = new Ingredient("mayonnaise", 100.0, Unit.GRAM, 680.0);
         Ingredient cucumber = new Ingredient("cucumber", 1.0, Unit.CUP, 16.0);
+        Ingredient beef = new Ingredient("beef", 100.0, Unit.GRAM, 250.5);
+        Ingredient potato = new Ingredient("potato", 100.0, Unit.GRAM, 76.7);
+        Ingredient pork = new Ingredient("pork", 100.0, Unit.GRAM, 242.1);
+        Ingredient duck = new Ingredient("duck", 100.0, Unit.GRAM, 337.0);
+        Ingredient chicken = new Ingredient("chicken", 100.0, Unit.GRAM, 239.0);
+        energy_table.put("chicken", chicken);
+        energy_table.put("duck", duck);
+        energy_table.put("pork", pork);
+        energy_table.put("potato", potato);
+        energy_table.put("beef", beef);
         energy_table.put("sugar", sugar);
         energy_table.put("shrimp", shrimp);
         energy_table.put("buttermilk", buttermilk);
