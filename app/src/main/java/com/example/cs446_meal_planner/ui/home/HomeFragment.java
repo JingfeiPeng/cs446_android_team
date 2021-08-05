@@ -115,7 +115,6 @@ public class HomeFragment extends Fragment {
             recipe = nextBooking.getBookedRecipe();
             if (recipe.getImageUrl() != null && !recipe.getImageUrl().equals("")) {
                 imageViewNextRecipe.setImageURI(Uri.parse(recipe.getImageUrl()));
-                //imageViewNextRecipe.setImageBitmap(Utils.getImage(binding.getRoot().getContext(), recipe.getImageUrl()));
             }
             textViewNextCalorie.setText("Calorie: " + recipe.getCalorie() + "kCal");
             textViewNextCookingTime.setText("Cooking Time: " + (int) Math.round(recipe.getCookingTime()) + "min");
