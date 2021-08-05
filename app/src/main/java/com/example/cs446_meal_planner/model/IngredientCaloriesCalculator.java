@@ -32,6 +32,8 @@ public class IngredientCaloriesCalculator {
         Ingredient pork = new Ingredient("pork", 100.0, Unit.GRAM, 242.1);
         Ingredient duck = new Ingredient("duck", 100.0, Unit.GRAM, 337.0);
         Ingredient chicken = new Ingredient("chicken", 100.0, Unit.GRAM, 239.0);
+        Ingredient egg = new Ingredient("egg", 100.0, Unit.GRAM, 155.1);
+        energy_table.put("egg", egg);
         energy_table.put("chicken", chicken);
         energy_table.put("duck", duck);
         energy_table.put("pork", pork);
@@ -153,15 +155,15 @@ public class IngredientCaloriesCalculator {
         }
 
         Unit u;
-        if (unit.toLowerCase() == "cup") {
+        if (unit.toLowerCase().equals("cup")) {
             u = Unit.CUP;
-        } else if (unit.toLowerCase() == "teaspoon") {
+        } else if (unit.toLowerCase().equals("teaspoon")) {
             u = Unit.TEASPOON;
-        } else if (unit.toLowerCase() == "tablespoon") {
+        } else if (unit.toLowerCase().equals("tablespoon")) {
             u = Unit.TABLESPOON;
-        } else if (unit.toLowerCase() == "whole") {
+        } else if (unit.toLowerCase().equals("whole")) {
             u = Unit.WHOLE;
-        } else if (unit.toLowerCase() == "pound") {
+        } else if (unit.toLowerCase().equals("pound")) {
             u = Unit.POUND;
         } else {
             u = Unit.GRAM; // default
