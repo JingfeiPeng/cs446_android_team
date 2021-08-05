@@ -146,10 +146,12 @@ public class RecipeActivity extends AppCompatActivity {
         //upload recipe image
         Button buttonUploadImage = findViewById(R.id.button_upload_image);
         buttonUploadImage.setOnClickListener(view -> {
-            Intent intent = new Intent(
-                    Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            uploadImageActivityResultLauncher.launch(intent);
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("image/jpeg");
+            uploadImageActivityResultLauncher.launch(
+                    Intent.createChooser(intent, "Choose an Image")
+            );
         });
 
 
