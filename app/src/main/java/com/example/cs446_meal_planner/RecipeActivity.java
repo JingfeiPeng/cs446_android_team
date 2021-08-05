@@ -41,6 +41,7 @@ import com.example.cs446_meal_planner.model.IngredientCaloriesCalculator;
 import com.example.cs446_meal_planner.model.Recipe;
 import com.example.cs446_meal_planner.model.WarningMessageGenerator;
 
+import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -148,7 +149,7 @@ public class RecipeActivity extends AppCompatActivity {
         buttonUploadImage.setOnClickListener(view -> {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("image/jpeg");
+            intent.setType("image/*");
             uploadImageActivityResultLauncher.launch(
                     Intent.createChooser(intent, "Choose an Image")
             );
@@ -309,14 +310,8 @@ public class RecipeActivity extends AppCompatActivity {
     public void uploadImage(Intent data){
         Uri selectedImage = data.getData();
         image_path = selectedImage.toString();
-        String[] filePathColumn = { MediaStore.Images.Media.DATA };
-        Cursor cursor = getContentResolver().query(selectedImage,
-                filePathColumn, null, null, null);
-        cursor.moveToFirst();
-        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-        String picturePath = cursor.getString(columnIndex);
-        cursor.close();
-        imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+        Bitmap bitmap = Utils.getImage(this, image_path);
+        imageView.setImageBitmap(bitmap);
         imageView.setVisibility(View.VISIBLE);
     }
 

@@ -1,5 +1,6 @@
 package com.example.cs446_meal_planner;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -110,7 +111,7 @@ public class RecipeOverviewActivity extends RecipeActivity {
         //display image
         if(!imageUrl.equals("")){
             ImageView recipeImage = findViewById(R.id.imageView_recipe_image);
-            recipeImage.setImageBitmap(Utils.getImage(this.getApplicationContext(), imageUrl));
+            recipeImage.setImageURI(Uri.parse(imageUrl));
             imageView.setVisibility(View.VISIBLE);
         }
         else{

@@ -1,6 +1,7 @@
 package com.example.cs446_meal_planner.ui.home;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -113,8 +114,8 @@ public class HomeFragment extends Fragment {
         if (nextBooking != null) {
             recipe = nextBooking.getBookedRecipe();
             if (recipe.getImageUrl() != null && !recipe.getImageUrl().equals("")) {
-                imageViewNextRecipe.setImageBitmap(Utils.getImage(binding.getRoot().getContext(),
-                        recipe.getImageUrl()));
+                imageViewNextRecipe.setImageURI(Uri.parse(recipe.getImageUrl()));
+                //imageViewNextRecipe.setImageBitmap(Utils.getImage(binding.getRoot().getContext(), recipe.getImageUrl()));
             }
             textViewNextCalorie.setText("Calorie: " + recipe.getCalorie() + "kCal");
             textViewNextCookingTime.setText("Cooking Time: " + (int) Math.round(recipe.getCookingTime()) + "min");
@@ -165,7 +166,7 @@ public class HomeFragment extends Fragment {
         CalendarBooking curBooking = calendarDB.getMealBookingOnDate(today, mealType);
 
         if(curBooking != null && curBooking.getBookedRecipe().getImageUrl() != null && !curBooking.getBookedRecipe().getImageUrl().equals("")){
-            mealImage.setImageBitmap(Utils.getImage(root.getContext(), curBooking.getBookedRecipe().getImageUrl()));
+            mealImage.setImageURI(Uri.parse(curBooking.getBookedRecipe().getImageUrl()));
         }
     }
 
