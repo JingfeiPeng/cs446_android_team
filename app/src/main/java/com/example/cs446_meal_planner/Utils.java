@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.view.View;
 
 import com.example.cs446_meal_planner.model.MonthDay;
 import com.jjoe64.graphview.series.DataPoint;
@@ -13,6 +14,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 import org.joda.time.DateTime;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,14 +24,13 @@ import java.util.Map;
 public class Utils {
     public static Bitmap getImage(Context context, String imageUrl){
         Uri selectedImage = Uri.parse(imageUrl);
-        String[] filePathColumn = { MediaStore.Images.Media.DATA };
-        Cursor cursor = context.getContentResolver().query(selectedImage,
-                filePathColumn, null, null, null);
-        cursor.moveToFirst();
-        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-        String picturePath = cursor.getString(columnIndex);
-        cursor.close();
-        return BitmapFactory.decodeFile(picturePath);
+        Bitmap bitmap = null;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), selectedImage);
+        } catch (IOException e) {
+
+        }
+        return bitmap;
     }
 
     public static LineGraphSeries <DataPoint> generateSeries(Map<MonthDay, Double> list){
