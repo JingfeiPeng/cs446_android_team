@@ -1,140 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.setting.SettingFragment">
-
-    <TextView
-        android:id="@+id/textView_PersonalInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Personal Information"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="30dp"
-        android:textSize="26sp"
-        android:fontFamily="sans-serif-medium" />
-
-    <TextView
-        android:id="@+id/textView_Gender"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Gender:"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_PersonalInfo"
-        android:layout_marginLeft="15dp"
-        android:textSize="15sp"
-        android:textColor="@color/black"
-        android:fontFamily="sans-serif-medium" />
-
-    <RadioGroup
-        android:id="@+id/radiogroup"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/textView_Gender"
-        android:textSize="14sp"
-        android:paddingLeft="10dp">
+        >
+        <TextView
+            android:id="@+id/textView_PersonalInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Personal Information"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="30dp"
+            android:textSize="26sp"
+            android:fontFamily="sans-serif-medium" />
 
-        <RadioButton
-            android:id="@+id/radiobutton1"
+        <TextView
+            android:id="@+id/textView_Gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gender:"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_PersonalInfo"
+            android:layout_marginLeft="15dp"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:fontFamily="sans-serif-medium" />
+
+        <RadioGroup
+            android:id="@+id/radiogroup"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="Male" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/textView_Gender"
+            android:textSize="14sp"
+            android:paddingLeft="10dp">
 
-        <RadioButton
-            android:id="@+id/radiobutton2"
+            <RadioButton
+                android:id="@+id/radiobutton1"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="Male" />
+
+            <RadioButton
+                android:id="@+id/radiobutton2"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="Female" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textView_Age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Age:"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radiogroup"
+            android:layout_marginLeft="15dp"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:fontFamily="sans-serif-medium" />
+
+        <EditText
+            android:id="@+id/edit_age"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/round_grey"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:paddingLeft="10dp"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:text="Female" />
-    </RadioGroup>
-
-    <TextView
-        android:id="@+id/textView_Age"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Age:"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radiogroup"
-        android:layout_marginLeft="15dp"
-        android:textSize="15sp"
-        android:textColor="@color/black"
-        android:fontFamily="sans-serif-medium" />
-
-    <EditText
-        android:id="@+id/edit_age"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="5dp"
-        android:background="@drawable/round_grey"
-        android:layout_weight="1"
-        android:textSize="14sp"
-        android:paddingLeft="10dp"
-        android:textColor="@color/black"
-        android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
-        android:inputType="number"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_Age"
-        android:layout_height="40dp"></EditText>
+            android:layout_marginTop="10dp"
+            android:inputType="number"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_Age"
+            android:layout_height="40dp"></EditText>
 
 
-    <TextView
-        android:id="@+id/textView_recommend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Based on your personal information, we estimate the suggested calories goal based on  Energy Requirements (EER) from the Institute of Medicine Dietary Reference Intakes macronutrients report( 2002)"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_age"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"
-        android:textSize="15sp"
-        android:textColor="@color/black"
-        android:fontFamily="sans-serif-medium" />
+        <TextView
+            android:id="@+id/textView_recommend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Based on your personal information, we estimate the suggested calories goal based on  Energy Requirements (EER) from the Institute of Medicine Dietary Reference Intakes macronutrients report( 2002)"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_age"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:fontFamily="sans-serif-medium" />
 
-    <TextView
-        android:id="@+id/textView_suggestion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="According to your gender and age, the recommended daily calorie intake is 2000 calories"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_recommend"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"
-        android:textSize="15sp"
-        android:textColor="@color/black"
-        android:fontFamily="sans-serif-medium" />
+        <TextView
+            android:id="@+id/textView_suggestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="According to your gender and age, the recommended daily calorie intake is 2000 calories"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_recommend"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:fontFamily="sans-serif-medium" />
 
-    <TextView
-        android:id="@+id/textView_GoalSetting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Set Daily Goal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_suggestion"
-        android:layout_marginLeft="30dp"
-        android:textSize="26sp"
-        android:fontFamily="sans-serif-medium" />
+        <TextView
+            android:id="@+id/textView_GoalSetting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Set Daily Goal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_suggestion"
+            android:layout_marginLeft="30dp"
+            android:textSize="26sp"
+            android:fontFamily="sans-serif-medium" />
 
-    <EditText
-        android:id="@+id/edit_goal"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="5dp"
-        android:background="@drawable/round_grey"
-        android:layout_weight="1"
-        android:textSize="14sp"
-        android:layout_marginTop="10dp"
-        android:paddingLeft="10dp"
-        android:textColor="@color/black"
-        android:hint="Enter in calories"
-        android:layout_width="match_parent"
-        android:inputType="number"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_GoalSetting"
-        android:layout_height="40dp"></EditText>
+        <EditText
+            android:id="@+id/edit_goal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/round_grey"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:textColor="@color/black"
+            android:hint="Enter in calories"
+            android:layout_width="match_parent"
+            android:inputType="number"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_GoalSetting"
+            android:layout_height="40dp"></EditText>
+    </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

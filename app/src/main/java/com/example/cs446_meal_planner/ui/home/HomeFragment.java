@@ -151,14 +151,14 @@ public class HomeFragment extends Fragment {
         if(info.getGoal() != 0){
             percent =  (int)((today/info.getGoal().doubleValue()) * 100);
         }
-
+        float floatPercent = (float) ((today/info.getGoal().doubleValue()) * 100);
         calorie_2.setText(percent + "% of your daily intake");
         progressBar.setMax(info.getGoal());
         progressBar.setProgress((int) today);
         int colour = R.color.red;
-        if (percent < 80) {
+        if (floatPercent < 80) {
             colour = R.color.green;
-        } else if (percent <= 100) {
+        } else if (floatPercent <= 100) {
             colour = R.color.orange;
         }
         progressBar.getProgressDrawable().setColorFilter(
