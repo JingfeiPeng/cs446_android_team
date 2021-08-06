@@ -16,6 +16,7 @@
         android:background="@drawable/round_grey"
         android:layout_weight="1"
         android:hint="1,1.5,2,3..."
+        android:inputType="numberDecimal"
         android:textSize="14sp"
         android:paddingLeft="10dp"
         android:textColor="@color/black"
