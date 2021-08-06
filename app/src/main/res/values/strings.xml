@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CS446_Meal_Planner</string>
+    <string name="app_name">MealPlanner</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Recipe</string>
     <string name="title_notifications">Setting</string>
