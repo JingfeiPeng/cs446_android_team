@@ -67,7 +67,6 @@ public class SettingDBHelper extends DBHelper {
 
         // should have only 1 entry
         while (res.isAfterLast() == false) {
-            Log.d("Jenny", res.toString());
             info = PersonalInfo.builder()
                     .age(res.getInt(res.getColumnIndex(SETTING_AGE)))
                     .gender(res.getString(res.getColumnIndex(SETTING_GENDER)))
