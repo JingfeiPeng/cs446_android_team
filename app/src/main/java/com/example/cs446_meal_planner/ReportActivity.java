@@ -232,6 +232,7 @@ public class ReportActivity extends CalorieReportActivity {
             if(occurrences.get(ingredient) > maxOccurence){
                 result.clear();
                 result.add(ingredient);
+                maxOccurence = occurrences.get(ingredient);
             }
             else if(occurrences.get(ingredient) == maxOccurence){
                 result.add(ingredient);
