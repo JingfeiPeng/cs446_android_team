@@ -8,5 +8,6 @@ import lombok.Data;
 public class PersonalInfo {
     private String gender;
     private Integer age;
+    private String activity_level;
     private Integer goal;
 }

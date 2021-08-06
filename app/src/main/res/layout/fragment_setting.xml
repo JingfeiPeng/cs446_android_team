@@ -57,6 +57,51 @@
         </RadioGroup>
 
         <TextView
+            android:id="@+id/textView_ActivityLevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Activity level:"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_age"
+            android:layout_marginLeft="15dp"
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:fontFamily="sans-serif-medium" />
+
+        <RadioGroup
+            android:id="@+id/radiogroup_activitylevel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/textView_ActivityLevel"
+            android:textSize="14sp"
+            android:paddingLeft="10dp">
+
+            <RadioButton
+                android:id="@+id/activity_rb1"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="Sedentary" />
+
+            <RadioButton
+                android:id="@+id/activity_rb2"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="Moderately Active" />
+
+            <RadioButton
+                android:id="@+id/activity_rb3"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="Active" />
+
+        </RadioGroup>
+
+
+
+
+
+        <TextView
             android:id="@+id/textView_Age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
