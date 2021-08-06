@@ -70,13 +70,11 @@ public class RecipeCreationActivity extends RecipeActivity{
 
         @Override
         protected String doInBackground(String... params) {
-            Looper.prepare();
             try {
                 Document doc = Jsoup.connect(recipe_url).get();
 
                 // Recipe title
-                EditText edit_recipe_name = findViewById(R.id.edit_recipe_name);
-                edit_recipe_name.setText(doc.title());
+                publishProgress("title", doc.title());
 
                 // Recipe Ingredients
                 Elements ingredientSections = doc.getElementsByAttributeValueContaining("class", "recipe-ingredients");
@@ -193,6 +191,9 @@ public class RecipeCreationActivity extends RecipeActivity{
             } else if (values[0] == "time") {
                 EditText edit_cooking_time = findViewById(R.id.edit_cooking_time);
                 edit_cooking_time.setText(values[1]);
+            } else if (values[0] == "title") {
+                EditText edit_recipe_name = findViewById(R.id.edit_recipe_name);
+                edit_recipe_name.setText(values[1]);
             }
         }
     }
