@@ -46,7 +46,7 @@ public class CalorieSuggestion {
             } else {
                 result = 2000;
             }
-        } else if (activity.equals("moderately")) {
+        } else if (activity.equals("moderate")) {
             if (age < 4) {
                 result = 1250;
             } else if (4 <= age && age < 9) {

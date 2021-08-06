@@ -100,7 +100,7 @@ public class SettingFragment extends Fragment {
         }
         if (activity.equals("sedentary")) {
             activity_sedentary.setChecked(true);
-        } else if (activity.equals("moderately")) {
+        } else if (activity.equals("moderate")) {
             activity_moderately.setChecked(true);
         } else{
             activity_active.setChecked(true);
@@ -127,7 +127,7 @@ public class SettingFragment extends Fragment {
                 if (checkedId == activity_sedentary.getId()) {
                     activity = "sedentary";
                 } else if (checkedId == activity_moderately.getId()) {
-                    activity = "moderately";
+                    activity = "moderate";
                 } else {
                     activity = "active";
                 }
