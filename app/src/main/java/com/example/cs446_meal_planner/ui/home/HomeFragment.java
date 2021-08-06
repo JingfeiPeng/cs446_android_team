@@ -88,6 +88,9 @@ public class HomeFragment extends Fragment {
         buttonNextRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (recipe == null) {
+                    return;
+                }
                 Intent intent = new Intent(root.getContext(), RecipeOverviewActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("instructions",recipe.getInstruction());
