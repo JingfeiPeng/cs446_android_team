@@ -20,6 +20,7 @@ public class SettingDBHelper extends DBHelper {
     public static final String SETTING_ID = "id";
     public static final String SETTING_GENDER = "gender";
     public static final String SETTING_AGE = "age";
+    public static final String SETTING_ACTIVITY = "activity_level";
     public static final String SETTING_GOAL = "goal";
     public static final Integer default_id = 1;
 
@@ -48,7 +49,7 @@ public class SettingDBHelper extends DBHelper {
         onCreate(db);
         // insert default row if not present
         if (get_personal_info() == null) {
-            db.execSQL("insert into SettingTable (id,gender,age,goal) values (1,'male',18,2200)");
+            db.execSQL("insert into SettingTable (id,gender,age,activity_level,goal) values (1,'male',18,'sedentary',2200)");
         }
     }
 
@@ -66,9 +67,11 @@ public class SettingDBHelper extends DBHelper {
 
         // should have only 1 entry
         while (res.isAfterLast() == false) {
+            Log.d("Jenny", res.toString());
             info = PersonalInfo.builder()
                     .age(res.getInt(res.getColumnIndex(SETTING_AGE)))
                     .gender(res.getString(res.getColumnIndex(SETTING_GENDER)))
+                    .activity_level(res.getString(res.getColumnIndex(SETTING_ACTIVITY)))
                     .goal(res.getInt(res.getColumnIndex(SETTING_GOAL)))
                     .build();
             res.moveToNext();
@@ -92,6 +95,13 @@ public class SettingDBHelper extends DBHelper {
         return true;
     }
 
+    public boolean updateActivity(String activity) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(SETTING_ACTIVITY, activity);
+        db.update(SETTING_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(default_id)});
+        return true;
+    }
 
     public boolean updateGoal(Integer goal) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -106,6 +116,7 @@ public class SettingDBHelper extends DBHelper {
             "id INTEGER PRIMARY KEY, " +
             "gender TEXT, " +
             "age INTEGER, " +
+            "activity_level TEXT, " +
             "goal INTEGER" +
             ")";
 

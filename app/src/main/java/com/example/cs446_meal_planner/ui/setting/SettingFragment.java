@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.database.DatabaseUtils;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,11 +37,18 @@ public class SettingFragment extends Fragment {
 
     private Integer age;
     private String gender;
+    private String activity;
     private Integer dailyCaloriesGoal;
 
     protected RadioGroup gender_result;
     protected RadioButton gender_male;
     protected RadioButton gender_female;
+
+    protected RadioGroup activity_result;
+    protected RadioButton activity_sedentary;
+    protected RadioButton activity_moderately;
+    protected RadioButton activity_active;
+
     private SettingDBHelper settingDB;
     protected EditText ageEdit;
     protected EditText goalEdit;
@@ -67,6 +75,11 @@ public class SettingFragment extends Fragment {
         gender_male = getView().findViewById(R.id.radiobutton1);
         gender_female = getView().findViewById(R.id.radiobutton2);
 
+        activity_result = getView().findViewById(R.id.radiogroup_activitylevel);
+        activity_sedentary = getView().findViewById(R.id.activity_rb1);
+        activity_moderately = getView().findViewById(R.id.activity_rb2);
+        activity_active = getView().findViewById(R.id.activity_rb3);
+
         ageEdit = getView().findViewById(R.id.edit_age);
         ageEdit.addTextChangedListener(watchAgeChange);
         goalEdit = getView().findViewById(R.id.edit_goal);
@@ -78,11 +91,19 @@ public class SettingFragment extends Fragment {
         PersonalInfo personalInfo = settingDB.get_personal_info();
         age = personalInfo.getAge();
         gender = personalInfo.getGender();
+        activity = personalInfo.getActivity_level();
         dailyCaloriesGoal = personalInfo.getGoal();
         if (gender.equals("male")) {
             gender_male.setChecked(true);
         } else {
             gender_female.setChecked(true);
+        }
+        if (activity.equals("sedentary")) {
+            activity_sedentary.setChecked(true);
+        } else if (activity.equals("moderately")) {
+            activity_moderately.setChecked(true);
+        } else{
+            activity_active.setChecked(true);
         }
         ageEdit.setText(age.toString());
         Log.d("here", dailyCaloriesGoal.toString());
@@ -100,12 +121,26 @@ public class SettingFragment extends Fragment {
                 updateUI();
             }
         });
+
+        activity_result.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == activity_sedentary.getId()) {
+                    activity = "sedentary";
+                } else if (checkedId == activity_moderately.getId()) {
+                    activity = "moderately";
+                } else {
+                    activity = "active";
+                }
+                settingDB.updateActivity(activity);
+                updateUI();
+            }
+        });
     }
 
     private void updateUI(){
-        Integer suggestion = calorieCal.CalculateSuggestion(gender, age);
-        textview_Suggestion.setText("According to your gender of " + gender + " and age:" + age +","
-                + " the recommended daily calorie intake is " + suggestion + " calories");
+        Integer suggestion = calorieCal.CalculateSuggestion(gender, age, activity);
+        textview_Suggestion.setText("According to your gender of " + gender + ", age:" + age +","
+                + " and Activity Level: " + activity + " the recommended daily calorie intake is " + suggestion + " calories");
     }
 
     private TextWatcher watchAgeChange = new TextWatcher() {
@@ -127,14 +162,10 @@ public class SettingFragment extends Fragment {
 
     private TextWatcher watchGoalChange = new TextWatcher() {
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
         @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
+        public void onTextChanged(CharSequence s, int start, int before, int count) { }
 
         @Override
         public void afterTextChanged(Editable s) {
