@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
@@ -29,6 +30,7 @@ public class RecipeCreationActivity extends RecipeActivity{
 
     Button parse_recipe_url;
     Button submit_recipe;
+    TextView parseStatus;
     String recipe_url;
     @LayoutRes
     int layout_id = R.layout.recipe_creation_view;
@@ -40,6 +42,8 @@ public class RecipeCreationActivity extends RecipeActivity{
 
         parse_recipe_url = findViewById(R.id.button_parse_recipe_url);
         submit_recipe = findViewById(R.id.button_submit_recipe);
+        parseStatus = findViewById(R.id.parse_status);
+        parseStatus.setVisibility(View.GONE);
 
 
         parse_recipe_url.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +114,9 @@ public class RecipeCreationActivity extends RecipeActivity{
                 publishProgress("time", time);
 
             } catch (IOException e) {
-                e.printStackTrace();
+                publishProgress("failedToParse", "cannot_parse");
+            } catch (Exception e) {
+                publishProgress("failedToParse", "cannot_parse");
             }
             return null;
         }
@@ -118,7 +124,10 @@ public class RecipeCreationActivity extends RecipeActivity{
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected void onProgressUpdate(String... values) {
-            if (values[0] == "instruction") {
+            if (values[0] == "failedToParse"){
+                parseStatus.setVisibility(View.VISIBLE);
+                return;
+            } else if (values[0] == "instruction") {
                 addNewInstruction(values[1]);
             } else if (values[0] == "ingredient") {
                 // set default values
@@ -195,6 +204,7 @@ public class RecipeCreationActivity extends RecipeActivity{
                 EditText edit_recipe_name = findViewById(R.id.edit_recipe_name);
                 edit_recipe_name.setText(values[1]);
             }
+            parseStatus.setVisibility(View.GONE);
         }
     }
 }

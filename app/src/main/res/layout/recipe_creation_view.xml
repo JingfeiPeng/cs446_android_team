@@ -28,6 +28,14 @@
             android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="40dp"></EditText>
+        <TextView
+            android:id="@+id/parse_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="The given URL is invalid"
+            android:textSize="15sp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/red"></TextView>
 
         <Button
             android:id="@+id/button_parse_recipe_url"
