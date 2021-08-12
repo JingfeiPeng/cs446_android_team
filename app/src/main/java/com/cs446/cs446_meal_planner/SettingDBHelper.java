@@ -1,0 +1,117 @@
+package com.cs446.cs446_meal_planner;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
+import com.cs446.cs446_meal_planner.model.PersonalInfo;
+
+public class SettingDBHelper extends DBHelper {
+    public static final String SETTING_TABLE_NAME = "SettingTable";
+    public static final String SETTING_ID = "id";
+    public static final String SETTING_GENDER = "gender";
+    public static final String SETTING_AGE = "age";
+    public static final String SETTING_ACTIVITY = "activity_level";
+    public static final String SETTING_GOAL = "goal";
+    public static final Integer default_id = 1;
+
+    private static SettingDBHelper settingDBHelper = null;
+
+    private SettingDBHelper(Context context) {
+        super(context);
+    }
+
+    public static SettingDBHelper getInstance(Context ctx) {
+        if (settingDBHelper == null) {
+            settingDBHelper = new SettingDBHelper(ctx.getApplicationContext());
+            settingDBHelper.initialize();
+        }
+
+        return settingDBHelper;
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(QUERY_CREATE_SETTING_DB);
+    }
+
+    public void initialize() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        onCreate(db);
+        // insert default row if not present
+        if (get_personal_info() == null) {
+            db.execSQL("insert into SettingTable (id,gender,age,activity_level,goal) values (1,'male',18,'sedentary',2200)");
+        }
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL(QUERY_UPGRADE_DB);
+        onCreate(db);
+    }
+
+    public PersonalInfo get_personal_info() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT * FROM SettingTable", null);
+        res.moveToFirst();
+        PersonalInfo info = null;
+
+        // should have only 1 entry
+        while (res.isAfterLast() == false) {
+            info = PersonalInfo.builder()
+                    .age(res.getInt(res.getColumnIndex(SETTING_AGE)))
+                    .gender(res.getString(res.getColumnIndex(SETTING_GENDER)))
+                    .activity_level(res.getString(res.getColumnIndex(SETTING_ACTIVITY)))
+                    .goal(res.getInt(res.getColumnIndex(SETTING_GOAL)))
+                    .build();
+            res.moveToNext();
+        }
+        return info;
+    }
+
+    public boolean updateGender(String gender) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(SETTING_GENDER, gender);
+        db.update(SETTING_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(default_id)});
+        return true;
+    }
+
+    public boolean updateAge(Integer age) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(SETTING_AGE, age);
+        db.update(SETTING_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(default_id)});
+        return true;
+    }
+
+    public boolean updateActivity(String activity) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(SETTING_ACTIVITY, activity);
+        db.update(SETTING_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(default_id)});
+        return true;
+    }
+
+    public boolean updateGoal(Integer goal) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(SETTING_GOAL, goal);
+        db.update(SETTING_TABLE_NAME, cv, "id = ?", new String[]{String.valueOf(default_id)});
+        this.notifyObservers();
+        return true;
+    }
+
+    private final String QUERY_CREATE_SETTING_DB = "CREATE TABLE IF NOT EXISTS SettingTable (" +
+            "id INTEGER PRIMARY KEY, " +
+            "gender TEXT, " +
+            "age INTEGER, " +
+            "activity_level TEXT, " +
+            "goal INTEGER" +
+            ")";
+
+    private final String QUERY_UPGRADE_DB = "DROP TABLE IF EXISTS SettingTable";
+    private final String GetAge = "SELECT * FROM CalenderTable WHERE id=?";
+
+}
